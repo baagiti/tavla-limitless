@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Player, DoublingCubeState, CubeMode, BoardTheme, CheckerTheme } from '../types/backgammon';
 import { Checker } from './Checker';
 import { DoublingCube } from './DoublingCube';
@@ -29,6 +30,7 @@ export const Bar: React.FC<BarProps> = ({
   theme = 'royal_green',
   checkerTheme = 'auto',
 }) => {
+  const { t } = useTranslation();
   const isSelected = selectedSource === 'bar';
   const hasMyCheckers = bar[activePlayer] > 0;
   const isCubeActive = cubeMode === 'with_cube';
@@ -89,7 +91,7 @@ export const Bar: React.FC<BarProps> = ({
         ) : (
           /* Handcrafted Brass Tournament Medallion (Clean, no 64, no cube text) */
           <div
-            title="Tournament Backgammon Board"
+            title={t('bar.medallionTitle')}
             className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#3d2b1f] via-[#201610] to-[#120b08] border-2 border-[#8b6b47] flex items-center justify-center shadow-lg relative group"
           >
             <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-[#e5c07b]/40 flex items-center justify-center">
@@ -103,7 +105,7 @@ export const Bar: React.FC<BarProps> = ({
 
         {hasMyCheckers && (
           <span className="text-[8px] uppercase tracking-widest text-[#e5c07b] font-bold mt-1.5 text-center animate-pulse drop-shadow">
-            Kırık Pul
+            {t('bar.onBar')}
           </span>
         )}
       </div>

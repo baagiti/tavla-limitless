@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Player, GameMode } from '../types/backgammon';
 import { Crown, Bot, User, Dices } from 'lucide-react';
@@ -42,6 +43,7 @@ const SingleDie: React.FC<{
   isWinner = false,
   isTie = false,
 }) => {
+  const { t } = useTranslation();
   const pips = PIP_LAYOUTS[value] || [];
   const isWhite = playerColor === 'white';
 
@@ -103,20 +105,20 @@ const SingleDie: React.FC<{
 
       {isOpening && (
         <div className="absolute -bottom-5 text-[10px] uppercase font-mono tracking-widest text-[#c2a278] font-semibold">
-          {playerColor}
+          {t(`players.${playerColor}`)}
         </div>
       )}
 
       {isWinner && (
         <div className="absolute -top-3.5 bg-gradient-to-r from-[#e5c07b] to-[#c2a278] text-[#140e0a] text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow flex items-center gap-0.5 uppercase tracking-wider">
           <Crown className="w-2.5 h-2.5" />
-          <span>Winner</span>
+          <span>{t('dice.winner', 'Winner')}</span>
         </div>
       )}
 
       {isTie && (
         <div className="absolute -top-3 bg-[#2d1e15] border border-[#c2a278]/50 text-[#c2a278] text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow uppercase tracking-wider">
-          Tie
+          {t('dice.tie', 'Tie')}
         </div>
       )}
     </motion.div>
@@ -137,6 +139,7 @@ export const Dice: React.FC<DiceProps> = ({
   gameMode = 'ai',
   userColor = 'white',
 }) => {
+  const { t } = useTranslation();
   const isDoubles = rolledDice && rolledDice[0] === rolledDice[1];
 
   // ----------------------------------------------------
@@ -171,7 +174,7 @@ export const Dice: React.FC<DiceProps> = ({
         {/* Header title */}
         <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-[#e5c07b] mb-3">
           <Dices className="w-3.5 h-3.5" />
-          <span>Açılış Zarı / Opening Roll</span>
+          <span>{t('dice.openingRollTitle')}</span>
         </div>
 
         {/* Dice Slot Container */}
@@ -180,14 +183,14 @@ export const Dice: React.FC<DiceProps> = ({
           <div className="flex flex-col items-center flex-1">
             <div className="flex items-center gap-1 mb-1.5 text-[10px] uppercase font-mono tracking-wider text-[#e0d5c1]/80">
               {isWhiteHuman ? <User className="w-3 h-3 text-[#c2a278]" /> : <Bot className="w-3 h-3 text-[#c2a278]" />}
-              <span>{isWhiteHuman ? (gameMode === 'local' ? 'White' : 'You') : 'AI (White)'}</span>
+              <span>{isWhiteHuman ? (gameMode === 'local' ? t('players.white') : t('dice.you')) : t('dice.aiWhite')}</span>
             </div>
 
             {openingDice.white !== null ? (
               <div
                 onClick={isTie && isWhiteHuman && !isRolling ? () => handleOpeningClick('white') : undefined}
                 className={isTie && isWhiteHuman ? 'cursor-pointer hover:scale-105 transition-transform' : ''}
-                title={isTie ? 'Tekrar atmak için tıkla' : undefined}
+                title={isTie ? t('dice.rollAgain') : undefined}
               >
                 <SingleDie
                   value={openingDice.white}
@@ -215,17 +218,17 @@ export const Dice: React.FC<DiceProps> = ({
                   className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border-2 border-dashed border-[#e5c07b] bg-[#2d1e15] hover:bg-[#e5c07b] hover:text-[#140e0a] text-[#e5c07b] flex flex-col items-center justify-center transition-all shadow-lg animate-pulse cursor-pointer"
                 >
                   <Dices className="w-4 h-4" />
-                  <span className="text-[9px] font-bold uppercase tracking-tight mt-0.5">Zar At</span>
+                  <span className="text-[9px] font-bold uppercase tracking-tight mt-0.5">{t('dice.rollDie')}</span>
                 </motion.button>
               ) : (
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-[#4a3528] bg-[#1a130f] flex flex-col items-center justify-center text-[#c2a278]/60 text-[9px] uppercase font-mono animate-pulse">
-                  <span>AI</span>
-                  <span>Rolling...</span>
+                  <span>{t('dice.aiRollingShort')}</span>
+                  <span>{t('dice.rollingEllipsis')}</span>
                 </div>
               )
             ) : (
               <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-dashed border-[#4a3528]/50 bg-[#140e0a]/50 flex items-center justify-center text-[#e0d5c1]/30 text-[9px] font-mono">
-                Bekliyor
+                {t('dice.waiting')}
               </div>
             )}
           </div>
@@ -235,7 +238,7 @@ export const Dice: React.FC<DiceProps> = ({
             <span className="text-[10px] font-mono font-bold text-[#c2a278]/60 uppercase">VS</span>
             {isTie && (
               <span className="text-[8px] uppercase tracking-wider text-amber-400 font-bold mt-1 text-center animate-pulse">
-                Berabere!
+                {t('dice.tieExclaim')}
               </span>
             )}
           </div>
@@ -244,14 +247,14 @@ export const Dice: React.FC<DiceProps> = ({
           <div className="flex flex-col items-center flex-1">
             <div className="flex items-center gap-1 mb-1.5 text-[10px] uppercase font-mono tracking-wider text-[#e0d5c1]/80">
               {isBlackHuman ? <User className="w-3 h-3 text-[#c2a278]" /> : <Bot className="w-3 h-3 text-[#c2a278]" />}
-              <span>{isBlackHuman ? (gameMode === 'local' ? 'Black' : 'You') : 'AI (Black)'}</span>
+              <span>{isBlackHuman ? (gameMode === 'local' ? t('players.black') : t('dice.you')) : t('dice.aiBlack')}</span>
             </div>
 
             {openingDice.black !== null ? (
               <div
                 onClick={isTie && isBlackHuman && !isRolling ? () => handleOpeningClick('black') : undefined}
                 className={isTie && isBlackHuman ? 'cursor-pointer hover:scale-105 transition-transform' : ''}
-                title={isTie ? 'Tekrar atmak için tıkla' : undefined}
+                title={isTie ? t('dice.rollAgain') : undefined}
               >
                 <SingleDie
                   value={openingDice.black}
@@ -279,17 +282,17 @@ export const Dice: React.FC<DiceProps> = ({
                   className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border-2 border-dashed border-[#e5c07b] bg-[#2d1e15] hover:bg-[#e5c07b] hover:text-[#140e0a] text-[#e5c07b] flex flex-col items-center justify-center transition-all shadow-lg animate-pulse cursor-pointer"
                 >
                   <Dices className="w-4 h-4" />
-                  <span className="text-[9px] font-bold uppercase tracking-tight mt-0.5">Zar At</span>
+                  <span className="text-[9px] font-bold uppercase tracking-tight mt-0.5">{t('dice.rollDie')}</span>
                 </motion.button>
               ) : (
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-[#4a3528] bg-[#1a130f] flex flex-col items-center justify-center text-[#c2a278]/60 text-[9px] uppercase font-mono animate-pulse">
-                  <span>AI</span>
-                  <span>Rolling...</span>
+                  <span>{t('dice.aiRollingShort')}</span>
+                  <span>{t('dice.rollingEllipsis')}</span>
                 </div>
               )
             ) : (
               <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-dashed border-[#4a3528]/50 bg-[#140e0a]/50 flex items-center justify-center text-[#e0d5c1]/30 text-[9px] font-mono">
-                Bekliyor
+                {t('dice.waiting')}
               </div>
             )}
           </div>
@@ -311,7 +314,7 @@ export const Dice: React.FC<DiceProps> = ({
               className="px-6 py-2 rounded-full border border-[#e5c07b] bg-gradient-to-r from-[#8b6b47] via-[#e5c07b] to-[#8b6b47] text-[#140e0a] text-xs font-bold uppercase tracking-wider shadow-[0_0_16px_rgba(229,192,123,0.6)] flex items-center gap-2 cursor-pointer hover:brightness-110"
             >
               <Dices className="w-4 h-4 text-[#140e0a]" />
-              <span>Tekrar Zar At</span>
+              <span>{t('dice.rollAgain')}</span>
             </motion.button>
           </motion.div>
         )}
@@ -321,20 +324,15 @@ export const Dice: React.FC<DiceProps> = ({
           {isBothRolled ? (
             isTie ? (
               <span className="text-amber-300 font-semibold">
-                Zarlar eşit geldi ({openingDice.white} - {openingDice.black})! Yeniden belirlemek için tekrar zar atın.
+                {t('dice.tieResult', { white: openingDice.white, black: openingDice.black })}
               </span>
             ) : (
-              <span>
-                <strong className="text-[#f9f3e5]">
-                  {whiteWon ? 'BEYAZ' : 'SİYAH'}
-                </strong>{' '}
-                büyük attı ve oyuna ilk hamleyle başlıyor!
-              </span>
+              <span>{t('dice.startsFirst', { winner: whiteWon ? t('dice.whiteCaps') : t('dice.blackCaps') })}</span>
             )
           ) : openingRoller === 'white' ? (
-            isWhiteHuman ? 'Sıra sende: Açılış zarını atmak için tıkla' : 'Beyaz oyuncu (AI) zar atıyor...'
+            isWhiteHuman ? t('dice.yourTurnTapToRoll') : t('dice.aiWhiteRollingLong')
           ) : (
-            isBlackHuman ? 'Sıra sende: Açılış zarını atmak için tıkla' : 'Siyah oyuncu (AI) zar atıyor...'
+            isBlackHuman ? t('dice.yourTurnTapToRoll') : t('dice.aiBlackRollingLong')
           )}
         </div>
       </div>
@@ -412,7 +410,7 @@ export const Dice: React.FC<DiceProps> = ({
           onClick={onRoll}
           className="py-3 px-6 rounded-sm border border-[#c2a278] bg-[#140e0a]/95 text-[#c2a278] text-xs font-semibold tracking-[0.2em] uppercase hover:bg-[#c2a278] hover:text-[#140e0a] transition-colors shadow-2xl cursor-pointer"
         >
-          Roll Dice
+          {t('dice.rollDiceButton')}
         </motion.button>
       )}
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GameSettings, AIDifficulty, Player } from '../types/backgammon';
 import { Bot, Users, Trophy, ShieldCheck, Settings } from 'lucide-react';
@@ -20,6 +21,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
   onOpenStats,
   onOpenSettings,
 }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   const isCubeMode = settings.cubeMode !== 'no_cube';
@@ -39,10 +41,10 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
         <div className="mb-5 pb-4 border-b border-[#2d1e15] flex items-center justify-between">
           <div>
             <h1 className="text-xl sm:text-2xl font-serif font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#f9f3e5] via-[#e5c07b] to-[#c2a278]">
-              BACKGAMMON LIMITLESS
+              {t('matchSetup.title')}
             </h1>
             <p className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-[#c2a278]/70">
-              Championship Tavla — Match Setup
+              {t('matchSetup.subtitle')}
             </p>
           </div>
 
@@ -51,7 +53,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
               <button
                 type="button"
                 onClick={onOpenSettings}
-                title="Ayarlar & Temalar"
+                title={t('matchSetup.settings')}
                 className="p-1.5 rounded border border-[#3d2b1f] bg-[#201610] text-[#e5c07b] hover:border-[#e5c07b] transition-all cursor-pointer shadow"
               >
                 <Settings className="w-4 h-4 text-[#e5c07b]" />
@@ -64,7 +66,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-[#3d2b1f] bg-[#201610] text-[#e5c07b] hover:border-[#e5c07b] text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow"
               >
                 <Trophy className="w-3.5 h-3.5 text-[#e5c07b]" />
-                <span className="hidden sm:inline">İstatistikler</span>
+                <span className="hidden sm:inline">{t('matchSetup.statistics')}</span>
               </button>
             )}
           </div>
@@ -75,10 +77,10 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
           <section>
             <div className="flex items-center justify-between mb-2">
               <label className="text-[10px] tracking-[0.15em] uppercase opacity-40 block">
-                Rule Variant / Oyun Modu
+                {t('matchSetup.ruleVariant')}
               </label>
               <span className="text-[10px] text-[#c2a278] font-mono font-medium">
-                {isCubeMode ? 'Doubling Cube Active' : 'Pure Classic Mode'}
+                {isCubeMode ? t('matchSetup.doublingCubeActive') : t('matchSetup.pureClassicMode')}
               </span>
             </div>
 
@@ -99,7 +101,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                       64
                     </div>
                     <span className="text-xs font-bold uppercase tracking-wider">
-                      Doubling Cube
+                      {t('matchSetup.doublingCubeTitle')}
                     </span>
                   </div>
                   {isCubeMode && (
@@ -107,7 +109,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                   )}
                 </div>
                 <div className="text-[10px] text-[#e0d5c1]/70 leading-relaxed">
-                  Katlama zarı ile (2x, 4x... 64x), taktiksel teklif & pas kuralları
+                  {t('matchSetup.doublingCubeDesc')}
                 </div>
               </button>
 
@@ -125,7 +127,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                   <div className="flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-[#c2a278]" />
                     <span className="text-xs font-bold uppercase tracking-wider">
-                      Standart Mod
+                      {t('matchSetup.standardModeTitle')}
                     </span>
                   </div>
                   {!isCubeMode && (
@@ -133,7 +135,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                   )}
                 </div>
                 <div className="text-[10px] text-[#e0d5c1]/70 leading-relaxed">
-                  Katlama zarsız klasik tavla: Tek (1p), Mars (2p), Katmerli Mars (3p)
+                  {t('matchSetup.standardModeDesc')}
                 </div>
               </button>
             </div>
@@ -142,7 +144,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
           {/* 2. Opponent Selection */}
           <section>
             <label className="text-[10px] tracking-[0.15em] uppercase opacity-40 block mb-2">
-              Opponent Selection
+              {t('matchSetup.opponentSelection')}
             </label>
             <div className="grid grid-cols-2 gap-2.5">
               <button
@@ -156,9 +158,9 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
               >
                 <div className="flex items-center gap-2 mb-0.5">
                   <Bot className="w-4 h-4" />
-                  <span className="text-xs font-semibold uppercase tracking-wider">AI Opponent</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider">{t('matchSetup.aiOpponent')}</span>
                 </div>
-                <p className="text-[10px] opacity-60">Yapay Zeka Rakip</p>
+                <p className="text-[10px] opacity-60">{t('matchSetup.aiOpponentDesc')}</p>
               </button>
 
               <button
@@ -172,9 +174,9 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
               >
                 <div className="flex items-center gap-2 mb-0.5">
                   <Users className="w-4 h-4" />
-                  <span className="text-xs font-semibold uppercase tracking-wider">Pass & Play</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider">{t('matchSetup.passAndPlayTitle')}</span>
                 </div>
-                <p className="text-[10px] opacity-60">Aynı Cihazda 2 Oyuncu</p>
+                <p className="text-[10px] opacity-60">{t('matchSetup.passAndPlayDesc')}</p>
               </button>
             </div>
           </section>
@@ -184,13 +186,13 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
             <div className="space-y-3 p-3 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
               <div>
                 <label className="text-[10px] tracking-[0.15em] uppercase opacity-40 block mb-1.5">
-                  AI Difficulty Level
+                  {t('matchSetup.aiDifficultyLevel')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { key: 'easy', label: 'Easy', desc: 'Acemi' },
-                    { key: 'medium', label: 'Medium', desc: 'Dengeli' },
-                    { key: 'hard', label: 'Hard', desc: 'Usta Taktikler' },
+                    { key: 'easy', label: t('matchSetup.difficultyEasy'), desc: t('matchSetup.difficultyEasyDesc') },
+                    { key: 'medium', label: t('matchSetup.difficultyMedium'), desc: t('matchSetup.difficultyMediumDesc') },
+                    { key: 'hard', label: t('matchSetup.difficultyHard'), desc: t('matchSetup.difficultyHardDesc') },
                   ].map((diff) => {
                     const isSelected =
                       settings.aiDifficulty === diff.key ||
@@ -223,7 +225,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
 
               <div>
                 <label className="text-[10px] tracking-[0.15em] uppercase opacity-40 block mb-1.5">
-                  Sizin Taşınız
+                  {t('matchSetup.yourColor')}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {(['white', 'black'] as Player[]).map((col) => (
@@ -242,7 +244,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                           col === 'white' ? 'bg-[#f9f3e5] border border-[#d4c5a9]' : 'bg-[#961c1e] border border-[#52090a]'
                         }`}
                       />
-                      <span>{col === 'white' ? 'Beyaz ile Oyna' : 'Kırmızı ile Oyna'}</span>
+                      <span>{col === 'white' ? t('matchSetup.playWhite') : t('matchSetup.playBlack')}</span>
                     </button>
                   ))}
                 </div>
@@ -254,7 +256,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
           <section className="p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm space-y-3">
             <div className="flex items-center justify-between">
               <label className="text-[10px] tracking-[0.15em] uppercase opacity-40">
-                Match Stake Mode
+                {t('matchSetup.matchStakeMode')}
               </label>
               <div className="flex gap-1">
                 <button
@@ -266,7 +268,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                       : 'text-[#e0d5c1]/50 hover:text-[#e0d5c1]'
                   }`}
                 >
-                  Puan Yarışı
+                  {t('matchSetup.pointsRace')}
                 </button>
                 <button
                   type="button"
@@ -277,7 +279,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                       : 'text-[#e0d5c1]/50 hover:text-[#e0d5c1]'
                   }`}
                 >
-                  Bahis ($)
+                  {t('matchSetup.moneyStake')}
                 </button>
               </div>
             </div>
@@ -285,8 +287,8 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
             {settings.stakeType === 'points' ? (
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs">
-                  <span className="opacity-70">Hedef Maç Puanı</span>
-                  <span className="font-mono text-[#c2a278] font-bold">{settings.matchTarget} PUAN</span>
+                  <span className="opacity-70">{t('matchSetup.targetMatchPoints')}</span>
+                  <span className="font-mono text-[#c2a278] font-bold">{settings.matchTarget} {t('matchSetup.pointsUnit')}</span>
                 </div>
                 <div className="grid grid-cols-5 gap-1.5">
                   {[1, 3, 5, 7, 11].map((pts) => (
@@ -308,7 +310,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
             ) : (
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs">
-                  <span className="opacity-70">Puan Başına Bahis</span>
+                  <span className="opacity-70">{t('matchSetup.stakePerPoint')}</span>
                   <span className="font-mono text-[#c2a278] font-bold">${settings.stakePerPoint} / pt</span>
                 </div>
                 <div className="grid grid-cols-4 gap-1.5">
@@ -339,7 +341,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
           onClick={onStartMatch}
           className="w-full mt-5 py-3 border border-[#c2a278] text-[#c2a278] text-xs tracking-[0.2em] uppercase hover:bg-[#c2a278] hover:text-[#140e0a] transition-colors font-semibold cursor-pointer shadow-lg"
         >
-          {isCubeMode ? 'Maçı Başlat (Katlama Zarlı)' : 'Maçı Başlat (Standart)'}
+          {isCubeMode ? t('matchSetup.startMatchCube') : t('matchSetup.startMatchStandard')}
         </button>
       </motion.div>
     </div>

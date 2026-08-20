@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { DoublingCubeState, Player } from '../types/backgammon';
 import { Check, X, Zap } from 'lucide-react';
@@ -20,11 +21,12 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
   onDrop,
   onBeaver,
 }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   const nextValue = cube.value === 1 ? 2 : cube.value * 2;
-  const offeredBy = cube.offeredBy || 'opponent';
-  const answeringPlayer = activePlayer;
+  const offeredBy = cube.offeredBy ? t(`players.${cube.offeredBy}`) : t('players.opponent', 'Opponent');
+  const answeringPlayer = t(`players.${activePlayer}`);
 
   return (
     <div
@@ -43,18 +45,15 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
         </div>
 
         <p className="text-[10px] uppercase tracking-[0.25em] text-[#c2a278] opacity-80 mb-1">
-          Double Proposed
+          {t('doubling.proposed')}
         </p>
 
         <h3 className="text-xl font-light text-[#f9f3e5] capitalize tracking-tight">
-          {offeredBy} Doubles to {nextValue}x
+          {t('doubling.doublesTo', { player: offeredBy, value: nextValue })}
         </h3>
 
         <p className="text-xs text-[#e0d5c1]/60 mt-2 mb-6">
-          The stakes will increase from{' '}
-          <span className="font-mono text-[#c2a278]">{cube.value}x</span> to{' '}
-          <span className="font-mono text-[#c2a278]">{nextValue}x</span>.
-          Does <span className="capitalize text-[#f9f3e5] font-semibold">{answeringPlayer}</span> accept?
+          {t('doubling.stakesIncrease', { from: cube.value, to: nextValue, player: answeringPlayer })}
         </p>
 
         <div className="grid grid-cols-2 gap-3">
@@ -64,7 +63,7 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
             onClick={onAccept}
             className="py-3 px-4 border border-[#c2a278] bg-[#c2a278] text-[#140e0a] text-xs uppercase tracking-[0.15em] font-semibold rounded-sm hover:bg-[#d6b78d] transition-colors cursor-pointer"
           >
-            Accept ({nextValue}x)
+            {t('doubling.accept', { value: nextValue })}
           </button>
 
           {/* Drop */}
@@ -73,7 +72,7 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
             onClick={onDrop}
             className="py-3 px-4 border border-[#2d1e15] bg-[#1a130f] hover:border-rose-800 hover:text-rose-300 text-[#e0d5c1]/70 text-xs uppercase tracking-[0.15em] font-semibold rounded-sm transition-colors cursor-pointer"
           >
-            Drop ({cube.value}p)
+            {t('doubling.drop', { value: cube.value })}
           </button>
         </div>
 
@@ -84,7 +83,7 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
             onClick={onBeaver}
             className="w-full mt-3 py-2.5 border border-[#4a3528] bg-[#1a130f] text-[#c2a278] text-[11px] uppercase tracking-wider font-semibold rounded-sm hover:border-[#c2a278] transition-colors cursor-pointer"
           >
-            Beaver! (Re-double to {nextValue * 2}x)
+            {t('doubling.beaver', { value: nextValue * 2 })}
           </button>
         )}
       </motion.div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GameSettings, BearingDirection, BoardTheme, CheckerTheme } from '../types/backgammon';
 import { X, Volume2, VolumeX, Eye, Compass, Flag, Palette, CircleDot, Sparkles } from 'lucide-react';
@@ -19,6 +20,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onUpdateSettings,
   onResign,
 }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return (
@@ -41,9 +43,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </button>
 
         <div className="mb-6 pb-3 border-b border-[#2d1e15]">
-          <h3 className="text-xl font-serif text-[#c2a278]">Preferences</h3>
+          <h3 className="text-xl font-serif text-[#c2a278]">{t('settings.title')}</h3>
           <p className="text-[10px] tracking-[0.2em] uppercase opacity-40">
-            Game & Audio Configuration
+            {t('settings.subtitle')}
           </p>
         </div>
 
@@ -53,16 +55,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Palette className="w-3.5 h-3.5 text-[#c2a278]" />
-                <span className="text-xs font-semibold text-[#f9f3e5]">Tahta Rengi ve Teması</span>
+                <span className="text-xs font-semibold text-[#f9f3e5]">{t('settings.boardTheme')}</span>
               </div>
               <span className="text-[10px] text-[#c2a278]/80 font-medium">
-                {BOARD_THEMES[settings.boardTheme || 'royal_green']?.name}
+                {(() => {
+                  const key = settings.boardTheme || 'royal_green';
+                  return t(`themes.board.${key}.name`, { defaultValue: BOARD_THEMES[key]?.name });
+                })()}
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               {(Object.keys(BOARD_THEMES) as BoardTheme[]).map((themeKey) => {
-                const t = BOARD_THEMES[themeKey];
+                const theme = BOARD_THEMES[themeKey];
+                const themeName = t(`themes.board.${themeKey}.name`, { defaultValue: theme.name });
+                const themeDesc = t(`themes.board.${themeKey}.description`, { defaultValue: theme.description });
                 const isSelected = (settings.boardTheme || 'royal_green') === themeKey;
                 return (
                   <button
@@ -79,18 +86,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       {/* Swatch preview */}
                       <div
                         className="w-4 h-4 rounded-sm border border-black/40 shadow-inner flex items-center justify-center overflow-hidden"
-                        style={{ backgroundColor: t.fieldBg }}
+                        style={{ backgroundColor: theme.fieldBg }}
                       >
                         <div
                           className="w-2 h-2 rounded-full"
-                          style={{ backgroundColor: t.pointDarkStroke }}
+                          style={{ backgroundColor: theme.pointDarkStroke }}
                         />
                       </div>
                       <span className={`text-[11px] font-semibold ${isSelected ? 'text-[#e5c07b]' : 'text-[#e0d5c1]'}`}>
-                        {t.name.split(' (')[0]}
+                        {themeName.split(' (')[0]}
                       </span>
                     </div>
-                    <span className="text-[9px] opacity-50 line-clamp-1">{t.description}</span>
+                    <span className="text-[9px] opacity-50 line-clamp-1">{themeDesc}</span>
                   </button>
                 );
               })}
@@ -102,12 +109,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <CircleDot className="w-3.5 h-3.5 text-[#e5c07b]" />
-                <span className="text-xs font-semibold text-[#f9f3e5]">Taş Renkleri ve Malzemesi</span>
+                <span className="text-xs font-semibold text-[#f9f3e5]">{t('settings.checkerTheme')}</span>
               </div>
               <span className="text-[10px] text-[#e5c07b]/80 font-medium truncate max-w-[150px]">
                 {settings.checkerTheme && settings.checkerTheme !== 'auto'
-                  ? CHECKER_PAIRS[settings.checkerTheme]?.name.split(' & ')[0] + ' & ...'
-                  : 'Tahtayla Uyumlu (Otomatik)'}
+                  ? t(`themes.checker.${settings.checkerTheme}.name`, {
+                      defaultValue: CHECKER_PAIRS[settings.checkerTheme]?.name,
+                    }).split(' & ')[0] + ' & ...'
+                  : t('settings.autoMatched')}
               </span>
             </div>
 
@@ -145,16 +154,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       </div>
                       <div className="flex flex-col">
                         <span className={`text-[11px] font-semibold ${isAutoSelected ? 'text-[#e5c07b]' : 'text-[#e0d5c1]'}`}>
-                          Tahtayla Uyumlu (Önerilen)
+                          {t('settings.autoLabel')}
                         </span>
                         <span className="text-[9px] opacity-50">
-                          {autoPair.whiteName} & {autoPair.blackName}
+                          {t(`themes.checker.${autoPair.id}.whiteName`, { defaultValue: autoPair.whiteName })} &{' '}
+                          {t(`themes.checker.${autoPair.id}.blackName`, { defaultValue: autoPair.blackName })}
                         </span>
                       </div>
                     </div>
                     {isAutoSelected && (
                       <span className="text-[9px] text-[#e5c07b] font-mono font-bold bg-[#e5c07b]/10 px-1.5 py-0.5 rounded border border-[#e5c07b]/30">
-                        Aktif
+                        {t('settings.active')}
                       </span>
                     )}
                   </button>
@@ -165,6 +175,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div className="grid grid-cols-2 gap-1.5 pt-1">
                 {(Object.keys(CHECKER_PAIRS) as Exclude<CheckerTheme, 'auto'>[]).map((pairKey) => {
                   const pair = CHECKER_PAIRS[pairKey];
+                  const pairName = t(`themes.checker.${pairKey}.name`, { defaultValue: pair.name });
+                  const pairBlackName = t(`themes.checker.${pairKey}.blackName`, { defaultValue: pair.blackName });
                   const isSelected = settings.checkerTheme === pairKey;
                   return (
                     <button
@@ -195,10 +207,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                           />
                         </div>
                         <span className={`text-[10px] font-bold truncate ${isSelected ? 'text-[#e5c07b]' : 'text-[#e0d5c1]'}`}>
-                          {pair.name.split(' & ')[0]}
+                          {pairName.split(' & ')[0]}
                         </span>
                       </div>
-                      <span className="text-[9px] opacity-50 truncate">{pair.blackName}</span>
+                      <span className="text-[9px] opacity-50 truncate">{pairBlackName}</span>
                     </button>
                   );
                 })}
@@ -209,8 +221,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Sound Effects */}
           <div className="flex items-center justify-between p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
             <div>
-              <div className="text-xs font-semibold text-[#f9f3e5]">Sound Effects</div>
-              <div className="text-[10px] opacity-50">Tactile wooden clacks and dice</div>
+              <div className="text-xs font-semibold text-[#f9f3e5]">{t('settings.soundEffects')}</div>
+              <div className="text-[10px] opacity-50">{t('settings.soundEffectsDesc')}</div>
             </div>
             <button
               type="button"
@@ -234,8 +246,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Move Highlights */}
           <div className="flex items-center justify-between p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
             <div>
-              <div className="text-xs font-semibold text-[#f9f3e5]">Highlight Legal Moves</div>
-              <div className="text-[10px] opacity-50">Visual indicator for landing points</div>
+              <div className="text-xs font-semibold text-[#f9f3e5]">{t('settings.highlightMoves')}</div>
+              <div className="text-[10px] opacity-50">{t('settings.highlightMovesDesc')}</div>
             </div>
             <button
               type="button"
@@ -259,9 +271,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Show Pip Count Toggle */}
           <div className="flex items-center justify-between p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
             <div>
-              <div className="text-xs font-semibold text-[#f9f3e5]">Pip Sayısı Gösterimi (Pip Count)</div>
+              <div className="text-xs font-semibold text-[#f9f3e5]">{t('settings.pipCount')}</div>
               <div className="text-[10px] opacity-50">
-                {settings.showPipCount !== false ? 'Açık (Kalan pip ve yarış avantajı görünür)' : 'Kapalı (Görünmez)'}
+                {settings.showPipCount !== false ? t('settings.pipCountDesc') : t('settings.pipCountDescOff')}
               </div>
             </div>
             <button
@@ -286,8 +298,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Mirror View */}
           <div className="flex items-center justify-between p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
             <div>
-              <div className="text-xs font-semibold text-[#f9f3e5]">Mirror View (Clockwise)</div>
-              <div className="text-[10px] opacity-50">Bear off checkers to the left tray</div>
+              <div className="text-xs font-semibold text-[#f9f3e5]">{t('settings.mirrorView')}</div>
+              <div className="text-[10px] opacity-50">{t('settings.mirrorViewDesc')}</div>
             </div>
             <button
               type="button"
@@ -318,9 +330,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Doubling Cube Mode Toggle */}
           <div className="flex items-center justify-between p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
             <div>
-              <div className="text-xs font-semibold text-[#f9f3e5]">Doubling Cube (Katlama Zarı)</div>
+              <div className="text-xs font-semibold text-[#f9f3e5]">{t('settings.doublingCubeToggle')}</div>
               <div className="text-[10px] opacity-50">
-                {settings.cubeMode !== 'no_cube' ? 'Enabled (64-cube stakes)' : 'Disabled (Classic standard mode)'}
+                {settings.cubeMode !== 'no_cube' ? t('settings.doublingCubeEnabled') : t('settings.doublingCubeDisabled')}
               </div>
             </div>
             <button
@@ -357,7 +369,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               className="w-full py-2.5 px-4 rounded-sm border border-[#4a3528] bg-[#1a130f] text-rose-300 hover:bg-rose-950/40 hover:border-rose-700 text-xs uppercase tracking-wider font-semibold transition-colors cursor-pointer flex items-center justify-center gap-2"
             >
               <Flag className="w-4 h-4" />
-              <span>Resign Current Game</span>
+              <span>{t('settings.resign')}</span>
             </button>
           </div>
         </div>

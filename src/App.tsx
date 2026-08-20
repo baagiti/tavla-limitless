@@ -6,6 +6,7 @@
  */
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   BoardState,
   Player,
@@ -50,6 +51,7 @@ import { RulesModal } from './components/RulesModal';
 import { StatsHistoryModal } from './components/StatsHistoryModal';
 
 export default function App() {
+  const { t } = useTranslation();
   // 1. Settings State
   const [settings, setSettings] = useState<GameSettings>({
     mode: 'ai',
@@ -204,7 +206,7 @@ export default function App() {
           setCube((prev) => {
             const nextVal = Math.min(prev.value * 2, 64);
             sound.playDouble();
-            showToast(`Berabere (${dWhite}-${dBlack})! Katlama Zarı ${nextVal}x oldu. Tekrar zar atın.`);
+            showToast(t('toast.tieDoubleCube', { d1: dWhite, d2: dBlack, value: nextVal }));
             return {
               ...prev,
               value: nextVal,
@@ -212,7 +214,7 @@ export default function App() {
             };
           });
         } else {
-          showToast(`Berabere (${dWhite}-${dBlack})! Tekrar zar atmak için butona tıklayın.`);
+          showToast(t('toast.tieRollAgain', { d1: dWhite, d2: dBlack }));
         }
 
         // Set the designated first roller for the manual re-roll (do NOT auto-roll with timeout)
@@ -225,7 +227,7 @@ export default function App() {
         const lowerVal = Math.min(dWhite, dBlack);
 
         showToast(
-          `${firstPlayer.toUpperCase()} ${higherVal} vs ${lowerVal} ile açılışı kazandı! Oyuna başlıyor.`
+          t('toast.wonOpening', { player: t(`players.${firstPlayer}`), high: higherVal, low: lowerVal })
         );
 
         setTimeout(() => {
@@ -237,7 +239,7 @@ export default function App() {
           // Check if first player has any legal moves with opening dice
           const initialMoves = getPossibleMoves(createInitialBoard(), firstPlayer, [dWhite, dBlack]);
           if (initialMoves.length === 0) {
-            showToast(`Hamle yapılamıyor (${dWhite}-${dBlack}). Sıra geçiyor...`);
+            showToast(t('toast.noMoves', { d1: dWhite, d2: dBlack }));
             setTimeout(() => {
               switchTurn(firstPlayer);
             }, 1500);
@@ -263,9 +265,9 @@ export default function App() {
       setOpeningRoller(firstRoller);
 
       if (activeSettings.mode === 'ai') {
-        showToast('Açılış Zarı: İlk hamleyi belirlemek için zarını at!');
+        showToast(t('toast.openingRollPrompt'));
       } else {
-        showToast(`Açılış Zarı: ${firstRoller === 'white' ? 'Beyaz' : 'Siyah'} oyuncu zar atıyor.`);
+        showToast(t('toast.openingRollTurn', { player: t(`players.${firstRoller}`) }));
       }
     },
     [settings, showToast]
@@ -314,7 +316,7 @@ export default function App() {
           setOpeningRoller(otherPlayer);
 
           if (settings.mode === 'ai') {
-            showToast('Yapay Zeka zar atıyor...');
+            showToast(t('toast.aiRolling'));
             setTimeout(() => {
               setIsRolling(true);
               sound.playDiceRoll();
@@ -329,7 +331,7 @@ export default function App() {
               }, 550);
             }, 650);
           } else {
-            showToast(`${otherPlayer === 'white' ? 'Beyaz' : 'Siyah'} oyuncu, zarını at!`);
+            showToast(t('toast.playerRollNow', { player: t(`players.${otherPlayer}`) }));
           }
         } else {
           // Both players have rolled
@@ -424,13 +426,13 @@ export default function App() {
       setPhase('moving');
 
       if (d1 === d2) {
-        showToast(`Rolled Doubles ${d1}-${d1}! Four moves available.`);
+        showToast(t('toast.rolledDoubles', { n: d1 }));
       }
 
       // Check if player has any legal moves
       const moves = getPossibleMoves(board, activePlayer, availableDice);
       if (moves.length === 0) {
-        showToast(`No legal moves with ${d1}-${d2}! Passing turn...`);
+        showToast(t('toast.noLegalMoves', { d1, d2 }));
         setTimeout(() => {
           switchTurn(activePlayer);
         }, 1500);
@@ -450,7 +452,7 @@ export default function App() {
 
       // If player has checkers on bar, they MUST move from bar first!
       if (board.bar[activePlayer] > 0) {
-        showToast('You must enter your checkers from the bar first!');
+        showToast(t('toast.mustEnterFromBar'));
         setSelectedSource('bar');
         return;
       }
@@ -508,7 +510,7 @@ export default function App() {
       } else if (isHit) {
         sound.playHit();
         gameHitsCountRef.current[activePlayer] += 1;
-        showToast('Captured opponent checker!');
+        showToast(t('toast.capturedChecker'));
       } else {
         sound.playCheckerDrop();
       }
@@ -547,7 +549,7 @@ export default function App() {
       } else {
         const remainingMoves = getPossibleMoves(nextBoard, activePlayer, nextDice);
         if (remainingMoves.length === 0) {
-          showToast('No further legal moves possible. Turn ended.');
+          showToast(t('toast.noFurtherMoves'));
           gameTurnsCountRef.current += 1;
           setTimeout(() => {
             switchTurn(activePlayer);
@@ -616,11 +618,11 @@ export default function App() {
           }));
           setPhase('rolling');
           currentMatchEventsRef.current.push(`AI accepted double to ${nextVal}x`);
-          showToast(`AI accepted the double (${nextVal}x)!`);
+          showToast(t('toast.aiAcceptedDouble', { value: nextVal }));
         } else {
           // AI drops -> Human wins 1x cube value
           currentMatchEventsRef.current.push(`AI dropped double offer`);
-          showToast('AI dropped the double! You win the game.');
+          showToast(t('toast.aiDroppedDouble'));
           handleGameWin(settings.playerColor, 'single', 1);
         }
       }, 1000);
@@ -645,14 +647,14 @@ export default function App() {
     setPhase('rolling');
     sound.playDouble();
     currentMatchEventsRef.current.push(`${activePlayer.toUpperCase()} accepted double to ${nextVal}x`);
-    showToast(`Double accepted! Stake is now ${nextVal}x.`);
+    showToast(t('toast.doubleAccepted', { value: nextVal }));
   }, [cube.value, activePlayer, showToast]);
 
   const handleDropDouble = useCallback(() => {
     setIsDoublingModalOpen(false);
     const opponent: Player = activePlayer === 'white' ? 'black' : 'white';
     currentMatchEventsRef.current.push(`${activePlayer.toUpperCase()} declined double`);
-    showToast(`${activePlayer.toUpperCase()} dropped the double.`);
+    showToast(t('toast.playerDropped', { player: t(`players.${activePlayer}`) }));
     handleGameWin(opponent, 'single', 1);
   }, [activePlayer, showToast]);
 
@@ -801,7 +803,7 @@ export default function App() {
 
   const handleResign = useCallback(() => {
     const opponent: Player = activePlayer === 'white' ? 'black' : 'white';
-    showToast(`${activePlayer.toUpperCase()} resigned.`);
+    showToast(t('toast.playerResigned', { player: t(`players.${activePlayer}`) }));
     handleGameWin(opponent, 'single', 1);
   }, [activePlayer, showToast, handleGameWin]);
 
@@ -822,7 +824,7 @@ export default function App() {
       const bestSeq = chooseBestTurn(currentBoard, aiColor, diceToPlay, settings.aiDifficulty);
 
       if (!bestSeq || bestSeq.steps.length === 0) {
-        showToast(`AI has no legal moves.`);
+        showToast(t('toast.aiNoLegalMoves'));
         setTimeout(() => {
           aiTurnInProgress.current = false;
           switchTurn(aiColor);
@@ -1032,12 +1034,14 @@ export default function App() {
       {/* Minimalist Bottom Status Bar */}
       <footer className="w-full max-w-5xl mx-auto px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] tracking-wider uppercase text-[#a89984]/60 border-t border-[#2d1e15]">
         <div className="flex items-center gap-2">
-          <span className="text-[#e5c07b] font-medium">Backgammon Limitless</span>
+          <span className="text-[#e5c07b] font-medium">{t('footer.appName')}</span>
           <span>•</span>
-          <span className="capitalize">{settings.mode === 'ai' ? `AI (${settings.aiDifficulty})` : '2 Oyunculu'}</span>
+          <span className="capitalize">
+            {settings.mode === 'ai' ? t('footer.vsAi', { difficulty: settings.aiDifficulty }) : t('footer.twoPlayer')}
+          </span>
           <span>•</span>
           <span>
-            {settings.bearingDirection === 'counterclockwise' ? 'Standart Yön' : 'Ters Yön (CW)'}
+            {settings.bearingDirection === 'counterclockwise' ? t('footer.directionStandard') : t('footer.directionReverse')}
           </span>
         </div>
 
@@ -1047,17 +1051,17 @@ export default function App() {
             onClick={() => setIsStatsOpen(true)}
             className="text-[#c2a278] hover:text-[#f9f3e5] hover:underline cursor-pointer flex items-center gap-1 transition-colors"
           >
-            İstatistik & Kayıtlar
+            {t('footer.statsAndHistory')}
           </button>
           <span>•</span>
-          <span>Oyun {score.gamesPlayed}</span>
+          <span>{t('footer.game', { n: score.gamesPlayed })}</span>
           <span>•</span>
           <button
             type="button"
             onClick={() => setIsRulesOpen(true)}
             className="text-[#c2a278] hover:text-[#f9f3e5] hover:underline cursor-pointer transition-colors"
           >
-            Nasıl Oynanır?
+            {t('footer.howToPlay')}
           </button>
         </div>
       </footer>
@@ -1113,7 +1117,7 @@ export default function App() {
           const { stats: s, history: h } = clearAllStatsAndHistory();
           setStats(s);
           setMatchHistory(h);
-          showToast('Career stats and history cleared.');
+          showToast(t('toast.statsCleared'));
         }}
       />
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Player,
   GameSettings,
@@ -52,6 +53,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
   onToggleSound,
   onResign,
 }) => {
+  const { t } = useTranslation();
   const isAIMode = settings.mode === 'ai';
   const humanPlayer = settings.playerColor;
   const isAITurn = isAIMode && activePlayer !== humanPlayer;
@@ -82,21 +84,25 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
                 </h1>
               </div>
               <div className="flex items-center gap-1.5 text-[8px] font-mono tracking-widest text-[#c2a278]/70 uppercase">
-                <span>{settings.mode === 'ai' ? `VS AI (${settings.aiDifficulty})` : 'Pass & Play'}</span>
+                <span>
+                  {settings.mode === 'ai'
+                    ? t('header.vsAi', { difficulty: settings.aiDifficulty })
+                    : t('header.passAndPlay')}
+                </span>
                 <span className="text-[#4a3528]">•</span>
                 <span className={isCubeMode ? 'text-[#e5c07b]' : 'text-[#a89984]'}>
-                  {isCubeMode ? 'Doubling Cube' : 'Standard Tavla'}
+                  {isCubeMode ? t('header.doublingCube') : t('header.standardTavla')}
                 </span>
               </div>
             </div>
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#201610] border border-[#3d2b1f] text-[10px] font-mono">
-            <span className="text-[#a89984] text-[8px] uppercase tracking-wider">Hedef:</span>
+            <span className="text-[#a89984] text-[8px] uppercase tracking-wider">{t('header.target')}</span>
             <span className="text-[#f9f3e5] font-semibold">
               {settings.stakeType === 'points'
-                ? `${settings.matchTarget} Puan`
-                : `$${settings.stakePerPoint}/Puan`}
+                ? t('header.targetPoints', { n: settings.matchTarget })
+                : t('matchSetup.stakePerPoint') + `: $${settings.stakePerPoint}`}
             </span>
           </div>
         </div>
@@ -128,7 +134,13 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
 
             <div className="text-left">
               <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-[#a89984]">
-                <span>{settings.mode === 'ai' && settings.playerColor === 'white' ? `Sen (${whiteChecker.name.split(' ')[0]})` : whiteChecker.name}</span>
+                <span>
+                  {settings.mode === 'ai' && settings.playerColor === 'white'
+                    ? t('header.you', { color: t('players.white') })
+                    : settings.mode === 'ai'
+                    ? t('header.aiPlayer')
+                    : t('players.white')}
+                </span>
               </div>
               <div className="text-sm sm:text-base font-serif font-bold text-[#f9f3e5] leading-none mt-0.5">
                 {score.white} <span className="text-[10px] font-normal text-[#a89984]">pts</span>
@@ -145,11 +157,14 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
           <div className="flex flex-col items-center justify-center px-2 sm:px-4 border-x border-[#2d1e15]">
             {isCubeMode ? (
               <div
-                title={`Katlama Seviyesi: ${cube.value}x (Sahip: ${cube.owner})`}
+                title={t('doublingCube.label', {
+                  value: cube.value,
+                  owner: cube.owner === 'neutral' ? t('doublingCube.shared') : t(`players.${cube.owner}`),
+                })}
                 className="px-2 py-0.5 rounded bg-gradient-to-r from-[#2d1e15] to-[#1f1510] border border-[#c2a278]/60 text-[#e5c07b] text-[10px] font-mono font-bold shadow flex items-center gap-1"
               >
                 <Sparkles className="w-2.5 h-2.5 text-[#e5c07b]" />
-                <span>{cube.value}x Çarpan</span>
+                <span>{t('header.cubeMultiplier', { value: cube.value })}</span>
               </div>
             ) : (
               <div className="text-[10px] font-mono uppercase tracking-widest text-[#a89984]/80">
@@ -160,16 +175,18 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             {/* Turn or State Notice */}
             <span className="text-[8px] sm:text-[9px] uppercase tracking-wider font-semibold text-[#c2a278] mt-1">
               {phase === 'opening_roll'
-                ? 'Açılış Zarı'
+                ? t('header.openingRoll')
                 : isAITurn
-                ? 'AI Hamlesi'
-                : `${activePlayer === 'white' ? whiteChecker.name.split(' ')[0] : blackChecker.name.split(' ')[0]} Sırası`}
+                ? t('header.aiTurn')
+                : t('header.turnOf', { name: t(`players.${activePlayer}`) })}
             </span>
 
             {/* Pip Lead Gauge */}
             {settings.showPipCount !== false && pipLeadWhite !== 0 && (
               <span className="text-[8px] font-mono text-[#a89984] -mt-0.5">
-                {pipLeadWhite > 0 ? `+${pipLeadWhite} Beyaz önde` : `+${Math.abs(pipLeadWhite)} Siyah önde`}
+                {pipLeadWhite > 0
+                  ? t('header.aheadWhite', { n: pipLeadWhite })
+                  : t('header.aheadBlack', { n: Math.abs(pipLeadWhite) })}
               </span>
             )}
           </div>
@@ -178,7 +195,13 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
           <div className={`flex items-center gap-2.5 transition-all ${activePlayer === 'black' ? 'opacity-100' : 'opacity-65'}`}>
             <div className="text-right">
               <div className="flex items-center justify-end gap-1 text-[9px] font-mono uppercase tracking-wider text-[#a89984]">
-                <span>{settings.mode === 'ai' && settings.playerColor === 'black' ? `Sen (${blackChecker.name.split(' ')[0]})` : settings.mode === 'ai' ? 'Yapay Zeka' : blackChecker.name}</span>
+                <span>
+                  {settings.mode === 'ai' && settings.playerColor === 'black'
+                    ? t('header.you', { color: t('players.black') })
+                    : settings.mode === 'ai'
+                    ? t('header.aiPlayer')
+                    : t('players.black')}
+                </span>
               </div>
               <div className="text-sm sm:text-base font-serif font-bold text-[#f9f3e5] leading-none mt-0.5">
                 {score.black} <span className="text-[10px] font-normal text-[#a89984]">pts</span>
@@ -221,7 +244,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             type="button"
             onClick={onUndo}
             disabled={!canUndo}
-            title="Hamleyi Geri Al"
+            title={t('header.undo')}
             className={`p-2 rounded border transition-all ${
               canUndo
                 ? 'border-[#c2a278] text-[#c2a278] bg-[#201610] hover:bg-[#c2a278] hover:text-[#140e0a] cursor-pointer shadow-md'
@@ -236,7 +259,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             id="btn-toggle-sound"
             type="button"
             onClick={onToggleSound}
-            title={settings.soundEnabled ? 'Sesi Kapat' : 'Sesi Aç'}
+            title={settings.soundEnabled ? t('header.toggleSoundOn') : t('header.toggleSoundOff')}
             className="p-1.5 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
           >
             {settings.soundEnabled ? (
@@ -251,7 +274,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             id="btn-stats-history"
             type="button"
             onClick={onOpenStats}
-            title="Kariyer İstatistikleri ve Maç Geçmişi"
+            title={t('header.stats')}
             className="p-1.5 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
           >
             <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -262,7 +285,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             id="btn-rules"
             type="button"
             onClick={onOpenRules}
-            title="Tavla Kuralları ve Rehber"
+            title={t('header.rules')}
             className="p-1.5 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
           >
             <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -273,7 +296,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             id="btn-settings"
             type="button"
             onClick={onOpenSettings}
-            title="Oyun Ayarları"
+            title={t('header.settings')}
             className="p-1.5 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
           >
             <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -284,7 +307,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             id="btn-resign"
             type="button"
             onClick={onResign}
-            title="Mevcut Oyundan Çekil"
+            title={t('header.resign')}
             className="p-1.5 rounded border border-[#2d1e15] text-[#a89984]/60 bg-[#201610] hover:text-rose-400 hover:border-rose-800 transition-colors cursor-pointer"
           >
             <Flag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />

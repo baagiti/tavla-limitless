@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { DoublingCubeState, Player } from '../types/backgammon';
 
@@ -17,6 +18,7 @@ export const DoublingCube: React.FC<DoublingCubeProps> = ({
   onOfferDouble,
   size = 38,
 }) => {
+  const { t } = useTranslation();
   // Display clean multiplier level (e.g. "1x", "2x", "4x", "8x", "16x", "32x", "64x")
   const displayVal = `${cube.value}x`;
   const isMyCube = cube.owner === 'neutral' || cube.owner === activePlayer;
@@ -42,8 +44,11 @@ export const DoublingCube: React.FC<DoublingCubeProps> = ({
       }}
       title={
         isClickable
-          ? `Katlama Teklif Et (${cube.value * 2}x yapmak için tıkla)`
-          : `Katlama Zarı: ${displayVal} (Sahip: ${cube.owner === 'neutral' ? 'Ortak' : cube.owner})`
+          ? t('doublingCube.offerDouble', { value: cube.value * 2 })
+          : t('doublingCube.label', {
+              value: displayVal,
+              owner: cube.owner === 'neutral' ? t('doublingCube.shared') : t(`players.${cube.owner}`),
+            })
       }
     >
       {/* Corner metallic inlays */}

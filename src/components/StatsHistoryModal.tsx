@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   CareerStats,
@@ -36,6 +37,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
   history,
   onClearData,
 }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'stats' | 'history'>('stats');
   const [filterMode, setFilterMode] = useState<'all' | 'ai' | 'local'>('all');
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
@@ -54,13 +56,13 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
       case 'easy':
         return (
           <span className="px-2 py-0.5 rounded text-[10px] uppercase font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
-            Easy AI
+            {t('stats.easyAi')}
           </span>
         );
       case 'medium':
         return (
           <span className="px-2 py-0.5 rounded text-[10px] uppercase font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-800/60">
-            Medium AI
+            {t('stats.mediumAi')}
           </span>
         );
       case 'hard':
@@ -68,7 +70,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
       default:
         return (
           <span className="px-2 py-0.5 rounded text-[10px] uppercase font-mono font-bold bg-rose-950/60 text-rose-300 border border-rose-800/60">
-            Hard AI
+            {t('stats.hardAi')}
           </span>
         );
     }
@@ -84,7 +86,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
         minute: '2-digit',
       });
     } catch {
-      return 'Recent';
+      return t('stats.recent');
     }
   };
 
@@ -107,10 +109,10 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
             </div>
             <div>
               <h2 className="text-lg font-serif tracking-tight text-[#f9f3e5]">
-                Game Statistics & History
+                {t('stats.title')}
               </h2>
               <p className="text-[10px] uppercase tracking-[0.2em] text-[#c2a278]/70">
-                Career Performance & Match Archive
+                {t('stats.subtitle')}
               </p>
             </div>
           </div>
@@ -138,7 +140,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
             }`}
           >
             <TrendingUp className="w-4 h-4" />
-            <span>Career Overview</span>
+            <span>{t('stats.careerOverview')}</span>
           </button>
 
           <button
@@ -154,7 +156,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
             }`}
           >
             <History className="w-4 h-4" />
-            <span>Match Log ({history.length})</span>
+            <span>{t('stats.matchLog', { n: history.length })}</span>
           </button>
         </div>
 
@@ -167,20 +169,20 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                 {/* Total Games */}
                 <div className="p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm flex flex-col justify-between">
                   <span className="text-[10px] uppercase tracking-wider text-[#e0d5c1]/50">
-                    Games Played
+                    {t('stats.gamesPlayed')}
                   </span>
                   <div className="text-2xl font-serif text-[#f9f3e5] mt-1">
                     {stats.totalGamesPlayed}
                   </div>
                   <span className="text-[10px] text-[#c2a278]/80 mt-1">
-                    {stats.totalMatchesPlayed} matches
+                    {t('stats.matchesCount', { n: stats.totalMatchesPlayed })}
                   </span>
                 </div>
 
                 {/* Win / Loss */}
                 <div className="p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm flex flex-col justify-between">
                   <span className="text-[10px] uppercase tracking-wider text-[#e0d5c1]/50">
-                    Won / Lost
+                    {t('stats.wonLost')}
                   </span>
                   <div className="text-2xl font-serif text-[#f9f3e5] mt-1 flex items-baseline gap-1.5">
                     <span className="text-emerald-400">{stats.gamesWon}</span>
@@ -188,14 +190,14 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                     <span className="text-rose-400">{stats.gamesLost}</span>
                   </div>
                   <span className="text-[10px] text-emerald-400/80 mt-1">
-                    {stats.matchesWon} match wins
+                    {t('stats.matchWins', { n: stats.matchesWon })}
                   </span>
                 </div>
 
                 {/* Win Percentage */}
                 <div className="p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm flex flex-col justify-between">
                   <span className="text-[10px] uppercase tracking-wider text-[#e0d5c1]/50">
-                    Win Rate
+                    {t('stats.winRate')}
                   </span>
                   <div className="text-2xl font-serif text-[#c2a278] mt-1">
                     {stats.totalGamesPlayed > 0 ? `${stats.winPercentage}%` : '0%'}
@@ -212,16 +214,16 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                 <div className="p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] uppercase tracking-wider text-[#e0d5c1]/50">
-                      Streak
+                      {t('stats.streak')}
                     </span>
                     <Flame className="w-3.5 h-3.5 text-amber-500" />
                   </div>
                   <div className="text-2xl font-serif text-[#f9f3e5] mt-1">
                     {stats.currentStreak}
-                    <span className="text-xs font-mono text-[#e0d5c1]/40 ml-1">current</span>
+                    <span className="text-xs font-mono text-[#e0d5c1]/40 ml-1">{t('stats.current')}</span>
                   </div>
                   <span className="text-[10px] text-amber-400/80 mt-1">
-                    Best: {stats.longestStreak} wins
+                    {t('stats.best', { n: stats.longestStreak })}
                   </span>
                 </div>
               </div>
@@ -231,7 +233,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                 <div className="flex items-center gap-2 pb-2 border-b border-[#2d1e15]">
                   <Bot className="w-4 h-4 text-[#c2a278]" />
                   <h3 className="text-xs uppercase tracking-widest font-semibold text-[#f9f3e5]">
-                    Performance vs AI Difficulties
+                    {t('stats.performanceByDifficulty')}
                   </h3>
                 </div>
 
@@ -239,9 +241,9 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                   {/* Easy AI */}
                   <div className="p-3 bg-[#140e0a] border border-[#2d1e15] rounded-sm">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs font-semibold text-emerald-300">Easy</span>
+                      <span className="text-xs font-semibold text-emerald-300">{t('matchSetup.difficultyEasy')}</span>
                       <span className="text-[10px] font-mono text-[#e0d5c1]/50">
-                        {stats.byDifficulty.easy.played} games
+                        {t('stats.gamesUnit', { n: stats.byDifficulty.easy.played })}
                       </span>
                     </div>
                     <div className="text-sm font-mono flex items-center justify-between text-[#e0d5c1]/80">
@@ -260,9 +262,9 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                   {/* Medium AI */}
                   <div className="p-3 bg-[#140e0a] border border-[#2d1e15] rounded-sm">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs font-semibold text-amber-300">Medium</span>
+                      <span className="text-xs font-semibold text-amber-300">{t('matchSetup.difficultyMedium')}</span>
                       <span className="text-[10px] font-mono text-[#e0d5c1]/50">
-                        {stats.byDifficulty.medium.played} games
+                        {t('stats.gamesUnit', { n: stats.byDifficulty.medium.played })}
                       </span>
                     </div>
                     <div className="text-sm font-mono flex items-center justify-between text-[#e0d5c1]/80">
@@ -282,9 +284,9 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                   {/* Hard AI */}
                   <div className="p-3 bg-[#140e0a] border border-[#2d1e15] rounded-sm">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs font-semibold text-rose-300">Hard (Tactical)</span>
+                      <span className="text-xs font-semibold text-rose-300">{t('stats.hardLabel')}</span>
                       <span className="text-[10px] font-mono text-[#e0d5c1]/50">
-                        {stats.byDifficulty.hard.played} games
+                        {t('stats.gamesUnit', { n: stats.byDifficulty.hard.played })}
                       </span>
                     </div>
                     <div className="text-sm font-mono flex items-center justify-between text-[#e0d5c1]/80">
@@ -307,14 +309,14 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                 <div className="flex items-center gap-2 pb-2 border-b border-[#2d1e15]">
                   <Award className="w-4 h-4 text-[#c2a278]" />
                   <h3 className="text-xs uppercase tracking-widest font-semibold text-[#f9f3e5]">
-                    Victory Type Breakdown
+                    {t('stats.victoryBreakdown')}
                   </h3>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 pt-1 text-center">
                   <div className="p-2.5 bg-[#140e0a] border border-[#2d1e15] rounded-sm">
                     <div className="text-[10px] uppercase tracking-wider text-[#e0d5c1]/50">
-                      Single (1x)
+                      {t('stats.single')}
                     </div>
                     <div className="text-lg font-serif text-[#f9f3e5] mt-0.5">
                       {stats.singleWins}
@@ -323,7 +325,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
 
                   <div className="p-2.5 bg-[#140e0a] border border-[#2d1e15] rounded-sm">
                     <div className="text-[10px] uppercase tracking-wider text-amber-400/70">
-                      Gammon (2x)
+                      {t('stats.gammon')}
                     </div>
                     <div className="text-lg font-serif text-amber-400 mt-0.5">
                       {stats.gammonWins}
@@ -332,7 +334,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
 
                   <div className="p-2.5 bg-[#140e0a] border border-[#2d1e15] rounded-sm">
                     <div className="text-[10px] uppercase tracking-wider text-[#c2a278]">
-                      Backgammon (3x)
+                      {t('stats.backgammon')}
                     </div>
                     <div className="text-lg font-serif text-[#c2a278] mt-0.5">
                       {stats.backgammonWins}
@@ -359,7 +361,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                           : 'border border-[#2d1e15] bg-[#1a130f] text-[#e0d5c1]/50 hover:text-[#e0d5c1]'
                       }`}
                     >
-                      {mode === 'all' ? 'All Matches' : mode === 'ai' ? 'vs AI' : 'Pass & Play'}
+                      {mode === 'all' ? t('stats.allMatches') : mode === 'ai' ? t('stats.vsAi') : t('stats.passAndPlay')}
                     </button>
                   ))}
                 </div>
@@ -371,7 +373,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                     className="text-[11px] text-rose-400/70 hover:text-rose-400 flex items-center gap-1 cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
-                    <span>Clear Archive</span>
+                    <span>{t('stats.clearArchive')}</span>
                   </button>
                 )}
               </div>
@@ -380,7 +382,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
               {confirmClear && (
                 <div className="p-3 bg-rose-950/40 border border-rose-800/80 rounded-sm flex items-center justify-between text-xs">
                   <span className="text-rose-200">
-                    Are you sure you want to reset all stats and history?
+                    {t('stats.confirmClear')}
                   </span>
                   <div className="flex gap-2">
                     <button
@@ -390,13 +392,13 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                       }}
                       className="px-2.5 py-1 bg-rose-700 text-white rounded-sm text-[11px] font-semibold uppercase tracking-wider hover:bg-rose-600 cursor-pointer"
                     >
-                      Yes, Reset
+                      {t('stats.yesReset')}
                     </button>
                     <button
                       onClick={() => setConfirmClear(false)}
                       className="px-2.5 py-1 bg-[#2d1e15] text-[#e0d5c1] rounded-sm text-[11px] hover:bg-[#4a3528] cursor-pointer"
                     >
-                      Cancel
+                      {t('stats.cancel')}
                     </button>
                   </div>
                 </div>
@@ -406,9 +408,9 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
               {filteredHistory.length === 0 ? (
                 <div className="text-center py-12 border border-dashed border-[#2d1e15] rounded-sm bg-[#1a130f]/40">
                   <History className="w-8 h-8 mx-auto text-[#c2a278]/30 mb-2" />
-                  <p className="text-sm text-[#e0d5c1]/60">No completed matches recorded yet.</p>
+                  <p className="text-sm text-[#e0d5c1]/60">{t('stats.noMatches')}</p>
                   <p className="text-[11px] text-[#e0d5c1]/40 mt-1">
-                    Play a match against the AI or a friend to record career history.
+                    {t('stats.playToRecord')}
                   </p>
                 </div>
               ) : (
@@ -437,24 +439,24 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                                   : 'bg-rose-950 text-rose-300 border border-rose-700/60'
                               }`}
                             >
-                              {match.isUserWinner ? 'Victory' : 'Defeat'}
+                              {match.isUserWinner ? t('stats.victory') : t('stats.defeat')}
                             </span>
 
                             <div>
                               <div className="flex items-center gap-2">
                                 <span className="text-xs font-semibold text-[#f9f3e5]">
-                                  {match.mode === 'ai' ? 'Match vs AI' : 'Pass & Play Match'}
+                                  {match.mode === 'ai' ? t('stats.matchVsAi') : t('stats.passAndPlayMatch')}
                                 </span>
                                 {match.mode === 'ai' && getDifficultyBadge(match.aiDifficulty)}
                                 <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-[#2d1e15] text-[#c2a278]/80 border border-[#4a3528]">
-                                  {match.cubeMode === 'no_cube' ? 'Classic' : 'Cube 64'}
+                                  {match.cubeMode === 'no_cube' ? t('stats.classic') : t('stats.cube64')}
                                 </span>
                               </div>
                               <div className="flex items-center gap-2 text-[10px] text-[#e0d5c1]/40 mt-0.5">
                                 <Calendar className="w-3 h-3" />
                                 <span>{formatDate(match.date)}</span>
                                 <span>•</span>
-                                <span>{match.totalGames} {match.totalGames === 1 ? 'game' : 'games'}</span>
+                                <span>{t('stats.game', { count: match.totalGames })}</span>
                               </div>
                             </div>
                           </div>
@@ -467,8 +469,8 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                               </div>
                               <div className="text-[10px] font-mono text-[#e0d5c1]/50">
                                 {match.stakeType === 'points'
-                                  ? `Target: ${match.matchTarget} PTS`
-                                  : `$${match.stakePerPoint}/pt`}
+                                  ? t('stats.target', { n: match.matchTarget })
+                                  : t('stats.stakePerPoint', { n: match.stakePerPoint })}
                               </div>
                             </div>
 
@@ -495,7 +497,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                               {match.keyEvents && match.keyEvents.length > 0 && (
                                 <div>
                                   <span className="text-[10px] uppercase tracking-wider text-[#c2a278] block mb-1.5 font-semibold flex items-center gap-1">
-                                    <Zap className="w-3 h-3 text-[#c2a278]" /> Key Match Events
+                                    <Zap className="w-3 h-3 text-[#c2a278]" /> {t('stats.keyEvents')}
                                   </span>
                                   <div className="flex flex-wrap gap-1.5">
                                     {match.keyEvents.map((evt, idx) => (
@@ -514,7 +516,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                               {match.games && match.games.length > 0 && (
                                 <div className="space-y-1.5">
                                   <span className="text-[10px] uppercase tracking-wider text-[#e0d5c1]/40 block">
-                                    Individual Games Summary
+                                    {t('stats.individualGames')}
                                   </span>
                                   <div className="space-y-1">
                                     {match.games.map((g, gIdx) => (
@@ -524,20 +526,20 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
                                       >
                                         <div className="flex items-center gap-2">
                                           <span className="font-mono text-[#c2a278]">
-                                            Game {g.gameNumber}
+                                            {t('stats.gameN', { n: g.gameNumber })}
                                           </span>
                                           <span className="capitalize text-[#e0d5c1]">
-                                            {g.winner} Won ({g.winType})
+                                            {t('stats.wonBy', { winner: t(`players.${g.winner}`), type: g.winType })}
                                           </span>
                                           {g.cubeValue > 1 && (
                                             <span className="px-1.5 py-0.2 bg-[#2d1e15] text-[#c2a278] rounded text-[9px] font-mono">
-                                              {g.cubeValue}x Cube
+                                              {t('stats.cubeValue', { n: g.cubeValue })}
                                             </span>
                                           )}
                                         </div>
 
                                         <div className="font-mono text-[#e0d5c1]/70">
-                                          +{g.pointsWon * g.cubeValue} PTS
+                                          {t('stats.pointsWon', { n: g.pointsWon * g.cubeValue })}
                                         </div>
                                       </div>
                                     ))}
@@ -562,7 +564,7 @@ export const StatsHistoryModal: React.FC<StatsHistoryModalProps> = ({
             onClick={onClose}
             className="px-5 py-2 rounded-sm border border-[#c2a278] bg-[#c2a278] text-[#140e0a] text-xs uppercase tracking-[0.15em] font-semibold hover:bg-[#d6b78d] transition-colors cursor-pointer"
           >
-            Close
+            {t('stats.close')}
           </button>
         </div>
       </motion.div>

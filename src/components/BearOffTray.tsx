@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { Player, BoardTheme, CheckerTheme } from '../types/backgammon';
 import { BOARD_THEMES, getCheckerStyle } from '../utils/themes';
@@ -24,6 +25,7 @@ export const BearOffTray: React.FC<BearOffTrayProps> = ({
   theme = 'royal_green',
   checkerTheme = 'auto',
 }) => {
+  const { t } = useTranslation();
   const isTarget = isValidTarget && highlightMoves;
   const currentTheme = BOARD_THEMES[theme] || BOARD_THEMES.royal_green;
   const whiteStyle = getCheckerStyle('white', theme, checkerTheme);
@@ -44,7 +46,7 @@ export const BearOffTray: React.FC<BearOffTrayProps> = ({
         borderRight: position === 'left' ? `2px solid ${currentTheme.fieldBorder}` : 'none',
         boxShadow: 'inset 0 0 15px rgba(0,0,0,0.7)',
       }}
-      title={isTarget ? 'Click here to Bear Off checker' : 'Bear-off Tray'}
+      title={isTarget ? t('bearOff.clickToBearOff') : t('bearOff.tray')}
     >
       {/* Black Bear-Off Top Slot */}
       <div className="flex flex-col items-center gap-0.5">
