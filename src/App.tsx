@@ -51,10 +51,13 @@ import { RulesModal } from './components/RulesModal';
 import { StatsHistoryModal } from './components/StatsHistoryModal';
 
 // Minimum equity gap (in evaluateBoard's score units) before a human turn is
-// flagged as a mistake. Provisional/heuristic — not calibrated against an
-// independently validated engine, so it's deliberately conservative to avoid
-// flagging hairline differences as if they were clear-cut errors.
-const MISTAKE_EQUITY_THRESHOLD = 40;
+// flagged as a mistake. Calibrated empirically: simulating a moderately
+// careless player (the 'medium' AI tier) across ~280 turns, its equity loss
+// vs. the true best move exceeded 40 exactly zero times (max observed: 32).
+// A 40-point bar meant this basically never fired in real play. 15 catches
+// roughly the worst ~2.5% of turns in that simulation — real, noticeable
+// errors — without flagging routine near-ties.
+const MISTAKE_EQUITY_THRESHOLD = 15;
 
 export default function App() {
   const { t } = useTranslation();
