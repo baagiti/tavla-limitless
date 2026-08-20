@@ -131,7 +131,7 @@ export const Point: React.FC<PointProps> = ({
       <span
         className={`absolute text-[9px] sm:text-[10px] font-mono font-bold ${
           isTarget ? 'text-[#f9f3e5] drop-shadow' : ''
-        } ${isTop ? 'bottom-1.5' : 'top-1.5'} select-none pointer-events-none z-10`}
+        } ${isTop ? 'top-1.5' : 'bottom-1.5'} select-none pointer-events-none z-10`}
         style={{
           color: isTarget ? undefined : currentTheme.pointNumberColor,
         }}
