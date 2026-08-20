@@ -12,7 +12,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNewMatch, onOpenSettin
   const { t } = useTranslation();
   return (
     <div
-      className="app-safe-area h-dvh w-full flex flex-col items-center justify-center px-8 select-none relative"
+      className="app-safe-area app-full-height w-full flex flex-col items-center justify-center px-8 select-none relative"
       style={{
         backgroundImage:
           'radial-gradient(ellipse at 50% 35%, rgba(65, 43, 26, 0.45) 0%, rgba(20, 14, 9, 0.95) 75%, #0a0604 100%)',

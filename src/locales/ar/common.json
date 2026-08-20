@@ -90,7 +90,8 @@
     "startNewMatch": "بدء مباراة جديدة",
     "viewStats": "عرض إحصائيات المسيرة والسجل",
     "returnToSetup": "العودة إلى قائمة الإعداد",
-    "backToHome": "العودة إلى الشاشة الرئيسية"
+    "backToHome": "العودة إلى الشاشة الرئيسية",
+    "reviewMoves": "مراجعة الحركات"
   },
   "settings": {
     "title": "التفضيلات",
@@ -323,5 +324,12 @@
         "blackName": "زمرد عميق"
       }
     }
+  },
+  "moveReview": {
+    "title": "مراجعة الحركات",
+    "subtitleWithMistakes": "تم تحديد {{count}} من أصل {{total}} دور",
+    "subtitleClean": "تم لعب {{total}} دور — لم يتم تحديد أي خطأ",
+    "empty": "لا توجد حركات مسجلة لهذه المباراة بعد.",
+    "betterMove": "الأفضل:"
   }
 }

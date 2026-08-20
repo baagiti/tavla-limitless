@@ -90,7 +90,8 @@
     "startNewMatch": "Yeni Maç Başlat",
     "viewStats": "Kariyer İstatistiklerini ve Geçmişi Görüntüle",
     "returnToSetup": "Kurulum Menüsüne Dön",
-    "backToHome": "Ana Sayfaya Dön"
+    "backToHome": "Ana Sayfaya Dön",
+    "reviewMoves": "Hamleleri İncele"
   },
   "settings": {
     "title": "Tercihler",
@@ -320,5 +321,12 @@
         "blackName": "Derin Zümrüt"
       }
     }
+  },
+  "moveReview": {
+    "title": "Hamle İncelemesi",
+    "subtitleWithMistakes": "{{total}} turdan {{count}} tanesi işaretlendi",
+    "subtitleClean": "{{total}} tur oynandı — işaretlenen hamle yok",
+    "empty": "Bu oyun için henüz kayıtlı hamle yok.",
+    "betterMove": "Daha iyisi:"
   }
 }

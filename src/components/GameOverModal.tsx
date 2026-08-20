@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import confetti from 'canvas-confetti';
 import { Player, WinType, ScoreState, GameSettings } from '../types/backgammon';
-import { Trophy, Home } from 'lucide-react';
+import { Trophy, Home, ClipboardList } from 'lucide-react';
 
 interface GameOverModalProps {
   isOpen: boolean;
@@ -18,6 +18,8 @@ interface GameOverModalProps {
   onNewMatch: () => void;
   onGoHome: () => void;
   onOpenStats?: () => void;
+  onOpenMoveReview?: () => void;
+  mistakeCount?: number;
 }
 
 export const GameOverModal: React.FC<GameOverModalProps> = ({
@@ -33,6 +35,8 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   onNewMatch,
   onGoHome,
   onOpenStats,
+  onOpenMoveReview,
+  mistakeCount = 0,
 }) => {
   useEffect(() => {
     if (isOpen) {
@@ -127,6 +131,22 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
               className="w-full py-3.5 border border-[#c2a278] bg-[#c2a278] text-[#140e0a] text-xs uppercase tracking-[0.2em] font-semibold rounded-sm hover:bg-[#d6b78d] transition-colors cursor-pointer"
             >
               {t('gameOver.startNewMatch')}
+            </button>
+          )}
+
+          {onOpenMoveReview && (
+            <button
+              type="button"
+              onClick={onOpenMoveReview}
+              className="w-full py-2.5 border border-[#c2a278]/40 bg-[#1a130f] text-[#c2a278] hover:bg-[#2d1e15] text-xs uppercase tracking-[0.15em] font-medium rounded-sm transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <ClipboardList className="w-3.5 h-3.5" />
+              <span>{t('gameOver.reviewMoves')}</span>
+              {mistakeCount > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 rounded-full bg-rose-950/60 text-rose-300 border border-rose-800/60 text-[9px] font-mono font-bold">
+                  {mistakeCount}
+                </span>
+              )}
             </button>
           )}
 

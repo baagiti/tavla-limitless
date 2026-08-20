@@ -23,3 +23,16 @@ body {
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
 }
+
+/* JS-measured true viewport height (src/utils/viewportHeight.ts) — see that
+   file for why `dvh` alone isn't trustworthy in every WKWebView build. Falls
+   back to `dvh` itself before the JS has run, and to plain `vh` on the rare
+   engine that ignores custom properties inside calc(). */
+:root {
+  --app-vh: 1dvh;
+}
+.app-full-height {
+  height: 100vh;
+  height: 100dvh;
+  height: calc(var(--app-vh) * 100);
+}

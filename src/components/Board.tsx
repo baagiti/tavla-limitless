@@ -87,18 +87,25 @@ export const Board: React.FC<BoardProps> = ({
       setBoardSize({ width: Math.floor(w), height: Math.floor(h) });
     };
     measure();
+    // A couple of WKWebView builds finish their real safe-area/toolbar
+    // layout a frame or two after this effect's first paint, so the very
+    // first measurement here can be too small; these two rAFs catch that
+    // late correction without waiting for an actual resize event.
+    requestAnimationFrame(() => requestAnimationFrame(measure));
     // ResizeObserver alone covers real orientation changes and window
-    // resizes, but is redundantly backed by these two events — cheap
-    // insurance against any host WebView that fires a layout change without
-    // the observed element's box actually updating in the same tick.
+    // resizes, but is redundantly backed by these events — cheap insurance
+    // against any host WebView that fires a layout change without the
+    // observed element's box actually updating in the same tick.
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     window.addEventListener('resize', measure);
     window.addEventListener('orientationchange', measure);
+    window.visualViewport?.addEventListener('resize', measure);
     return () => {
       ro.disconnect();
       window.removeEventListener('resize', measure);
       window.removeEventListener('orientationchange', measure);
+      window.visualViewport?.removeEventListener('resize', measure);
     };
   }, []);
 

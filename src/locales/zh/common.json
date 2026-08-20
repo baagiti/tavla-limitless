@@ -90,7 +90,8 @@
     "startNewMatch": "开始新比赛",
     "viewStats": "查看生涯统计与记录",
     "returnToSetup": "返回设置菜单",
-    "backToHome": "返回主页"
+    "backToHome": "返回主页",
+    "reviewMoves": "回顾走法"
   },
   "settings": {
     "title": "偏好设置",
@@ -319,5 +320,12 @@
         "blackName": "深祖母绿"
       }
     }
+  },
+  "moveReview": {
+    "title": "走法回顾",
+    "subtitleWithMistakes": "{{total}} 回合中有 {{count}} 回合被标记",
+    "subtitleClean": "共进行了 {{total}} 回合——没有标记的失误",
+    "empty": "本局尚无记录的走法。",
+    "betterMove": "更好的走法："
   }
 }

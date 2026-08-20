@@ -90,7 +90,8 @@
     "startNewMatch": "Rozpocznij nowy mecz",
     "viewStats": "Zobacz statystyki kariery i historię",
     "returnToSetup": "Wróć do menu ustawień",
-    "backToHome": "Powrót do ekranu głównego"
+    "backToHome": "Powrót do ekranu głównego",
+    "reviewMoves": "Przeglądaj ruchy"
   },
   "settings": {
     "title": "Preferencje",
@@ -322,5 +323,12 @@
         "blackName": "Głęboki szmaragd"
       }
     }
+  },
+  "moveReview": {
+    "title": "Przegląd ruchów",
+    "subtitleWithMistakes": "Oznaczono {{count}} z {{total}} tur",
+    "subtitleClean": "Rozegrano {{total}} tur — nie oznaczono żadnego błędu",
+    "empty": "Dla tej gry nie zarejestrowano jeszcze żadnych ruchów.",
+    "betterMove": "Lepiej:"
   }
 }

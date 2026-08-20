@@ -20,6 +20,7 @@ import {
   CareerStats,
   MatchHistoryEntry,
   GameHistoryEntry,
+  MoveLogEntry,
 } from './types/backgammon';
 import {
   createInitialBoard,
@@ -46,6 +47,7 @@ import { Board } from './components/Board';
 import { MatchStartModal } from './components/MatchStartModal';
 import { DoublingModal } from './components/DoublingModal';
 import { GameOverModal } from './components/GameOverModal';
+import { MoveReviewModal } from './components/MoveReviewModal';
 import { SettingsModal } from './components/SettingsModal';
 import { RulesModal } from './components/RulesModal';
 import { StatsHistoryModal } from './components/StatsHistoryModal';
@@ -96,6 +98,13 @@ export default function App() {
   // used to retroactively check whether a human player's turn had a stronger
   // alternative once all their dice are used.
   const turnStartBoardRef = useRef<BoardState | null>(null);
+  // Accumulates the steps of the turn currently in progress, so the finished
+  // turn can be recorded in moveLog once all dice are used.
+  const currentTurnStepsRef = useRef<MoveStep[]>([]);
+
+  // Per-turn log of every human move this game, with mistake flags — the
+  // "review" data backing the post-game move review screen.
+  const [moveLog, setMoveLog] = useState<MoveLogEntry[]>([]);
 
   // 2. Core Game State
   const [board, setBoard] = useState<BoardState>(createInitialBoard);
@@ -144,6 +153,7 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isRulesOpen, setIsRulesOpen] = useState<boolean>(false);
   const [isStatsOpen, setIsStatsOpen] = useState<boolean>(false);
+  const [isMoveReviewOpen, setIsMoveReviewOpen] = useState<boolean>(false);
   const [isDoublingModalOpen, setIsDoublingModalOpen] = useState<boolean>(false);
   const [gameOverInfo, setGameOverInfo] = useState<{
     winner: Player;
@@ -250,6 +260,7 @@ export default function App() {
           setDice([dWhite, dBlack]);
           setPhase('moving');
           turnStartBoardRef.current = createInitialBoard();
+          currentTurnStepsRef.current = [];
 
           // Check if first player has any legal moves with opening dice
           const initialMoves = getPossibleMoves(createInitialBoard(), firstPlayer, [dWhite, dBlack]);
@@ -385,6 +396,7 @@ export default function App() {
       });
       setGameOverInfo(null);
       setIsStartModalOpen(false);
+      setMoveLog([]);
 
       // Reset match tracking refs
       currentMatchGamesRef.current = [];
@@ -414,6 +426,7 @@ export default function App() {
     setDice([]);
     setRolledDice(null);
     setGameOverInfo(null);
+    setMoveLog([]);
 
     // Reset game tracking refs
     gameTurnsCountRef.current = 0;
@@ -451,6 +464,7 @@ export default function App() {
       setDice(availableDice);
       setPhase('moving');
       turnStartBoardRef.current = board;
+      currentTurnStepsRef.current = [];
 
       if (d1 === d2) {
         showToast(t('toast.rolledDoubles', { n: d1 }));
@@ -474,7 +488,7 @@ export default function App() {
   // so a confident-looking percentage would be misleading. A threshold-gated flag
   // is honest about what it actually is: "the engine found something better."
   const analyzeHumanTurn = useCallback(
-    (mover: Player, boardAfterTurn: BoardState) => {
+    (mover: Player, boardAfterTurn: BoardState, playedSteps: MoveStep[]) => {
       if (!settings.mistakeFlagging) return;
       const startBoard = turnStartBoardRef.current;
       if (!startBoard || !rolledDice) return;
@@ -488,7 +502,20 @@ export default function App() {
         if (!bestSeq) return;
         const bestEquity = evaluateBoard(bestSeq.finalBoard, mover, 'master');
         const actualEquity = evaluateBoard(boardAfterTurn, mover, 'master');
-        if (bestEquity - actualEquity > MISTAKE_EQUITY_THRESHOLD) {
+        const isMistake = bestEquity - actualEquity > MISTAKE_EQUITY_THRESHOLD;
+
+        setMoveLog((prev) => [
+          ...prev,
+          {
+            player: mover,
+            dice: fullDice,
+            steps: playedSteps,
+            isMistake,
+            betterSteps: isMistake ? bestSeq.steps : undefined,
+          },
+        ]);
+
+        if (isMistake) {
           showToast(t('toast.moveMistake'));
         }
       }, 600);
@@ -581,6 +608,7 @@ export default function App() {
       };
 
       setTurnHistory((prev) => [...prev, { steps: [step], boardBefore: board }]);
+      currentTurnStepsRef.current = [...currentTurnStepsRef.current, step];
       setBoard(nextBoard);
 
       // Remove used die
@@ -593,6 +621,7 @@ export default function App() {
       // Check win condition
       const win = checkWin(nextBoard);
       if (win.winner !== null) {
+        analyzeHumanTurn(activePlayer, nextBoard, currentTurnStepsRef.current);
         handleGameWin(win.winner, win.type, win.points);
         return;
       }
@@ -601,14 +630,14 @@ export default function App() {
       if (nextDice.length === 0) {
         // End of turn
         gameTurnsCountRef.current += 1;
-        analyzeHumanTurn(activePlayer, nextBoard);
+        analyzeHumanTurn(activePlayer, nextBoard, currentTurnStepsRef.current);
         switchTurn(activePlayer);
       } else {
         const remainingMoves = getPossibleMoves(nextBoard, activePlayer, nextDice);
         if (remainingMoves.length === 0) {
           showToast(t('toast.noFurtherMoves'));
           gameTurnsCountRef.current += 1;
-          analyzeHumanTurn(activePlayer, nextBoard);
+          analyzeHumanTurn(activePlayer, nextBoard, currentTurnStepsRef.current);
           setTimeout(() => {
             switchTurn(activePlayer);
           }, 1200);
@@ -1026,7 +1055,7 @@ export default function App() {
 
   return (
     <div
-      className="app-safe-area h-dvh w-full bg-[#0d0906] text-[#e0d5c1] flex flex-col justify-between selection:bg-[#e5c07b] selection:text-[#0d0906] font-sans overflow-hidden relative"
+      className="app-safe-area app-full-height w-full bg-[#0d0906] text-[#e0d5c1] flex flex-col justify-between selection:bg-[#e5c07b] selection:text-[#0d0906] font-sans overflow-hidden relative"
       style={{
         backgroundImage:
           'radial-gradient(ellipse at 50% 35%, rgba(65, 43, 26, 0.45) 0%, rgba(20, 14, 9, 0.95) 75%, #0a0604 100%)',
@@ -1162,6 +1191,14 @@ export default function App() {
           setShowHome(true);
         }}
         onOpenStats={() => setIsStatsOpen(true)}
+        onOpenMoveReview={() => setIsMoveReviewOpen(true)}
+        mistakeCount={moveLog.filter((m) => m.isMistake).length}
+      />
+
+      <MoveReviewModal
+        isOpen={isMoveReviewOpen}
+        onClose={() => setIsMoveReviewOpen(false)}
+        moveLog={moveLog}
       />
 
       <SettingsModal

@@ -90,7 +90,8 @@
     "startNewMatch": "Démarrer un nouveau match",
     "viewStats": "Voir les statistiques et l'historique",
     "returnToSetup": "Retour au menu de configuration",
-    "backToHome": "Retour à l'accueil"
+    "backToHome": "Retour à l'accueil",
+    "reviewMoves": "Revoir les coups"
   },
   "settings": {
     "title": "Préférences",
@@ -320,5 +321,12 @@
         "blackName": "Émeraude profond"
       }
     }
+  },
+  "moveReview": {
+    "title": "Analyse des coups",
+    "subtitleWithMistakes": "{{count}} coups signalés sur {{total}}",
+    "subtitleClean": "{{total}} tours joués — aucune erreur signalée",
+    "empty": "Aucun coup enregistré pour cette partie pour le moment.",
+    "betterMove": "Meilleur coup :"
   }
 }

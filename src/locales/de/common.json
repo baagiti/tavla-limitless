@@ -90,7 +90,8 @@
     "startNewMatch": "Neue Partie starten",
     "viewStats": "Karrierestatistik & Verlauf ansehen",
     "returnToSetup": "Zurück zum Einstellungsmenü",
-    "backToHome": "Zurück zum Startbildschirm"
+    "backToHome": "Zurück zum Startbildschirm",
+    "reviewMoves": "Züge überprüfen"
   },
   "settings": {
     "title": "Einstellungen",
@@ -320,5 +321,12 @@
         "blackName": "Tiefes Smaragdgrün"
       }
     }
+  },
+  "moveReview": {
+    "title": "Zugüberprüfung",
+    "subtitleWithMistakes": "{{count}} von {{total}} Zügen markiert",
+    "subtitleClean": "{{total}} Züge gespielt — keine Fehler markiert",
+    "empty": "Für dieses Spiel sind noch keine Züge aufgezeichnet.",
+    "betterMove": "Besser:"
   }
 }

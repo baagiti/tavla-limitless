@@ -90,7 +90,8 @@
     "startNewMatch": "Start New Match",
     "viewStats": "View Career Stats & History",
     "returnToSetup": "Return to Setup Menu",
-    "backToHome": "Return to Home"
+    "backToHome": "Return to Home",
+    "reviewMoves": "Review Moves"
   },
   "settings": {
     "title": "Preferences",
@@ -320,5 +321,12 @@
         "blackName": "Deep Emerald"
       }
     }
+  },
+  "moveReview": {
+    "title": "Move Review",
+    "subtitleWithMistakes": "{{count}} of {{total}} turns flagged",
+    "subtitleClean": "{{total}} turns played — no mistakes flagged",
+    "empty": "No moves recorded for this game yet.",
+    "betterMove": "Better:"
   }
 }

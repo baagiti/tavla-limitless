@@ -90,7 +90,8 @@
     "startNewMatch": "नया मैच शुरू करें",
     "viewStats": "करियर आँकड़े और इतिहास देखें",
     "returnToSetup": "सेटअप मेनू पर वापस जाएं",
-    "backToHome": "होम स्क्रीन पर वापस जाएं"
+    "backToHome": "होम स्क्रीन पर वापस जाएं",
+    "reviewMoves": "चालों की समीक्षा करें"
   },
   "settings": {
     "title": "प्राथमिकताएं",
@@ -320,5 +321,12 @@
         "blackName": "डीप एमराल्ड"
       }
     }
+  },
+  "moveReview": {
+    "title": "चाल समीक्षा",
+    "subtitleWithMistakes": "{{total}} में से {{count}} चालें चिह्नित",
+    "subtitleClean": "{{total}} चालें खेली गईं — कोई गलती चिह्नित नहीं",
+    "empty": "इस गेम के लिए अभी तक कोई चाल दर्ज नहीं हुई है।",
+    "betterMove": "बेहतर:"
   }
 }

@@ -90,7 +90,8 @@
     "startNewMatch": "Iniciar nueva partida",
     "viewStats": "Ver estadísticas de carrera e historial",
     "returnToSetup": "Volver al menú de configuración",
-    "backToHome": "Volver al inicio"
+    "backToHome": "Volver al inicio",
+    "reviewMoves": "Revisar jugadas"
   },
   "settings": {
     "title": "Preferencias",
@@ -320,5 +321,12 @@
         "blackName": "Esmeralda profundo"
       }
     }
+  },
+  "moveReview": {
+    "title": "Revisión de jugadas",
+    "subtitleWithMistakes": "{{count}} de {{total}} turnos marcados",
+    "subtitleClean": "{{total}} turnos jugados — sin errores marcados",
+    "empty": "Todavía no hay jugadas registradas para esta partida.",
+    "betterMove": "Mejor:"
   }
 }

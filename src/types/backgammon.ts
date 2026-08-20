@@ -25,6 +25,14 @@ export interface MoveStep {
   player: Player;
 }
 
+export interface MoveLogEntry {
+  player: Player;
+  dice: number[];
+  steps: MoveStep[];
+  isMistake: boolean;
+  betterSteps?: MoveStep[];
+}
+
 export interface TurnSequence {
   steps: MoveStep[];
   finalBoard: BoardState;
