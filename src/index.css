@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/* Native-app feel inside the Capacitor WKWebView: no bounce/rubber-band
+   scrolling (this is a single fixed game screen, never a scrollable page),
+   no callout/selection popup on long-press (checkers/points get long-pressed
+   constantly during normal play), no browser tap-highlight flash. */
+html,
+body {
+  overscroll-behavior: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Keeps the board/header/footer clear of the notch and home indicator in
+   both orientations — iPad has none of these, but iPhone (portrait or
+   landscape) always does. Applied on App's own h-dvh root (not #root):
+   with box-sizing: border-box that root's own height stays exactly 100dvh
+   and the padding eats into its content area, instead of adding a second
+   independently-100dvh box nested inside the first. */
+.app-safe-area {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Backgammon Limitless",
+  "description": "A championship-grade Backgammon experience featuring ultra-luxurious board aesthetics, realistic physical checkers, challenging AI, career analytics, and tournament doubling cube mechanics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

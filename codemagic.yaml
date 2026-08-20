@@ -1,0 +1,43 @@
+workflows:
+  ios-release:
+    name: iOS Release
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      # Same App Store Connect API key integration already used by the
+      # Flutter build of this app (and by metronom-akort-app / one_pad).
+      app_store_connect: metronometuner
+    environment:
+      # Same bundle ID as the Flutter app this replaces, so it resolves to
+      # the same App Store Connect app record and reuses the existing
+      # account-level "ios_distribution" certificate / auto-fetched
+      # provisioning profile. No secrets in env vars.
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.burakakkaya.tavla
+      node: 20
+      xcode: latest
+    scripts:
+      - name: Set up code signing
+        script: xcode-project use-profiles
+      - name: Install npm dependencies
+        script: npm ci
+      - name: Build web assets
+        script: npm run build
+      - name: Sync Capacitor iOS project
+        script: npx cap sync ios
+      - name: Build ipa
+        script: |
+          xcode-project build-ipa \
+            --project "ios/App/App.xcodeproj" \
+            --scheme "App"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        # Upload only — TestFlight, not App Store review. Add to the
+        # Internal Testing group by hand on App Store Connect if it doesn't
+        # auto-assign.
+        submit_to_testflight: false
