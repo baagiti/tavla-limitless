@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import confetti from 'canvas-confetti';
 import { Player, WinType, ScoreState, GameSettings } from '../types/backgammon';
-import { Trophy, Award, ArrowRight, RotateCcw } from 'lucide-react';
+import { Trophy, Home } from 'lucide-react';
 
 interface GameOverModalProps {
   isOpen: boolean;
@@ -16,6 +16,7 @@ interface GameOverModalProps {
   isMatchOver: boolean;
   onNextGame: () => void;
   onNewMatch: () => void;
+  onGoHome: () => void;
   onOpenStats?: () => void;
 }
 
@@ -30,6 +31,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   isMatchOver,
   onNextGame,
   onNewMatch,
+  onGoHome,
   onOpenStats,
 }) => {
   useEffect(() => {
@@ -141,10 +143,11 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
 
           <button
             type="button"
-            onClick={onNewMatch}
-            className="w-full py-2.5 border border-[#2d1e15] bg-[#1a130f] text-[#e0d5c1]/60 hover:text-[#e0d5c1] text-xs uppercase tracking-[0.15em] rounded-sm transition-colors cursor-pointer"
+            onClick={onGoHome}
+            className="w-full py-2.5 border border-[#2d1e15] bg-[#1a130f] text-[#e0d5c1]/60 hover:text-[#e0d5c1] text-xs uppercase tracking-[0.15em] rounded-sm transition-colors cursor-pointer flex items-center justify-center gap-1.5"
           >
-            {t('gameOver.returnToSetup')}
+            <Home className="w-3.5 h-3.5" />
+            <span>{t('gameOver.backToHome')}</span>
           </button>
         </div>
       </motion.div>

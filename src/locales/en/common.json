@@ -89,7 +89,8 @@
     "continueNextGame": "Continue to Next Game",
     "startNewMatch": "Start New Match",
     "viewStats": "View Career Stats & History",
-    "returnToSetup": "Return to Setup Menu"
+    "returnToSetup": "Return to Setup Menu",
+    "backToHome": "Return to Home"
   },
   "settings": {
     "title": "Preferences",
@@ -220,7 +221,8 @@
   },
   "bearOff": {
     "clickToBearOff": "Click here to bear off checker",
-    "tray": "Bear-off Tray"
+    "tray": "Bear-off Tray",
+    "label": "Bear Off"
   },
   "bar": {
     "onBar": "On the Bar",
@@ -265,17 +267,54 @@
   },
   "themes": {
     "board": {
-      "warm_oak": { "name": "Warm Oak (Light Tone)", "description": "Bright, airy walnut-oak field with gilded gold accents" },
-      "classic_walnut": { "name": "Classic Solid Walnut", "description": "Balanced classic tone, mother-of-pearl and ebony inlaid triangles" },
-      "royal_green": { "name": "Tournament Green (Royal Felt)", "description": "Classic club-green felt field, high-contrast wooden triangles" },
-      "midnight_ebony": { "name": "Midnight Ebony & Gold", "description": "Dark smoky luxury ebony field, bright gold inlays" }
+      "warm_oak": {
+        "name": "Warm Oak (Light Tone)",
+        "description": "Bright, airy walnut-oak field with gilded gold accents"
+      },
+      "classic_walnut": {
+        "name": "Classic Solid Walnut",
+        "description": "Balanced classic tone, mother-of-pearl and ebony inlaid triangles"
+      },
+      "royal_green": {
+        "name": "Tournament Green (Royal Felt)",
+        "description": "Classic club-green felt field, high-contrast wooden triangles"
+      },
+      "midnight_ebony": {
+        "name": "Midnight Ebony & Gold",
+        "description": "Dark smoky luxury ebony field, bright gold inlays"
+      }
     },
     "checker": {
-      "ivory_amber": { "name": "Mother-of-Pearl & Amber Wood", "description": "Mother-of-pearl ivory and polished amber-wood checkers for a warm oak board", "whiteName": "Mother-of-Pearl Ivory", "blackName": "Warm Amber" },
-      "classic_ebony": { "name": "Solid Boxwood & Dark Ebony", "description": "Solid boxwood and charcoal ebony checkers, a perfect match for the classic walnut board", "whiteName": "Solid Boxwood", "blackName": "Dark Ebony" },
-      "cream_ruby": { "name": "Tournament Cream & Ruby Red", "description": "World-championship-standard high-contrast cream and noble ruby checkers", "whiteName": "Tournament Cream", "blackName": "Royal Ruby" },
-      "platinum_gold": { "name": "Platinum Pearl & Gilded Onyx", "description": "Silvery platinum pearl and gold-inlaid black onyx for a luxury midnight-ebony board", "whiteName": "Platinum Pearl", "blackName": "Onyx & Gold" },
-      "pearl_emerald": { "name": "Antique Pearl & Emerald Green", "description": "Rich emerald-green and lustrous pearl-white collector's checkers", "whiteName": "Antique Pearl", "blackName": "Deep Emerald" }
+      "ivory_amber": {
+        "name": "Mother-of-Pearl & Amber Wood",
+        "description": "Mother-of-pearl ivory and polished amber-wood checkers for a warm oak board",
+        "whiteName": "Mother-of-Pearl Ivory",
+        "blackName": "Warm Amber"
+      },
+      "classic_ebony": {
+        "name": "Solid Boxwood & Dark Ebony",
+        "description": "Solid boxwood and charcoal ebony checkers, a perfect match for the classic walnut board",
+        "whiteName": "Solid Boxwood",
+        "blackName": "Dark Ebony"
+      },
+      "cream_ruby": {
+        "name": "Tournament Cream & Ruby Red",
+        "description": "World-championship-standard high-contrast cream and noble ruby checkers",
+        "whiteName": "Tournament Cream",
+        "blackName": "Royal Ruby"
+      },
+      "platinum_gold": {
+        "name": "Platinum Pearl & Gilded Onyx",
+        "description": "Silvery platinum pearl and gold-inlaid black onyx for a luxury midnight-ebony board",
+        "whiteName": "Platinum Pearl",
+        "blackName": "Onyx & Gold"
+      },
+      "pearl_emerald": {
+        "name": "Antique Pearl & Emerald Green",
+        "description": "Rich emerald-green and lustrous pearl-white collector's checkers",
+        "whiteName": "Antique Pearl",
+        "blackName": "Deep Emerald"
+      }
     }
   }
 }

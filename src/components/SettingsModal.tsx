@@ -2,8 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GameSettings, BearingDirection, BoardTheme, CheckerTheme } from '../types/backgammon';
-import { X, Volume2, VolumeX, Eye, Compass, Flag, Palette, CircleDot, Sparkles } from 'lucide-react';
+import { X, Flag, Palette, CircleDot, Languages } from 'lucide-react';
 import { BOARD_THEMES, CHECKER_PAIRS, getActiveCheckerPair } from '../utils/themes';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -50,6 +51,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         <div className="space-y-4">
+          {/* Language Selection */}
+          <div className="flex items-center justify-between p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
+            <div className="flex items-center gap-1.5">
+              <Languages className="w-3.5 h-3.5 text-[#c2a278]" />
+              <span className="text-xs font-semibold text-[#f9f3e5]">{t('header.language')}</span>
+            </div>
+            <LanguageSwitcher />
+          </div>
+
           {/* Board Color Theme Selection */}
           <div className="p-3.5 bg-[#1a130f] border border-[#2d1e15] rounded-sm space-y-2.5">
             <div className="flex items-center justify-between">

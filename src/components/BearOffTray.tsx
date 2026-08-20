@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { Player, BoardTheme, CheckerTheme } from '../types/backgammon';
-import { BOARD_THEMES, getCheckerStyle } from '../utils/themes';
+import { BOARD_THEMES, getCheckerStyle, getActiveCheckerPair } from '../utils/themes';
 
 interface BearOffTrayProps {
   borneOff: { white: number; black: number };
@@ -30,6 +30,9 @@ export const BearOffTray: React.FC<BearOffTrayProps> = ({
   const currentTheme = BOARD_THEMES[theme] || BOARD_THEMES.royal_green;
   const whiteStyle = getCheckerStyle('white', theme, checkerTheme);
   const blackStyle = getCheckerStyle('black', theme, checkerTheme);
+  const activePair = getActiveCheckerPair(theme, checkerTheme);
+  const whiteName = t(`themes.checker.${activePair.id}.whiteName`, { defaultValue: activePair.whiteName });
+  const blackName = t(`themes.checker.${activePair.id}.blackName`, { defaultValue: activePair.blackName });
 
   return (
     <div
@@ -51,7 +54,7 @@ export const BearOffTray: React.FC<BearOffTrayProps> = ({
       {/* Black Bear-Off Top Slot */}
       <div className="flex flex-col items-center gap-0.5">
         <div className="text-[10px] font-mono text-[#e0d5c1]/60 uppercase tracking-wider flex items-center justify-between w-full px-1">
-          <span className="truncate max-w-[36px]">{blackStyle.name.split(' ')[0]}</span>
+          <span className="truncate max-w-[36px]">{blackName.split(' ')[0]}</span>
           <span className="text-[#c2a278] font-bold">{borneOff.black}/15</span>
         </div>
 
@@ -78,7 +81,7 @@ export const BearOffTray: React.FC<BearOffTrayProps> = ({
           transition={{ repeat: Infinity, duration: 1.2 }}
           className="my-auto py-2 px-1 rounded-sm bg-[#c2a278] text-[#140e0a] font-bold text-[9px] text-center uppercase tracking-widest shadow-md border border-[#f9f3e5]"
         >
-          Bear Off
+          {t('bearOff.label')}
         </motion.div>
       )}
 
@@ -100,7 +103,7 @@ export const BearOffTray: React.FC<BearOffTrayProps> = ({
         </div>
 
         <div className="text-[10px] font-mono text-[#e0d5c1]/60 uppercase tracking-wider flex items-center justify-between w-full px-1">
-          <span className="truncate max-w-[36px]">{whiteStyle.name.split(' ')[0]}</span>
+          <span className="truncate max-w-[36px]">{whiteName.split(' ')[0]}</span>
           <span className="text-[#c2a278] font-bold">{borneOff.white}/15</span>
         </div>
       </div>

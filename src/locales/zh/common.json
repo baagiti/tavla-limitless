@@ -89,7 +89,8 @@
     "continueNextGame": "继续下一局",
     "startNewMatch": "开始新比赛",
     "viewStats": "查看生涯统计与记录",
-    "returnToSetup": "返回设置菜单"
+    "returnToSetup": "返回设置菜单",
+    "backToHome": "返回主页"
   },
   "settings": {
     "title": "偏好设置",
@@ -219,7 +220,8 @@
   },
   "bearOff": {
     "clickToBearOff": "点击此处收走棋子",
-    "tray": "收子托盘"
+    "tray": "收子托盘",
+    "label": "收子"
   },
   "bar": {
     "onBar": "在门柱上",
@@ -264,17 +266,54 @@
   },
   "themes": {
     "board": {
-      "warm_oak": { "name": "暖橡木（浅色）", "description": "明亮通透的胡桃木与橡木棋盘，金色点缀" },
-      "classic_walnut": { "name": "经典实木胡桃木", "description": "均衡的经典色调，珍珠母贝与乌木镶嵌三角格" },
-      "royal_green": { "name": "锦标赛绿（皇家毛毡）", "description": "经典俱乐部绿色毛毡棋盘，高对比度木质三角格" },
-      "midnight_ebony": { "name": "午夜乌木与金", "description": "深邃烟熏奢华乌木棋盘，明亮金色镶嵌" }
+      "warm_oak": {
+        "name": "暖橡木（浅色）",
+        "description": "明亮通透的胡桃木与橡木棋盘，金色点缀"
+      },
+      "classic_walnut": {
+        "name": "经典实木胡桃木",
+        "description": "均衡的经典色调，珍珠母贝与乌木镶嵌三角格"
+      },
+      "royal_green": {
+        "name": "锦标赛绿（皇家毛毡）",
+        "description": "经典俱乐部绿色毛毡棋盘，高对比度木质三角格"
+      },
+      "midnight_ebony": {
+        "name": "午夜乌木与金",
+        "description": "深邃烟熏奢华乌木棋盘，明亮金色镶嵌"
+      }
     },
     "checker": {
-      "ivory_amber": { "name": "珍珠母象牙白与琥珀木", "description": "珍珠母象牙白与抛光琥珀木棋子，搭配暖橡木棋盘", "whiteName": "珍珠母象牙白", "blackName": "暖琥珀色" },
-      "classic_ebony": { "name": "实木黄杨与深色乌木", "description": "实木黄杨与炭黑乌木棋子，与经典胡桃木棋盘完美搭配", "whiteName": "实木黄杨", "blackName": "深色乌木" },
-      "cream_ruby": { "name": "锦标赛奶油白与红宝石", "description": "世界锦标赛标准的高对比度奶油白与尊贵红宝石棋子", "whiteName": "锦标赛奶油白", "blackName": "皇家红宝石" },
-      "platinum_gold": { "name": "铂金珍珠与镀金玛瑙", "description": "银色铂金珍珠与镶金黑玛瑙，搭配奢华午夜乌木棋盘", "whiteName": "铂金珍珠", "blackName": "玛瑙与金" },
-      "pearl_emerald": { "name": "古董珍珠与祖母绿", "description": "浓郁祖母绿与光泽珍珠白的收藏级棋子", "whiteName": "古董珍珠", "blackName": "深祖母绿" }
+      "ivory_amber": {
+        "name": "珍珠母象牙白与琥珀木",
+        "description": "珍珠母象牙白与抛光琥珀木棋子，搭配暖橡木棋盘",
+        "whiteName": "珍珠母象牙白",
+        "blackName": "暖琥珀色"
+      },
+      "classic_ebony": {
+        "name": "实木黄杨与深色乌木",
+        "description": "实木黄杨与炭黑乌木棋子，与经典胡桃木棋盘完美搭配",
+        "whiteName": "实木黄杨",
+        "blackName": "深色乌木"
+      },
+      "cream_ruby": {
+        "name": "锦标赛奶油白与红宝石",
+        "description": "世界锦标赛标准的高对比度奶油白与尊贵红宝石棋子",
+        "whiteName": "锦标赛奶油白",
+        "blackName": "皇家红宝石"
+      },
+      "platinum_gold": {
+        "name": "铂金珍珠与镀金玛瑙",
+        "description": "银色铂金珍珠与镶金黑玛瑙，搭配奢华午夜乌木棋盘",
+        "whiteName": "铂金珍珠",
+        "blackName": "玛瑙与金"
+      },
+      "pearl_emerald": {
+        "name": "古董珍珠与祖母绿",
+        "description": "浓郁祖母绿与光泽珍珠白的收藏级棋子",
+        "whiteName": "古董珍珠",
+        "blackName": "深祖母绿"
+      }
     }
   }
 }

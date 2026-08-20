@@ -89,7 +89,8 @@
     "continueNextGame": "Przejdź do następnej gry",
     "startNewMatch": "Rozpocznij nowy mecz",
     "viewStats": "Zobacz statystyki kariery i historię",
-    "returnToSetup": "Wróć do menu ustawień"
+    "returnToSetup": "Wróć do menu ustawień",
+    "backToHome": "Powrót do ekranu głównego"
   },
   "settings": {
     "title": "Preferencje",
@@ -222,7 +223,8 @@
   },
   "bearOff": {
     "clickToBearOff": "Dotknij tutaj, aby zebrać pionek",
-    "tray": "Taca do zbierania"
+    "tray": "Taca do zbierania",
+    "label": "Zbierz"
   },
   "bar": {
     "onBar": "Na barze",
@@ -267,17 +269,54 @@
   },
   "themes": {
     "board": {
-      "warm_oak": { "name": "Ciepły dąb (jasny odcień)", "description": "Jasne, przewiewne pole orzechowo-dębowe ze złotymi akcentami" },
-      "classic_walnut": { "name": "Klasyczny lity orzech", "description": "Zrównoważony klasyczny odcień, trójkąty inkrustowane macicą perłową i hebanem" },
-      "royal_green": { "name": "Zieleń turniejowa (królewski filc)", "description": "Klasyczne klubowe zielone pole filcowe, kontrastowe drewniane trójkąty" },
-      "midnight_ebony": { "name": "Heban północy i złoto", "description": "Ciemne, dymne luksusowe pole hebanowe, jasne złote inkrustacje" }
+      "warm_oak": {
+        "name": "Ciepły dąb (jasny odcień)",
+        "description": "Jasne, przewiewne pole orzechowo-dębowe ze złotymi akcentami"
+      },
+      "classic_walnut": {
+        "name": "Klasyczny lity orzech",
+        "description": "Zrównoważony klasyczny odcień, trójkąty inkrustowane macicą perłową i hebanem"
+      },
+      "royal_green": {
+        "name": "Zieleń turniejowa (królewski filc)",
+        "description": "Klasyczne klubowe zielone pole filcowe, kontrastowe drewniane trójkąty"
+      },
+      "midnight_ebony": {
+        "name": "Heban północy i złoto",
+        "description": "Ciemne, dymne luksusowe pole hebanowe, jasne złote inkrustacje"
+      }
     },
     "checker": {
-      "ivory_amber": { "name": "Macica perłowa i drewno bursztynowe", "description": "Pionki z macicy perłowej i polerowanego drewna bursztynowego do ciepłej dębowej planszy", "whiteName": "Macica perłowa", "blackName": "Ciepły bursztyn" },
-      "classic_ebony": { "name": "Lite drewno bukszpanu i ciemny heban", "description": "Pionki z litego bukszpanu i węglowego hebanu, idealnie dopasowane do klasycznej planszy orzechowej", "whiteName": "Lity bukszpan", "blackName": "Ciemny heban" },
-      "cream_ruby": { "name": "Kremowy turniejowy i rubinowa czerwień", "description": "Kontrastowe kremowe i szlachetne rubinowe pionki w standardzie mistrzostw świata", "whiteName": "Kremowy turniejowy", "blackName": "Królewski rubin" },
-      "platinum_gold": { "name": "Perła platynowa i złocony onyks", "description": "Srebrzysta perła platynowa i czarny onyks inkrustowany złotem do luksusowej planszy hebanowej", "whiteName": "Perła platynowa", "blackName": "Onyks i złoto" },
-      "pearl_emerald": { "name": "Antyczna perła i zieleń szmaragdowa", "description": "Kolekcjonerskie pionki w bogatej zieleni szmaragdowej i lśniącej perłowej bieli", "whiteName": "Antyczna perła", "blackName": "Głęboki szmaragd" }
+      "ivory_amber": {
+        "name": "Macica perłowa i drewno bursztynowe",
+        "description": "Pionki z macicy perłowej i polerowanego drewna bursztynowego do ciepłej dębowej planszy",
+        "whiteName": "Macica perłowa",
+        "blackName": "Ciepły bursztyn"
+      },
+      "classic_ebony": {
+        "name": "Lite drewno bukszpanu i ciemny heban",
+        "description": "Pionki z litego bukszpanu i węglowego hebanu, idealnie dopasowane do klasycznej planszy orzechowej",
+        "whiteName": "Lity bukszpan",
+        "blackName": "Ciemny heban"
+      },
+      "cream_ruby": {
+        "name": "Kremowy turniejowy i rubinowa czerwień",
+        "description": "Kontrastowe kremowe i szlachetne rubinowe pionki w standardzie mistrzostw świata",
+        "whiteName": "Kremowy turniejowy",
+        "blackName": "Królewski rubin"
+      },
+      "platinum_gold": {
+        "name": "Perła platynowa i złocony onyks",
+        "description": "Srebrzysta perła platynowa i czarny onyks inkrustowany złotem do luksusowej planszy hebanowej",
+        "whiteName": "Perła platynowa",
+        "blackName": "Onyks i złoto"
+      },
+      "pearl_emerald": {
+        "name": "Antyczna perła i zieleń szmaragdowa",
+        "description": "Kolekcjonerskie pionki w bogatej zieleni szmaragdowej i lśniącej perłowej bieli",
+        "whiteName": "Antyczna perła",
+        "blackName": "Głęboki szmaragd"
+      }
     }
   }
 }

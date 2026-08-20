@@ -1094,7 +1094,15 @@ export default function App() {
         settings={settings}
         isMatchOver={gameOverInfo?.isMatchOver || false}
         onNextGame={startNextGame}
-        onNewMatch={() => setIsStartModalOpen(true)}
+        onNewMatch={() => {
+          setGameOverInfo(null);
+          setIsStartModalOpen(true);
+        }}
+        onGoHome={() => {
+          setGameOverInfo(null);
+          setIsStartModalOpen(false);
+          setShowHome(true);
+        }}
         onOpenStats={() => setIsStatsOpen(true)}
       />
 

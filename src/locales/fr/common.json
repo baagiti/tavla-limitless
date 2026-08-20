@@ -89,7 +89,8 @@
     "continueNextGame": "Continuer à la partie suivante",
     "startNewMatch": "Démarrer un nouveau match",
     "viewStats": "Voir les statistiques et l'historique",
-    "returnToSetup": "Retour au menu de configuration"
+    "returnToSetup": "Retour au menu de configuration",
+    "backToHome": "Retour à l'accueil"
   },
   "settings": {
     "title": "Préférences",
@@ -220,7 +221,8 @@
   },
   "bearOff": {
     "clickToBearOff": "Touchez ici pour sortir le pion",
-    "tray": "Plateau de sortie"
+    "tray": "Plateau de sortie",
+    "label": "Sortir"
   },
   "bar": {
     "onBar": "Sur la barre",
@@ -265,17 +267,54 @@
   },
   "themes": {
     "board": {
-      "warm_oak": { "name": "Chêne chaud (ton clair)", "description": "Champ chaleureux en noyer et chêne avec des accents dorés" },
-      "classic_walnut": { "name": "Noyer massif classique", "description": "Ton classique équilibré, triangles incrustés de nacre et d'ébène" },
-      "royal_green": { "name": "Vert de tournoi (feutre royal)", "description": "Champ de feutre vert club classique, triangles en bois à fort contraste" },
-      "midnight_ebony": { "name": "Ébène de minuit et or", "description": "Champ d'ébène fumé de luxe, incrustations dorées éclatantes" }
+      "warm_oak": {
+        "name": "Chêne chaud (ton clair)",
+        "description": "Champ chaleureux en noyer et chêne avec des accents dorés"
+      },
+      "classic_walnut": {
+        "name": "Noyer massif classique",
+        "description": "Ton classique équilibré, triangles incrustés de nacre et d'ébène"
+      },
+      "royal_green": {
+        "name": "Vert de tournoi (feutre royal)",
+        "description": "Champ de feutre vert club classique, triangles en bois à fort contraste"
+      },
+      "midnight_ebony": {
+        "name": "Ébène de minuit et or",
+        "description": "Champ d'ébène fumé de luxe, incrustations dorées éclatantes"
+      }
     },
     "checker": {
-      "ivory_amber": { "name": "Nacre ivoire et bois d'ambre", "description": "Pions en nacre ivoire et bois d'ambre poli pour un plateau en chêne chaud", "whiteName": "Nacre ivoire", "blackName": "Ambre chaud" },
-      "classic_ebony": { "name": "Buis massif et ébène sombre", "description": "Pions en buis massif et ébène charbon, assortis au plateau en noyer classique", "whiteName": "Buis massif", "blackName": "Ébène sombre" },
-      "cream_ruby": { "name": "Crème de tournoi et rouge rubis", "description": "Pions crème à fort contraste et rubis noble, standard des championnats du monde", "whiteName": "Crème de tournoi", "blackName": "Rubis royal" },
-      "platinum_gold": { "name": "Perle platine et onyx doré", "description": "Perle platine argentée et onyx noir incrusté d'or pour un plateau de luxe en ébène de minuit", "whiteName": "Perle platine", "blackName": "Onyx et or" },
-      "pearl_emerald": { "name": "Perle antique et vert émeraude", "description": "Pions de collection en vert émeraude riche et blanc perle lustré", "whiteName": "Perle antique", "blackName": "Émeraude profond" }
+      "ivory_amber": {
+        "name": "Nacre ivoire et bois d'ambre",
+        "description": "Pions en nacre ivoire et bois d'ambre poli pour un plateau en chêne chaud",
+        "whiteName": "Nacre ivoire",
+        "blackName": "Ambre chaud"
+      },
+      "classic_ebony": {
+        "name": "Buis massif et ébène sombre",
+        "description": "Pions en buis massif et ébène charbon, assortis au plateau en noyer classique",
+        "whiteName": "Buis massif",
+        "blackName": "Ébène sombre"
+      },
+      "cream_ruby": {
+        "name": "Crème de tournoi et rouge rubis",
+        "description": "Pions crème à fort contraste et rubis noble, standard des championnats du monde",
+        "whiteName": "Crème de tournoi",
+        "blackName": "Rubis royal"
+      },
+      "platinum_gold": {
+        "name": "Perle platine et onyx doré",
+        "description": "Perle platine argentée et onyx noir incrusté d'or pour un plateau de luxe en ébène de minuit",
+        "whiteName": "Perle platine",
+        "blackName": "Onyx et or"
+      },
+      "pearl_emerald": {
+        "name": "Perle antique et vert émeraude",
+        "description": "Pions de collection en vert émeraude riche et blanc perle lustré",
+        "whiteName": "Perle antique",
+        "blackName": "Émeraude profond"
+      }
     }
   }
 }

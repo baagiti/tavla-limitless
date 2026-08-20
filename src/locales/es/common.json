@@ -89,7 +89,8 @@
     "continueNextGame": "Continuar al siguiente juego",
     "startNewMatch": "Iniciar nueva partida",
     "viewStats": "Ver estadísticas de carrera e historial",
-    "returnToSetup": "Volver al menú de configuración"
+    "returnToSetup": "Volver al menú de configuración",
+    "backToHome": "Volver al inicio"
   },
   "settings": {
     "title": "Preferencias",
@@ -220,7 +221,8 @@
   },
   "bearOff": {
     "clickToBearOff": "Toca aquí para retirar la ficha",
-    "tray": "Bandeja de retirada"
+    "tray": "Bandeja de retirada",
+    "label": "Retirar"
   },
   "bar": {
     "onBar": "En la barra",
@@ -265,17 +267,54 @@
   },
   "themes": {
     "board": {
-      "warm_oak": { "name": "Roble cálido (tono claro)", "description": "Campo cálido de nogal y roble con acentos dorados" },
-      "classic_walnut": { "name": "Nogal macizo clásico", "description": "Tono clásico equilibrado, triángulos con incrustaciones de nácar y ébano" },
-      "royal_green": { "name": "Verde de torneo (fieltro real)", "description": "Campo de fieltro verde de club clásico, triángulos de madera de alto contraste" },
-      "midnight_ebony": { "name": "Ébano medianoche y oro", "description": "Campo de ébano ahumado de lujo, incrustaciones doradas brillantes" }
+      "warm_oak": {
+        "name": "Roble cálido (tono claro)",
+        "description": "Campo cálido de nogal y roble con acentos dorados"
+      },
+      "classic_walnut": {
+        "name": "Nogal macizo clásico",
+        "description": "Tono clásico equilibrado, triángulos con incrustaciones de nácar y ébano"
+      },
+      "royal_green": {
+        "name": "Verde de torneo (fieltro real)",
+        "description": "Campo de fieltro verde de club clásico, triángulos de madera de alto contraste"
+      },
+      "midnight_ebony": {
+        "name": "Ébano medianoche y oro",
+        "description": "Campo de ébano ahumado de lujo, incrustaciones doradas brillantes"
+      }
     },
     "checker": {
-      "ivory_amber": { "name": "Nácar marfil y madera de ámbar", "description": "Fichas de marfil nacarado y madera de ámbar pulida para un tablero de roble cálido", "whiteName": "Marfil nacarado", "blackName": "Ámbar cálido" },
-      "classic_ebony": { "name": "Boj macizo y ébano oscuro", "description": "Fichas de boj macizo y ébano carbón, a juego perfecto con el tablero de nogal clásico", "whiteName": "Boj macizo", "blackName": "Ébano oscuro" },
-      "cream_ruby": { "name": "Crema de torneo y rojo rubí", "description": "Fichas de crema de alto contraste y noble rubí, estándar de campeonatos mundiales", "whiteName": "Crema de torneo", "blackName": "Rubí real" },
-      "platinum_gold": { "name": "Perla platino y ónix dorado", "description": "Perla platino plateada y ónix negro con incrustaciones doradas para un tablero de lujo de ébano medianoche", "whiteName": "Perla platino", "blackName": "Ónix y oro" },
-      "pearl_emerald": { "name": "Perla antigua y verde esmeralda", "description": "Fichas de coleccionista en rico verde esmeralda y blanco perla brillante", "whiteName": "Perla antigua", "blackName": "Esmeralda profundo" }
+      "ivory_amber": {
+        "name": "Nácar marfil y madera de ámbar",
+        "description": "Fichas de marfil nacarado y madera de ámbar pulida para un tablero de roble cálido",
+        "whiteName": "Marfil nacarado",
+        "blackName": "Ámbar cálido"
+      },
+      "classic_ebony": {
+        "name": "Boj macizo y ébano oscuro",
+        "description": "Fichas de boj macizo y ébano carbón, a juego perfecto con el tablero de nogal clásico",
+        "whiteName": "Boj macizo",
+        "blackName": "Ébano oscuro"
+      },
+      "cream_ruby": {
+        "name": "Crema de torneo y rojo rubí",
+        "description": "Fichas de crema de alto contraste y noble rubí, estándar de campeonatos mundiales",
+        "whiteName": "Crema de torneo",
+        "blackName": "Rubí real"
+      },
+      "platinum_gold": {
+        "name": "Perla platino y ónix dorado",
+        "description": "Perla platino plateada y ónix negro con incrustaciones doradas para un tablero de lujo de ébano medianoche",
+        "whiteName": "Perla platino",
+        "blackName": "Ónix y oro"
+      },
+      "pearl_emerald": {
+        "name": "Perla antigua y verde esmeralda",
+        "description": "Fichas de coleccionista en rico verde esmeralda y blanco perla brillante",
+        "whiteName": "Perla antigua",
+        "blackName": "Esmeralda profundo"
+      }
     }
   }
 }

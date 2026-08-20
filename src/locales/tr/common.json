@@ -89,7 +89,8 @@
     "continueNextGame": "Sonraki Oyuna Geç",
     "startNewMatch": "Yeni Maç Başlat",
     "viewStats": "Kariyer İstatistiklerini ve Geçmişi Görüntüle",
-    "returnToSetup": "Kurulum Menüsüne Dön"
+    "returnToSetup": "Kurulum Menüsüne Dön",
+    "backToHome": "Ana Sayfaya Dön"
   },
   "settings": {
     "title": "Tercihler",
@@ -220,7 +221,8 @@
   },
   "bearOff": {
     "clickToBearOff": "Taşı toplamak için buraya tıkla",
-    "tray": "Toplama Tepsisi"
+    "tray": "Toplama Tepsisi",
+    "label": "Topla"
   },
   "bar": {
     "onBar": "Kırık Pul",
@@ -265,17 +267,54 @@
   },
   "themes": {
     "board": {
-      "warm_oak": { "name": "Sıcak Meşe (Açık Ton)", "description": "Aydınlık ve ferah ceviz-meşe zemin, altın yaldız detaylar" },
-      "classic_walnut": { "name": "Klasik Masif Ceviz", "description": "Dengeli klasik ton, sedef ve abanoz kakma üçgenler" },
-      "royal_green": { "name": "Turnuva Yeşili (Royal Felt)", "description": "Klasik kulüp yeşili keçe zemin, yüksek kontrastlı ahşap üçgenler" },
-      "midnight_ebony": { "name": "Gece Abanozu & Altın", "description": "Koyu füme lüks abanoz zemin, parlak altın sarısı kakmalar" }
+      "warm_oak": {
+        "name": "Sıcak Meşe (Açık Ton)",
+        "description": "Aydınlık ve ferah ceviz-meşe zemin, altın yaldız detaylar"
+      },
+      "classic_walnut": {
+        "name": "Klasik Masif Ceviz",
+        "description": "Dengeli klasik ton, sedef ve abanoz kakma üçgenler"
+      },
+      "royal_green": {
+        "name": "Turnuva Yeşili (Royal Felt)",
+        "description": "Klasik kulüp yeşili keçe zemin, yüksek kontrastlı ahşap üçgenler"
+      },
+      "midnight_ebony": {
+        "name": "Gece Abanozu & Altın",
+        "description": "Koyu füme lüks abanoz zemin, parlak altın sarısı kakmalar"
+      }
     },
     "checker": {
-      "ivory_amber": { "name": "Sedef Fildişi & Kehribar Ağacı", "description": "Sıcak meşe tahtaya özel sedef fildişi ve parlatılmış kehribar ağacı pullar", "whiteName": "Sedef Fildişi", "blackName": "Sıcak Kehribar" },
-      "classic_ebony": { "name": "Masif Şimşir & Koyu Abanoz", "description": "Klasik ceviz tahtayla tam uyumlu masif şimşir ve kömür abanoz pullar", "whiteName": "Masif Şimşir", "blackName": "Koyu Abanoz" },
-      "cream_ruby": { "name": "Turnuva Kremisi & Yakut Kırmızısı", "description": "Dünya şampiyonaları standardı yüksek kontrastlı krem ve asil yakut taşlar", "whiteName": "Turnuva Kremisi", "blackName": "Kraliyet Yakutu" },
-      "platinum_gold": { "name": "Platin Sedef & Altın Yaldızlı Oniks", "description": "Lüks gece abanozu zemin için gümüşi platin ve altın kakmalı siyah oniks", "whiteName": "Platin Sedef", "blackName": "Oniks & Altın" },
-      "pearl_emerald": { "name": "Antik Sedef & Zümrüt Yeşili", "description": "Zengin zümrüt yeşili ve parlak inci beyazı koleksiyon taşları", "whiteName": "Antik Sedef", "blackName": "Derin Zümrüt" }
+      "ivory_amber": {
+        "name": "Sedef Fildişi & Kehribar Ağacı",
+        "description": "Sıcak meşe tahtaya özel sedef fildişi ve parlatılmış kehribar ağacı pullar",
+        "whiteName": "Sedef Fildişi",
+        "blackName": "Sıcak Kehribar"
+      },
+      "classic_ebony": {
+        "name": "Masif Şimşir & Koyu Abanoz",
+        "description": "Klasik ceviz tahtayla tam uyumlu masif şimşir ve kömür abanoz pullar",
+        "whiteName": "Masif Şimşir",
+        "blackName": "Koyu Abanoz"
+      },
+      "cream_ruby": {
+        "name": "Turnuva Kremisi & Yakut Kırmızısı",
+        "description": "Dünya şampiyonaları standardı yüksek kontrastlı krem ve asil yakut taşlar",
+        "whiteName": "Turnuva Kremisi",
+        "blackName": "Kraliyet Yakutu"
+      },
+      "platinum_gold": {
+        "name": "Platin Sedef & Altın Yaldızlı Oniks",
+        "description": "Lüks gece abanozu zemin için gümüşi platin ve altın kakmalı siyah oniks",
+        "whiteName": "Platin Sedef",
+        "blackName": "Oniks & Altın"
+      },
+      "pearl_emerald": {
+        "name": "Antik Sedef & Zümrüt Yeşili",
+        "description": "Zengin zümrüt yeşili ve parlak inci beyazı koleksiyon taşları",
+        "whiteName": "Antik Sedef",
+        "blackName": "Derin Zümrüt"
+      }
     }
   }
 }

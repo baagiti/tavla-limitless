@@ -89,7 +89,8 @@
     "continueNextGame": "Weiter zum nächsten Spiel",
     "startNewMatch": "Neue Partie starten",
     "viewStats": "Karrierestatistik & Verlauf ansehen",
-    "returnToSetup": "Zurück zum Einstellungsmenü"
+    "returnToSetup": "Zurück zum Einstellungsmenü",
+    "backToHome": "Zurück zum Startbildschirm"
   },
   "settings": {
     "title": "Einstellungen",
@@ -220,7 +221,8 @@
   },
   "bearOff": {
     "clickToBearOff": "Hier klicken, um den Stein abzutragen",
-    "tray": "Abtrage-Ablage"
+    "tray": "Abtrage-Ablage",
+    "label": "Abtragen"
   },
   "bar": {
     "onBar": "Auf der Bar",
@@ -265,17 +267,54 @@
   },
   "themes": {
     "board": {
-      "warm_oak": { "name": "Warme Eiche (hell)", "description": "Helles, luftiges Nussbaum-Eiche-Feld mit goldenen Akzenten" },
-      "classic_walnut": { "name": "Klassisches Massivnussbaum", "description": "Ausgewogener klassischer Ton, Perlmutt- und Ebenholz-Intarsien" },
-      "royal_green": { "name": "Turniergrün (Royal Filz)", "description": "Klassisches Vereinsgrün-Filzfeld, kontrastreiche Holzdreiecke" },
-      "midnight_ebony": { "name": "Mitternachtsebenholz & Gold", "description": "Dunkles rauchiges Luxus-Ebenholzfeld mit leuchtenden Goldintarsien" }
+      "warm_oak": {
+        "name": "Warme Eiche (hell)",
+        "description": "Helles, luftiges Nussbaum-Eiche-Feld mit goldenen Akzenten"
+      },
+      "classic_walnut": {
+        "name": "Klassisches Massivnussbaum",
+        "description": "Ausgewogener klassischer Ton, Perlmutt- und Ebenholz-Intarsien"
+      },
+      "royal_green": {
+        "name": "Turniergrün (Royal Filz)",
+        "description": "Klassisches Vereinsgrün-Filzfeld, kontrastreiche Holzdreiecke"
+      },
+      "midnight_ebony": {
+        "name": "Mitternachtsebenholz & Gold",
+        "description": "Dunkles rauchiges Luxus-Ebenholzfeld mit leuchtenden Goldintarsien"
+      }
     },
     "checker": {
-      "ivory_amber": { "name": "Perlmutt & Bernsteinholz", "description": "Perlmutt-Elfenbein und poliertes Bernsteinholz für ein warmes Eichenbrett", "whiteName": "Perlmutt-Elfenbein", "blackName": "Warmer Bernstein" },
-      "classic_ebony": { "name": "Massivbuchsbaum & dunkles Ebenholz", "description": "Massiver Buchsbaum und kohleschwarzes Ebenholz, passend zum klassischen Nussbaumbrett", "whiteName": "Massivbuchsbaum", "blackName": "Dunkles Ebenholz" },
-      "cream_ruby": { "name": "Turniercreme & Rubinrot", "description": "Weltmeisterschaftsstandard, kontrastreiche Creme- und edle Rubinsteine", "whiteName": "Turniercreme", "blackName": "Königsrubin" },
-      "platinum_gold": { "name": "Platinperle & vergoldeter Onyx", "description": "Silbrige Platinperle und goldverzierter schwarzer Onyx für ein luxuriöses Mitternachtsebenholzbrett", "whiteName": "Platinperle", "blackName": "Onyx & Gold" },
-      "pearl_emerald": { "name": "Antike Perle & Smaragdgrün", "description": "Sattes Smaragdgrün und glänzende Perlweiß-Sammlersteine", "whiteName": "Antike Perle", "blackName": "Tiefes Smaragdgrün" }
+      "ivory_amber": {
+        "name": "Perlmutt & Bernsteinholz",
+        "description": "Perlmutt-Elfenbein und poliertes Bernsteinholz für ein warmes Eichenbrett",
+        "whiteName": "Perlmutt-Elfenbein",
+        "blackName": "Warmer Bernstein"
+      },
+      "classic_ebony": {
+        "name": "Massivbuchsbaum & dunkles Ebenholz",
+        "description": "Massiver Buchsbaum und kohleschwarzes Ebenholz, passend zum klassischen Nussbaumbrett",
+        "whiteName": "Massivbuchsbaum",
+        "blackName": "Dunkles Ebenholz"
+      },
+      "cream_ruby": {
+        "name": "Turniercreme & Rubinrot",
+        "description": "Weltmeisterschaftsstandard, kontrastreiche Creme- und edle Rubinsteine",
+        "whiteName": "Turniercreme",
+        "blackName": "Königsrubin"
+      },
+      "platinum_gold": {
+        "name": "Platinperle & vergoldeter Onyx",
+        "description": "Silbrige Platinperle und goldverzierter schwarzer Onyx für ein luxuriöses Mitternachtsebenholzbrett",
+        "whiteName": "Platinperle",
+        "blackName": "Onyx & Gold"
+      },
+      "pearl_emerald": {
+        "name": "Antike Perle & Smaragdgrün",
+        "description": "Sattes Smaragdgrün und glänzende Perlweiß-Sammlersteine",
+        "whiteName": "Antike Perle",
+        "blackName": "Tiefes Smaragdgrün"
+      }
     }
   }
 }
