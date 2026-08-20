@@ -15,7 +15,7 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.burakakkaya.tavla
-      node: 20
+      node: 22
       xcode: latest
     scripts:
       - name: Set up code signing
