@@ -112,7 +112,9 @@
     "doublingCubeToggle": "Doubling Cube",
     "doublingCubeEnabled": "Enabled (64-cube stakes)",
     "doublingCubeDisabled": "Disabled (classic standard mode)",
-    "resign": "Resign Current Game"
+    "resign": "Resign Current Game",
+    "mistakeFlagging": "Mistake Flagging",
+    "mistakeFlaggingDesc": "Flag your clearly weaker moves after each turn"
   },
   "rules": {
     "title": "Rules & Reference",
@@ -259,7 +261,8 @@
     "aiNoLegalMoves": "AI has no legal moves.",
     "statsCleared": "Career stats and history cleared.",
     "wonOpening": "{{player}} won the opening roll, {{high}} vs {{low}}! Starting the game.",
-    "moveMistake": "A stronger move was available"
+    "moveMistake": "A stronger move was available",
+    "winnerStartsNext": "{{player}} won the last game — no opening roll, they start this one"
   },
   "players": {
     "white": "White",

@@ -112,7 +112,9 @@
     "doublingCubeToggle": "Kostka dublująca",
     "doublingCubeEnabled": "Włączona (stawki do 64)",
     "doublingCubeDisabled": "Wyłączona (klasyczny tryb standardowy)",
-    "resign": "Poddaj bieżącą partię"
+    "resign": "Poddaj bieżącą partię",
+    "mistakeFlagging": "Oznaczanie błędów",
+    "mistakeFlaggingDesc": "Oznacza wyraźnie słabsze ruchy po każdej turze"
   },
   "rules": {
     "title": "Zasady i pomoc",
@@ -261,7 +263,8 @@
     "aiNoLegalMoves": "AI nie ma dozwolonych ruchów.",
     "statsCleared": "Statystyki kariery i historia wyczyszczone.",
     "wonOpening": "{{player}} wygrał rzut otwierający, {{high}} do {{low}}! Gra się zaczyna.",
-    "moveMistake": "Był dostępny mocniejszy ruch"
+    "moveMistake": "Był dostępny mocniejszy ruch",
+    "winnerStartsNext": "{{player}} wygrał poprzednią grę — bez rzutu otwierającego, on/ona zaczyna tę grę"
   },
   "players": {
     "white": "Biały",

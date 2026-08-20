@@ -179,6 +179,31 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
             </div>
           </section>
 
+          {/* Mistake Flagging Toggle */}
+          <section className="flex items-center justify-between p-3 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
+            <div>
+              <div className="text-xs font-semibold text-[#f9f3e5]">{t('settings.mistakeFlagging')}</div>
+              <div className="text-[9px] opacity-50 mt-0.5">{t('settings.mistakeFlaggingDesc')}</div>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={settings.mistakeFlagging}
+              onClick={() => onUpdateSettings({ mistakeFlagging: !settings.mistakeFlagging })}
+              className={`w-10 h-5 rounded-full relative p-0.5 transition-colors cursor-pointer shrink-0 ${
+                settings.mistakeFlagging ? 'bg-[#c2a278]' : 'bg-[#2d1e15]'
+              }`}
+            >
+              <div
+                className={`w-4 h-4 rounded-full transition-transform ${
+                  settings.mistakeFlagging
+                    ? 'translate-x-5 bg-[#140e0a]'
+                    : 'translate-x-0 bg-[#c2a278]'
+                }`}
+              />
+            </button>
+          </section>
+
           {/* Stakes & Match Length */}
           <section>
             <div className="flex items-center justify-between mb-2">

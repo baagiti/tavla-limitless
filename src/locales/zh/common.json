@@ -112,7 +112,9 @@
     "doublingCubeToggle": "加倍骰",
     "doublingCubeEnabled": "已启用（最高64倍赌注）",
     "doublingCubeDisabled": "已禁用（经典标准模式）",
-    "resign": "认输当前对局"
+    "resign": "认输当前对局",
+    "mistakeFlagging": "标记失误",
+    "mistakeFlaggingDesc": "在每回合后标记明显较弱的走法"
   },
   "rules": {
     "title": "规则与参考",
@@ -258,7 +260,8 @@
     "aiNoLegalMoves": "AI没有合法走法。",
     "statsCleared": "生涯统计与记录已清空。",
     "wonOpening": "{{player}}赢得开局掷骰，{{high}}比{{low}}！比赛开始。",
-    "moveMistake": "当时有更好的走法"
+    "moveMistake": "当时有更好的走法",
+    "winnerStartsNext": "{{player}}赢得了上一局——无需开局掷骰，由其开始本局"
   },
   "players": {
     "white": "白方",

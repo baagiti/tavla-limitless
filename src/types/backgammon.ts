@@ -131,6 +131,7 @@ export interface GameSettings {
   showPipCount: boolean; // Toggle pip count visibility on HUD
   autoRoll: boolean;
   crawfordRule: boolean;
+  mistakeFlagging: boolean; // Flag clearly suboptimal human turns after they're played
 }
 
 export interface DoublingCubeState {

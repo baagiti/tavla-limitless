@@ -112,7 +112,9 @@
     "doublingCubeToggle": "डबलिंग क्यूब",
     "doublingCubeEnabled": "सक्षम (64 तक दांव)",
     "doublingCubeDisabled": "अक्षम (क्लासिक मानक मोड)",
-    "resign": "मौजूदा खेल से हार मानें"
+    "resign": "मौजूदा खेल से हार मानें",
+    "mistakeFlagging": "गलती चिह्नित करना",
+    "mistakeFlaggingDesc": "हर बारी के बाद आपकी स्पष्ट रूप से कमज़ोर चाल को चिह्नित करता है"
   },
   "rules": {
     "title": "नियम और संदर्भ",
@@ -259,7 +261,8 @@
     "aiNoLegalMoves": "AI के पास कोई वैध चाल नहीं है।",
     "statsCleared": "करियर आँकड़े और इतिहास साफ़ किए गए।",
     "wonOpening": "{{player}} ने शुरुआती पासा जीता, {{high}} बनाम {{low}}! खेल शुरू हो रहा है।",
-    "moveMistake": "एक बेहतर चाल उपलब्ध थी"
+    "moveMistake": "एक बेहतर चाल उपलब्ध थी",
+    "winnerStartsNext": "{{player}} ने पिछला गेम जीता — कोई शुरुआती पासा नहीं, यह गेम वही शुरू करेगा"
   },
   "players": {
     "white": "सफ़ेद",

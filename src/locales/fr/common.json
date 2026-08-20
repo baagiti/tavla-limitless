@@ -112,7 +112,9 @@
     "doublingCubeToggle": "Doubleur",
     "doublingCubeEnabled": "Activé (mises jusqu'à 64)",
     "doublingCubeDisabled": "Désactivé (mode classique standard)",
-    "resign": "Abandonner la partie en cours"
+    "resign": "Abandonner la partie en cours",
+    "mistakeFlagging": "Signaler les erreurs",
+    "mistakeFlaggingDesc": "Signale vos coups nettement plus faibles après chaque tour"
   },
   "rules": {
     "title": "Règles et référence",
@@ -259,7 +261,8 @@
     "aiNoLegalMoves": "L'IA n'a aucun coup légal.",
     "statsCleared": "Statistiques et historique de carrière effacés.",
     "wonOpening": "{{player}} a gagné le lancer d'ouverture, {{high}} contre {{low}} ! La partie commence.",
-    "moveMistake": "Un coup plus fort était possible"
+    "moveMistake": "Un coup plus fort était possible",
+    "winnerStartsNext": "{{player}} a gagné la dernière partie — pas de lancer d'ouverture, il/elle commence celle-ci"
   },
   "players": {
     "white": "Blanc",

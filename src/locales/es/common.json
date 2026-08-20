@@ -112,7 +112,9 @@
     "doublingCubeToggle": "Dado doblador",
     "doublingCubeEnabled": "Activado (apuestas de dado 64)",
     "doublingCubeDisabled": "Desactivado (modo clásico estándar)",
-    "resign": "Abandonar partida actual"
+    "resign": "Abandonar partida actual",
+    "mistakeFlagging": "Marcar errores",
+    "mistakeFlaggingDesc": "Señala tus jugadas claramente más débiles después de cada turno"
   },
   "rules": {
     "title": "Reglas y referencia",
@@ -259,7 +261,8 @@
     "aiNoLegalMoves": "La IA no tiene movimientos legales.",
     "statsCleared": "Estadísticas de carrera e historial borrados.",
     "wonOpening": "¡{{player}} ganó la tirada de apertura, {{high}} vs {{low}}! La partida comienza.",
-    "moveMistake": "Había una jugada más fuerte disponible"
+    "moveMistake": "Había una jugada más fuerte disponible",
+    "winnerStartsNext": "{{player}} ganó la partida anterior — sin tirada de apertura, empieza esta partida"
   },
   "players": {
     "white": "Blancas",

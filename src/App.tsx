@@ -79,6 +79,7 @@ export default function App() {
     showPipCount: true,
     autoRoll: false,
     crawfordRule: true,
+    mistakeFlagging: true,
   });
 
   // Career Statistics and Match History State
@@ -398,6 +399,8 @@ export default function App() {
   );
 
   const startNextGame = useCallback(() => {
+    const previousWinner = gameOverInfo?.winner;
+
     setBoard(createInitialBoard());
     setCube({
       value: 1,
@@ -416,8 +419,17 @@ export default function App() {
     gameTurnsCountRef.current = 0;
     gameHitsCountRef.current = { white: 0, black: 0 };
 
-    startOpeningRoll();
-  }, [startOpeningRoll]);
+    if (previousWinner) {
+      // Match convention: whoever won the previous game starts the next one
+      // directly — who-goes-first isn't up for grabs again, so no opening roll.
+      setActivePlayer(previousWinner);
+      setOpeningRoller(null);
+      setPhase('rolling');
+      showToast(t('toast.winnerStartsNext', { player: t(`players.${previousWinner}`) }));
+    } else {
+      startOpeningRoll();
+    }
+  }, [gameOverInfo, startOpeningRoll, showToast, t]);
 
   // ----------------------------------------------------
   // Dice Rolling
@@ -463,6 +475,7 @@ export default function App() {
   // is honest about what it actually is: "the engine found something better."
   const analyzeHumanTurn = useCallback(
     (mover: Player, boardAfterTurn: BoardState) => {
+      if (!settings.mistakeFlagging) return;
       const startBoard = turnStartBoardRef.current;
       if (!startBoard || !rolledDice) return;
       const [d1, d2] = rolledDice;
@@ -480,7 +493,7 @@ export default function App() {
         }
       }, 600);
     },
-    [rolledDice, showToast, t]
+    [rolledDice, showToast, t, settings.mistakeFlagging]
   );
 
   // ----------------------------------------------------

@@ -112,7 +112,9 @@
     "doublingCubeToggle": "Verdopplungswürfel",
     "doublingCubeEnabled": "Aktiviert (64er-Würfeleinsätze)",
     "doublingCubeDisabled": "Deaktiviert (klassischer Standardmodus)",
-    "resign": "Aktuelle Partie aufgeben"
+    "resign": "Aktuelle Partie aufgeben",
+    "mistakeFlagging": "Fehlermarkierung",
+    "mistakeFlaggingDesc": "Markiert deutlich schwächere Züge nach jedem Zug"
   },
   "rules": {
     "title": "Regeln & Referenz",
@@ -259,7 +261,8 @@
     "aiNoLegalMoves": "Die KI hat keinen gültigen Zug.",
     "statsCleared": "Karrierestatistik und Verlauf gelöscht.",
     "wonOpening": "{{player}} gewinnt den Eröffnungswurf, {{high}} gegen {{low}}! Das Spiel beginnt.",
-    "moveMistake": "Ein stärkerer Zug wäre möglich gewesen"
+    "moveMistake": "Ein stärkerer Zug wäre möglich gewesen",
+    "winnerStartsNext": "{{player}} hat das letzte Spiel gewonnen — kein Eröffnungswurf, er/sie beginnt diese Partie"
   },
   "players": {
     "white": "Weiß",

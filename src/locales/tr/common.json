@@ -112,7 +112,9 @@
     "doublingCubeToggle": "Katlama Zarı",
     "doublingCubeEnabled": "Etkin (64'lük küp bahisleri)",
     "doublingCubeDisabled": "Devre dışı (klasik standart mod)",
-    "resign": "Mevcut Oyundan Çekil"
+    "resign": "Mevcut Oyundan Çekil",
+    "mistakeFlagging": "Hata İşaretleme",
+    "mistakeFlaggingDesc": "Her turdan sonra belirgin zayıf hamlelerini işaretler"
   },
   "rules": {
     "title": "Kurallar ve Rehber",
@@ -259,7 +261,8 @@
     "aiNoLegalMoves": "Yapay Zekanın geçerli hamlesi yok.",
     "statsCleared": "Kariyer istatistikleri ve geçmişi temizlendi.",
     "wonOpening": "{{player}} açılışı {{high}}-{{low}} ile kazandı! Oyun başlıyor.",
-    "moveMistake": "Daha güçlü bir hamle vardı"
+    "moveMistake": "Daha güçlü bir hamle vardı",
+    "winnerStartsNext": "{{player}} önceki oyunu kazandı — açılış zarı yok, bu oyuna o başlıyor"
   },
   "players": {
     "white": "Beyaz",
