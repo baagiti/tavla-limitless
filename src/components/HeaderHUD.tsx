@@ -15,9 +15,7 @@ import {
   VolumeX,
   Flag,
   Trophy,
-  Crown,
   Sparkles,
-  Layers,
 } from 'lucide-react';
 import { getCheckerStyle } from '../utils/themes';
 
@@ -66,24 +64,24 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
   const blackChecker = getCheckerStyle('black', settings.boardTheme, settings.checkerTheme);
 
   return (
-    <header className="w-full max-w-6xl mx-auto px-2 sm:px-4 py-2 sm:py-3 select-none z-20">
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-2.5 sm:gap-4 bg-gradient-to-b from-[#1c140f]/95 to-[#120c08]/95 border border-[#3d2b1f] rounded-lg p-2.5 sm:px-5 sm:py-2.5 shadow-[0_8px_30px_rgba(0,0,0,0.7)] backdrop-blur-md">
-        
+    <header className="w-full max-w-6xl mx-auto px-2 sm:px-3 py-1 sm:py-1.5 select-none z-20">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-1.5 sm:gap-3 bg-gradient-to-b from-[#1c140f]/95 to-[#120c08]/95 border border-[#3d2b1f] rounded-md p-1.5 sm:px-3 sm:py-1.5 shadow-[0_6px_20px_rgba(0,0,0,0.6)] backdrop-blur-md">
+
         {/* Left: Brand Identity & Match Stakes */}
-        <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-start">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[#c2a278] via-[#a38053] to-[#5a3f25] p-px shadow-[0_0_12px_rgba(194,162,120,0.3)] flex items-center justify-center">
-              <div className="w-full h-full bg-[#140e0a] rounded-[5px] flex items-center justify-center text-[#e5c07b]">
-                <Crown className="w-4 h-4" />
-              </div>
-            </div>
+        <div className="flex items-center gap-2.5 w-full md:w-auto justify-between md:justify-start">
+          <div className="flex items-center gap-2">
+            <img
+              src="/app-icon.png"
+              alt="Backgammon Limitless"
+              className="w-6 h-6 sm:w-7 sm:h-7 rounded-[6px] object-cover shadow-[0_0_10px_rgba(194,162,120,0.25)] border border-[#c2a278]/40"
+            />
             <div>
               <div className="flex items-center gap-1.5">
-                <h1 className="text-sm sm:text-base font-serif font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#f9f3e5] via-[#e5c07b] to-[#c2a278] drop-shadow-sm">
+                <h1 className="text-xs sm:text-sm font-serif font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#f9f3e5] via-[#e5c07b] to-[#c2a278] drop-shadow-sm">
                   BACKGAMMON LIMITLESS
                 </h1>
               </div>
-              <div className="flex items-center gap-1.5 text-[9px] font-mono tracking-widest text-[#c2a278]/70 uppercase">
+              <div className="flex items-center gap-1.5 text-[8px] font-mono tracking-widest text-[#c2a278]/70 uppercase">
                 <span>{settings.mode === 'ai' ? `VS AI (${settings.aiDifficulty})` : 'Pass & Play'}</span>
                 <span className="text-[#4a3528]">•</span>
                 <span className={isCubeMode ? 'text-[#e5c07b]' : 'text-[#a89984]'}>
@@ -93,8 +91,8 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#201610] border border-[#3d2b1f] text-[11px] font-mono">
-            <span className="text-[#a89984] text-[9px] uppercase tracking-wider">Hedef:</span>
+          <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#201610] border border-[#3d2b1f] text-[10px] font-mono">
+            <span className="text-[#a89984] text-[8px] uppercase tracking-wider">Hedef:</span>
             <span className="text-[#f9f3e5] font-semibold">
               {settings.stakeType === 'points'
                 ? `${settings.matchTarget} Puan`
@@ -104,13 +102,13 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
         </div>
 
         {/* Center: Live Match Scoreboard & Pip Gauge */}
-        <div className="flex items-center gap-3 sm:gap-6 bg-[#160f0a] border border-[#2d1e15] px-4 sm:px-6 py-1.5 rounded-md shadow-inner">
+        <div className="flex items-center gap-2.5 sm:gap-5 bg-[#160f0a] border border-[#2d1e15] px-3 sm:px-5 py-1 rounded-md shadow-inner">
           
           {/* WHITE PLAYER */}
           <div className={`flex items-center gap-2.5 transition-all ${activePlayer === 'white' ? 'opacity-100' : 'opacity-65'}`}>
             <div className="relative">
               <div
-                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full p-0.5 shadow-md flex items-center justify-center border transition-all ${
+                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full p-0.5 shadow-md flex items-center justify-center border transition-all ${
                   activePlayer === 'white' ? 'border-[#e5c07b] ring-2 ring-[#e5c07b]/50 scale-105' : 'border-[#4a3528]'
                 }`}
                 style={{
@@ -194,7 +192,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
 
             <div className="relative">
               <div
-                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full p-0.5 shadow-md flex items-center justify-center border transition-all ${
+                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full p-0.5 shadow-md flex items-center justify-center border transition-all ${
                   activePlayer === 'black' ? 'border-[#e5c07b] ring-2 ring-[#e5c07b]/50 scale-105' : 'border-[#4a3528]'
                 }`}
                 style={{
@@ -239,7 +237,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             type="button"
             onClick={onToggleSound}
             title={settings.soundEnabled ? 'Sesi Kapat' : 'Sesi Aç'}
-            className="p-2 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
+            className="p-1.5 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
           >
             {settings.soundEnabled ? (
               <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -254,7 +252,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             type="button"
             onClick={onOpenStats}
             title="Kariyer İstatistikleri ve Maç Geçmişi"
-            className="p-2 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
+            className="p-1.5 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
           >
             <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
@@ -265,7 +263,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             type="button"
             onClick={onOpenRules}
             title="Tavla Kuralları ve Rehber"
-            className="p-2 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
+            className="p-1.5 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
           >
             <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
@@ -276,7 +274,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             type="button"
             onClick={onOpenSettings}
             title="Oyun Ayarları"
-            className="p-2 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
+            className="p-1.5 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer"
           >
             <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
@@ -287,7 +285,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             type="button"
             onClick={onResign}
             title="Mevcut Oyundan Çekil"
-            className="p-2 rounded border border-[#2d1e15] text-[#a89984]/60 bg-[#201610] hover:text-rose-400 hover:border-rose-800 transition-colors cursor-pointer"
+            className="p-1.5 rounded border border-[#2d1e15] text-[#a89984]/60 bg-[#201610] hover:text-rose-400 hover:border-rose-800 transition-colors cursor-pointer"
           >
             <Flag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>

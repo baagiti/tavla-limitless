@@ -39,6 +39,7 @@ import {
   clearAllStatsAndHistory,
 } from './utils/statsStorage';
 
+import { HomeScreen } from './components/HomeScreen';
 import { HeaderHUD } from './components/HeaderHUD';
 import { Board } from './components/Board';
 import { MatchStartModal } from './components/MatchStartModal';
@@ -118,8 +119,12 @@ export default function App() {
   const [selectedSource, setSelectedSource] = useState<number | 'bar' | null>(null);
   const [turnHistory, setTurnHistory] = useState<{ steps: MoveStep[]; boardBefore: BoardState }[]>([]);
 
+  // Landing screen — shown once before the very first match is set up, so
+  // launching the app doesn't drop straight into match-configuration UI.
+  const [showHome, setShowHome] = useState<boolean>(true);
+
   // Modals & Overlays
-  const [isStartModalOpen, setIsStartModalOpen] = useState<boolean>(true);
+  const [isStartModalOpen, setIsStartModalOpen] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isRulesOpen, setIsRulesOpen] = useState<boolean>(false);
   const [isStatsOpen, setIsStatsOpen] = useState<boolean>(false);
@@ -937,6 +942,27 @@ export default function App() {
     switchTurn,
     handleGameWin,
   ]);
+
+  if (showHome) {
+    return (
+      <>
+        <HomeScreen
+          onNewMatch={() => {
+            setShowHome(false);
+            setIsStartModalOpen(true);
+          }}
+          onOpenSettings={() => setIsSettingsOpen(true)}
+        />
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          settings={settings}
+          onClose={() => setIsSettingsOpen(false)}
+          onUpdateSettings={(newS) => setSettings((prev) => ({ ...prev, ...newS }))}
+          onResign={handleResign}
+        />
+      </>
+    );
+  }
 
   return (
     <div
