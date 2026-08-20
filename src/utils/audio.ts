@@ -12,23 +12,52 @@
 class SoundEngine {
   private ctx: AudioContext | null = null;
   private enabled: boolean = true;
+  private unlocked: boolean = false;
 
   constructor() {
     // Lazy AudioContext initialization on first interaction
   }
 
-  private getContext(): AudioContext | null {
-    if (!this.enabled) return null;
+  private ensureContext(): AudioContext | null {
     if (!this.ctx && typeof window !== 'undefined') {
       const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (AudioCtx) {
         this.ctx = new AudioCtx();
       }
     }
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
-    }
     return this.ctx;
+  }
+
+  /**
+   * WebKit (Safari/WKWebView, incl. iPadOS) creates every AudioContext
+   * already suspended and has historically been unreliable about a bare
+   * `resume()` call actually starting it — the context can stay silently
+   * suspended forever even though every individual sound call "succeeds"
+   * with no error. The reliable fix is the classic iOS unlock trick: from
+   * the very first real user gesture, resume() AND schedule an actual
+   * (silent) buffer in the same synchronous tick. Call this once, as early
+   * as possible (first tap/click anywhere in the app).
+   */
+  public unlock() {
+    if (this.unlocked) return;
+    const ctx = this.ensureContext();
+    if (!ctx) return;
+    this.unlocked = true;
+    ctx.resume().catch(() => {});
+    const buffer = ctx.createBuffer(1, 1, 22050);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+  }
+
+  private getContext(): AudioContext | null {
+    if (!this.enabled) return null;
+    const ctx = this.ensureContext();
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume().catch(() => {});
+    }
+    return ctx;
   }
 
   public setEnabled(val: boolean) {

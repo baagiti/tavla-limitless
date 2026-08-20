@@ -35,7 +35,17 @@ interface BoardProps {
   onOpeningRoll?: (player?: Player) => void;
 }
 
-const BOARD_ASPECT_RATIO = 1.38; // width / height, matches the board frame's own proportions
+// A real backgammon board is inherently a wide shape. This is the ratio used
+// on landscape/tablet screens, where there's width to spare. On a narrow
+// portrait phone, fitting that same wide shape by width alone leaves most of
+// the available height empty (confirmed: on a 375x812 phone this rendered a
+// 359x265 board — centered, with ~166px of dead space above AND below it).
+// So the ratio isn't fixed: it's clamped between this and MIN_BOARD_ASPECT_RATIO
+// based on the container's own shape, letting the board actually use a tall
+// portrait container's height instead of "containing" itself into a letterboxed
+// sliver.
+const MAX_BOARD_ASPECT_RATIO = 1.38;
+const MIN_BOARD_ASPECT_RATIO = 0.62;
 
 export const Board: React.FC<BoardProps> = ({
   board,
@@ -78,11 +88,15 @@ export const Board: React.FC<BoardProps> = ({
     const measure = () => {
       const { width, height } = el.getBoundingClientRect();
       if (width < 1 || height < 1) return;
+      const ratio = Math.min(
+        MAX_BOARD_ASPECT_RATIO,
+        Math.max(MIN_BOARD_ASPECT_RATIO, width / height)
+      );
       let w = width;
-      let h = w / BOARD_ASPECT_RATIO;
+      let h = w / ratio;
       if (h > height) {
         h = height;
-        w = h * BOARD_ASPECT_RATIO;
+        w = h * ratio;
       }
       setBoardSize({ width: Math.floor(w), height: Math.floor(h) });
     };
@@ -173,7 +187,7 @@ export const Board: React.FC<BoardProps> = ({
         style={{
           width: boardSize ? `${boardSize.width}px` : '100%',
           height: boardSize ? `${boardSize.height}px` : undefined,
-          aspectRatio: boardSize ? undefined : `${BOARD_ASPECT_RATIO}`,
+          aspectRatio: boardSize ? undefined : `${MAX_BOARD_ASPECT_RATIO}`,
           visibility: boardSize ? 'visible' : 'hidden',
           background: currentTheme.outerFrame,
           borderColor: currentTheme.outerBorder,

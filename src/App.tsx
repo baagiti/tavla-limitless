@@ -178,6 +178,20 @@ export default function App() {
     sound.setEnabled(settings.soundEnabled);
   }, [settings.soundEnabled]);
 
+  // WKWebView (iOS/iPadOS) needs an explicit unlock tied to the very first
+  // real user gesture or the Web Audio context can stay silently suspended
+  // for the entire session — see utils/audio.ts's unlock() for why a plain
+  // resume() on first use isn't reliably enough on its own.
+  useEffect(() => {
+    const unlock = () => sound.unlock();
+    document.addEventListener('pointerdown', unlock, { once: true });
+    document.addEventListener('touchstart', unlock, { once: true });
+    return () => {
+      document.removeEventListener('pointerdown', unlock);
+      document.removeEventListener('touchstart', unlock);
+    };
+  }, []);
+
   // Compute Pip Counts
   const pips = calculatePipCount(board);
 
