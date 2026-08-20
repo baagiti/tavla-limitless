@@ -258,7 +258,8 @@
     "playerResigned": "{{player}} abandonó.",
     "aiNoLegalMoves": "La IA no tiene movimientos legales.",
     "statsCleared": "Estadísticas de carrera e historial borrados.",
-    "wonOpening": "¡{{player}} ganó la tirada de apertura, {{high}} vs {{low}}! La partida comienza."
+    "wonOpening": "¡{{player}} ganó la tirada de apertura, {{high}} vs {{low}}! La partida comienza.",
+    "moveMistake": "Había una jugada más fuerte disponible"
   },
   "players": {
     "white": "Blancas",

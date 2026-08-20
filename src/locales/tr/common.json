@@ -258,7 +258,8 @@
     "playerResigned": "{{player}} çekildi.",
     "aiNoLegalMoves": "Yapay Zekanın geçerli hamlesi yok.",
     "statsCleared": "Kariyer istatistikleri ve geçmişi temizlendi.",
-    "wonOpening": "{{player}} açılışı {{high}}-{{low}} ile kazandı! Oyun başlıyor."
+    "wonOpening": "{{player}} açılışı {{high}}-{{low}} ile kazandı! Oyun başlıyor.",
+    "moveMistake": "Daha güçlü bir hamle vardı"
   },
   "players": {
     "white": "Beyaz",

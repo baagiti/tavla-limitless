@@ -30,7 +30,7 @@ import {
   getPossibleMoves,
   checkWin,
 } from './logic/rules';
-import { chooseBestTurn, shouldAIDouble, shouldAIAcceptDouble } from './logic/ai';
+import { chooseBestTurn, shouldAIDouble, shouldAIAcceptDouble, evaluateBoard } from './logic/ai';
 import { sound } from './utils/audio';
 import {
   loadCareerStats,
@@ -49,6 +49,12 @@ import { GameOverModal } from './components/GameOverModal';
 import { SettingsModal } from './components/SettingsModal';
 import { RulesModal } from './components/RulesModal';
 import { StatsHistoryModal } from './components/StatsHistoryModal';
+
+// Minimum equity gap (in evaluateBoard's score units) before a human turn is
+// flagged as a mistake. Provisional/heuristic — not calibrated against an
+// independently validated engine, so it's deliberately conservative to avoid
+// flagging hairline differences as if they were clear-cut errors.
+const MISTAKE_EQUITY_THRESHOLD = 40;
 
 export default function App() {
   const { t } = useTranslation();
@@ -82,6 +88,10 @@ export default function App() {
   const matchStartTimeRef = useRef<number>(Date.now());
   const gameTurnsCountRef = useRef<number>(0);
   const gameHitsCountRef = useRef<{ white: number; black: number }>({ white: 0, black: 0 });
+  // Board snapshot from right before the current turn's first die was played,
+  // used to retroactively check whether a human player's turn had a stronger
+  // alternative once all their dice are used.
+  const turnStartBoardRef = useRef<BoardState | null>(null);
 
   // 2. Core Game State
   const [board, setBoard] = useState<BoardState>(createInitialBoard);
@@ -235,6 +245,7 @@ export default function App() {
           setRolledDice([dWhite, dBlack]);
           setDice([dWhite, dBlack]);
           setPhase('moving');
+          turnStartBoardRef.current = createInitialBoard();
 
           // Check if first player has any legal moves with opening dice
           const initialMoves = getPossibleMoves(createInitialBoard(), firstPlayer, [dWhite, dBlack]);
@@ -424,6 +435,7 @@ export default function App() {
       setRolledDice(rolled);
       setDice(availableDice);
       setPhase('moving');
+      turnStartBoardRef.current = board;
 
       if (d1 === d2) {
         showToast(t('toast.rolledDoubles', { n: d1 }));
@@ -439,6 +451,34 @@ export default function App() {
       }
     }, 550);
   }, [phase, isRolling, board, activePlayer, showToast, switchTurn]);
+
+  // Retroactively checks a just-finished human turn against the strongest move the
+  // engine could find for the same roll, and flags it if it was a clear mistake.
+  // No numeric accuracy score is surfaced — see project notes on why: our own
+  // heuristic isn't independently validated the way a rollout-trained engine is,
+  // so a confident-looking percentage would be misleading. A threshold-gated flag
+  // is honest about what it actually is: "the engine found something better."
+  const analyzeHumanTurn = useCallback(
+    (mover: Player, boardAfterTurn: BoardState) => {
+      const startBoard = turnStartBoardRef.current;
+      if (!startBoard || !rolledDice) return;
+      const [d1, d2] = rolledDice;
+      const fullDice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
+
+      // Deferred so the turn transition renders first — this reuses the same
+      // 2-ply search as the Master AI difficulty, which can take a moment.
+      setTimeout(() => {
+        const bestSeq = chooseBestTurn(startBoard, mover, fullDice, 'master');
+        if (!bestSeq) return;
+        const bestEquity = evaluateBoard(bestSeq.finalBoard, mover, 'master');
+        const actualEquity = evaluateBoard(boardAfterTurn, mover, 'master');
+        if (bestEquity - actualEquity > MISTAKE_EQUITY_THRESHOLD) {
+          showToast(t('toast.moveMistake'));
+        }
+      }, 600);
+    },
+    [rolledDice, showToast, t]
+  );
 
   // ----------------------------------------------------
   // Moving Checkers (Human Click & Move)
@@ -545,19 +585,21 @@ export default function App() {
       if (nextDice.length === 0) {
         // End of turn
         gameTurnsCountRef.current += 1;
+        analyzeHumanTurn(activePlayer, nextBoard);
         switchTurn(activePlayer);
       } else {
         const remainingMoves = getPossibleMoves(nextBoard, activePlayer, nextDice);
         if (remainingMoves.length === 0) {
           showToast(t('toast.noFurtherMoves'));
           gameTurnsCountRef.current += 1;
+          analyzeHumanTurn(activePlayer, nextBoard);
           setTimeout(() => {
             switchTurn(activePlayer);
           }, 1200);
         }
       }
     },
-    [selectedSource, phase, dice, board, activePlayer, showToast, switchTurn]
+    [selectedSource, phase, dice, board, activePlayer, showToast, switchTurn, analyzeHumanTurn]
   );
 
   // Undo Last Step in Current Turn

@@ -261,7 +261,8 @@
     "playerResigned": "{{player}} استسلم.",
     "aiNoLegalMoves": "لا توجد حركة قانونية للذكاء الاصطناعي.",
     "statsCleared": "تم مسح إحصائيات المسيرة وسجلها.",
-    "wonOpening": "فاز {{player}} برمية الافتتاح، {{high}} مقابل {{low}}! تبدأ المباراة."
+    "wonOpening": "فاز {{player}} برمية الافتتاح، {{high}} مقابل {{low}}! تبدأ المباراة.",
+    "moveMistake": "كان هناك حركة أقوى متاحة"
   },
   "players": {
     "white": "الأبيض",

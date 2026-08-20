@@ -265,7 +265,18 @@ export function getAllLegalTurnSequences(
 ): TurnSequence[] {
   const validSequences: TurnSequence[] = [];
 
+  // Safety cap: in heavily scattered/chaotic positions (many blots spread
+  // across many points) a doubles roll can make this unpruned DFS branch
+  // combinatorially — observed hanging for tens of seconds without a cap.
+  // 20,000 visited nodes is already far beyond what any realistic position
+  // needs (normal doubles branching is in the dozens-to-low-hundreds), so
+  // this never truncates legitimate exploration — it only stops runaway
+  // cases from freezing the UI.
+  const MAX_SEARCH_NODES = 20000;
+  let nodesVisited = 0;
+
   function search(currentBoard: BoardState, remainingDice: number[], steps: MoveStep[]) {
+    if (nodesVisited++ > MAX_SEARCH_NODES) return;
     const possibleMoves = getPossibleMoves(currentBoard, player, remainingDice);
 
     if (possibleMoves.length === 0 || remainingDice.length === 0) {

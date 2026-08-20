@@ -258,7 +258,8 @@
     "playerResigned": "{{player}} ने हार मान ली।",
     "aiNoLegalMoves": "AI के पास कोई वैध चाल नहीं है।",
     "statsCleared": "करियर आँकड़े और इतिहास साफ़ किए गए।",
-    "wonOpening": "{{player}} ने शुरुआती पासा जीता, {{high}} बनाम {{low}}! खेल शुरू हो रहा है।"
+    "wonOpening": "{{player}} ने शुरुआती पासा जीता, {{high}} बनाम {{low}}! खेल शुरू हो रहा है।",
+    "moveMistake": "एक बेहतर चाल उपलब्ध थी"
   },
   "players": {
     "white": "सफ़ेद",

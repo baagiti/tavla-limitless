@@ -258,7 +258,8 @@
     "playerResigned": "{{player}} resigned.",
     "aiNoLegalMoves": "AI has no legal moves.",
     "statsCleared": "Career stats and history cleared.",
-    "wonOpening": "{{player}} won the opening roll, {{high}} vs {{low}}! Starting the game."
+    "wonOpening": "{{player}} won the opening roll, {{high}} vs {{low}}! Starting the game.",
+    "moveMistake": "A stronger move was available"
   },
   "players": {
     "white": "White",

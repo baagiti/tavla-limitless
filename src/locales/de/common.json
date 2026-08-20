@@ -258,7 +258,8 @@
     "playerResigned": "{{player}} hat aufgegeben.",
     "aiNoLegalMoves": "Die KI hat keinen gültigen Zug.",
     "statsCleared": "Karrierestatistik und Verlauf gelöscht.",
-    "wonOpening": "{{player}} gewinnt den Eröffnungswurf, {{high}} gegen {{low}}! Das Spiel beginnt."
+    "wonOpening": "{{player}} gewinnt den Eröffnungswurf, {{high}} gegen {{low}}! Das Spiel beginnt.",
+    "moveMistake": "Ein stärkerer Zug wäre möglich gewesen"
   },
   "players": {
     "white": "Weiß",

@@ -260,7 +260,8 @@
     "playerResigned": "{{player}} poddał się.",
     "aiNoLegalMoves": "AI nie ma dozwolonych ruchów.",
     "statsCleared": "Statystyki kariery i historia wyczyszczone.",
-    "wonOpening": "{{player}} wygrał rzut otwierający, {{high}} do {{low}}! Gra się zaczyna."
+    "wonOpening": "{{player}} wygrał rzut otwierający, {{high}} do {{low}}! Gra się zaczyna.",
+    "moveMistake": "Był dostępny mocniejszy ruch"
   },
   "players": {
     "white": "Biały",

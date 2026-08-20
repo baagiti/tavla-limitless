@@ -221,6 +221,48 @@ export function evaluateBoard(board: BoardState, player: Player, difficulty: AID
   return score;
 }
 
+// Every distinct dice-roll outcome (21 combinations), weighted by how many of
+// the 36 physical two-die rolls produce it (doubles: 1/36, others: 2/36).
+const ALL_ROLLS: { dice: number[]; weight: number }[] = (() => {
+  const rolls: { dice: number[]; weight: number }[] = [];
+  for (let a = 1; a <= 6; a++) {
+    for (let b = a; b <= 6; b++) {
+      rolls.push({ dice: a === b ? [a, a, a, a] : [a, b], weight: a === b ? 1 : 2 });
+    }
+  }
+  return rolls;
+})();
+
+/**
+ * 2-ply equity: from a resulting board, averages over every possible
+ * opponent dice roll (weighted by probability), assuming the opponent
+ * replies with their own best move. This is what actually gives a move
+ * "lookahead" instead of just judging how the board looks immediately
+ * after playing it.
+ */
+function evaluateTwoPly(board: BoardState, player: Player): number {
+  const opponent: Player = player === 'white' ? 'black' : 'white';
+  let weightedTotal = 0;
+
+  for (const { dice, weight } of ALL_ROLLS) {
+    const oppSequences = getAllLegalTurnSequences(board, opponent, dice);
+
+    let bestOppFinalBoard = oppSequences[0]?.finalBoard ?? board;
+    let bestOppScore = -Infinity;
+    for (const seq of oppSequences) {
+      const oppScore = evaluateBoard(seq.finalBoard, opponent, 'hard');
+      if (oppScore > bestOppScore) {
+        bestOppScore = oppScore;
+        bestOppFinalBoard = seq.finalBoard;
+      }
+    }
+
+    weightedTotal += evaluateBoard(bestOppFinalBoard, player, 'hard') * weight;
+  }
+
+  return weightedTotal / 36;
+}
+
 /**
  * Selects the optimal turn sequence for AI based on difficulty level
  */
@@ -293,12 +335,27 @@ export function chooseBestTurn(
     return bestSeq;
   }
 
-  // 3. Hard AI: Advanced tactical evaluation and anticipation
-  let bestSeq = sequences[0];
-  let bestScore = -Infinity;
+  // 3. Hard / Master AI: 2-ply lookahead. Evaluating every legal first move
+  // against all 21 opponent dice rolls would be too slow (each expansion re-runs
+  // full move generation 21 times), so first rank every legal move with the
+  // cheap 0-ply heuristic, then only deepen the top candidates. Master deepens
+  // more candidates than Hard — that width is what actually separates the two
+  // tiers now, both share the same evaluation function.
+  const rankedByZeroPly = sequences
+    .map((seq) => ({ seq, zeroPlyScore: evaluateBoard(seq.finalBoard, player, 'hard') }))
+    .sort((a, b) => b.zeroPlyScore - a.zeroPlyScore);
 
-  for (const seq of sequences) {
-    const score = evaluateBoard(seq.finalBoard, player, 'hard');
+  // Both tiers deepen a bounded number of candidates — unbounded 2-ply search
+  // was tested and can blow past several seconds on chaotic, blot-heavy
+  // positions with doubles (each extra candidate re-runs full move generation
+  // 21 times for the opponent's replies). Master deepens more than Hard.
+  const candidateWidth = difficulty === 'master' ? 14 : 5;
+  const candidates = rankedByZeroPly.slice(0, candidateWidth);
+
+  let bestSeq = candidates[0].seq;
+  let bestScore = -Infinity;
+  for (const { seq } of candidates) {
+    const score = evaluateTwoPly(seq.finalBoard, player);
     if (score > bestScore) {
       bestScore = score;
       bestSeq = seq;

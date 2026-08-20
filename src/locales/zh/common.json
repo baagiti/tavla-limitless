@@ -257,7 +257,8 @@
     "playerResigned": "{{player}}认输了。",
     "aiNoLegalMoves": "AI没有合法走法。",
     "statsCleared": "生涯统计与记录已清空。",
-    "wonOpening": "{{player}}赢得开局掷骰，{{high}}比{{low}}！比赛开始。"
+    "wonOpening": "{{player}}赢得开局掷骰，{{high}}比{{low}}！比赛开始。",
+    "moveMistake": "当时有更好的走法"
   },
   "players": {
     "white": "白方",
