@@ -330,5 +330,12 @@
     "betterMove": "Daha iyisi:",
     "yourMove": "Senin Hamlen",
     "tapToCompare": "Tahtayı görmek için dokun"
+  },
+  "nextgammonPromo": {
+    "title": "NEXTGAMMON",
+    "rowTagline": "Yeni tavla oyunumuz",
+    "comingSoon": "Yakında",
+    "description": "Backgammon Limitless'i yapan ekipten yeni bir tavla deneyimi geliyor.",
+    "cta": "App Store'da Görüntüle"
   }
 }

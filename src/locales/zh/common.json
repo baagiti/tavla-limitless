@@ -329,5 +329,12 @@
     "betterMove": "更好的走法：",
     "yourMove": "你的走法",
     "tapToCompare": "点按查看棋盘"
+  },
+  "nextgammonPromo": {
+    "title": "NEXTGAMMON",
+    "rowTagline": "我们的下一款西洋双陆棋游戏",
+    "comingSoon": "即将推出",
+    "description": "来自 Backgammon Limitless 制作团队的全新西洋双陆棋体验。",
+    "cta": "在 App Store 查看"
   }
 }

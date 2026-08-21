@@ -330,5 +330,12 @@
     "betterMove": "Mejor:",
     "yourMove": "Tu Jugada",
     "tapToCompare": "Toca para ver el tablero"
+  },
+  "nextgammonPromo": {
+    "title": "NEXTGAMMON",
+    "rowTagline": "Nuestro próximo juego de backgammon",
+    "comingSoon": "Próximamente",
+    "description": "Una nueva experiencia de backgammon de los creadores de Backgammon Limitless.",
+    "cta": "Ver en App Store"
   }
 }

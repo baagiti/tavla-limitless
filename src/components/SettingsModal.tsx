@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GameSettings, BearingDirection, BoardTheme, CheckerTheme } from '../types/backgammon';
-import { X, Flag, Palette, CircleDot, Languages } from 'lucide-react';
+import { X, Flag, Palette, CircleDot, Languages, ChevronRight } from 'lucide-react';
 import { BOARD_THEMES, CHECKER_PAIRS, getActiveCheckerPair } from '../utils/themes';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { NextgammonPromoModal } from './NextgammonPromoModal';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onResign,
 }) => {
   const { t } = useTranslation();
+  const [isNextgammonPromoOpen, setIsNextgammonPromoOpen] = useState(false);
   if (!isOpen) return null;
 
   return (
@@ -393,6 +395,24 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </button>
           </div>
 
+          {/* Discover: Nextgammon cross-promo */}
+          <button
+            type="button"
+            onClick={() => setIsNextgammonPromoOpen(true)}
+            className="w-full flex items-center gap-3 p-3 bg-[#1a130f] border border-[#2d1e15] rounded-sm hover:border-[#3d2b1f] transition-colors cursor-pointer text-left"
+          >
+            <img
+              src="/nextgammon-icon.png"
+              alt="Nextgammon"
+              className="w-9 h-9 rounded-lg border border-white/10 shrink-0"
+            />
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-semibold text-[#f9f3e5]">{t('nextgammonPromo.title')}</div>
+              <div className="text-[10px] opacity-50 truncate">{t('nextgammonPromo.rowTagline')}</div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#a89984]/60 shrink-0" />
+          </button>
+
           {/* Resign Current Game */}
           <div className="pt-2 border-t border-[#2d1e15]">
             <button
@@ -409,6 +429,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
         </div>
       </motion.div>
+
+      <NextgammonPromoModal isOpen={isNextgammonPromoOpen} onClose={() => setIsNextgammonPromoOpen(false)} />
     </div>
   );
 };

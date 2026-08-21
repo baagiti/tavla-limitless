@@ -332,5 +332,12 @@
     "betterMove": "Лучше:",
     "yourMove": "Ваш ход",
     "tapToCompare": "Нажмите, чтобы увидеть доску"
+  },
+  "nextgammonPromo": {
+    "title": "NEXTGAMMON",
+    "rowTagline": "Наша следующая игра в нарды",
+    "comingSoon": "Скоро",
+    "description": "Новый опыт игры в нарды от создателей Backgammon Limitless.",
+    "cta": "Смотреть в App Store"
   }
 }

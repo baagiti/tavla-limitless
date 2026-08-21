@@ -333,5 +333,12 @@
     "betterMove": "الأفضل:",
     "yourMove": "حركتك",
     "tapToCompare": "اضغط لرؤية الرقعة"
+  },
+  "nextgammonPromo": {
+    "title": "NEXTGAMMON",
+    "rowTagline": "لعبة الطاولة التالية لنا",
+    "comingSoon": "قريبًا",
+    "description": "تجربة طاولة جديدة من صناع Backgammon Limitless.",
+    "cta": "عرض في App Store"
   }
 }
