@@ -180,17 +180,27 @@ export default function App() {
     sound.setEnabled(settings.soundEnabled);
   }, [settings.soundEnabled]);
 
-  // WKWebView (iOS/iPadOS) needs an explicit unlock tied to the very first
-  // real user gesture or the Web Audio context can stay silently suspended
-  // for the entire session — see utils/audio.ts's unlock() for why a plain
-  // resume() on first use isn't reliably enough on its own.
+  // WKWebView (iOS/iPadOS) needs an explicit unlock tied to a real user
+  // gesture or the Web Audio context can stay silently suspended for the
+  // entire session — see utils/audio.ts's unlock() for why a plain
+  // resume() on first use isn't reliably enough on its own. Deliberately
+  // NOT `{ once: true }`: the first resume() attempt can silently fail to
+  // actually reach 'running' on some WebKit versions, so this keeps retrying
+  // on every subsequent tap until sound.isUnlocked() confirms it truly took,
+  // instead of giving up forever after one failed try.
   useEffect(() => {
-    const unlock = () => sound.unlock();
-    document.addEventListener('pointerdown', unlock, { once: true });
-    document.addEventListener('touchstart', unlock, { once: true });
+    const tryUnlock = () => {
+      sound.unlock();
+      if (sound.isUnlocked()) {
+        document.removeEventListener('pointerdown', tryUnlock);
+        document.removeEventListener('touchstart', tryUnlock);
+      }
+    };
+    document.addEventListener('pointerdown', tryUnlock);
+    document.addEventListener('touchstart', tryUnlock);
     return () => {
-      document.removeEventListener('pointerdown', unlock);
-      document.removeEventListener('touchstart', unlock);
+      document.removeEventListener('pointerdown', tryUnlock);
+      document.removeEventListener('touchstart', tryUnlock);
     };
   }, []);
 

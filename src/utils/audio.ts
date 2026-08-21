@@ -35,15 +35,26 @@ class SoundEngine {
    * suspended forever even though every individual sound call "succeeds"
    * with no error. The reliable fix is the classic iOS unlock trick: from
    * the very first real user gesture, resume() AND schedule an actual
-   * (silent) buffer in the same synchronous tick. Call this once, as early
-   * as possible (first tap/click anywhere in the app).
+   * (silent) buffer in the same synchronous tick.
+   *
+   * This is deliberately safe to call on *every* tap rather than once:
+   * on some WebKit versions a single resume() doesn't actually flip the
+   * context to 'running' on the first try, and since `unlocked` is only
+   * set once we've confirmed that, later taps keep retrying until it
+   * genuinely takes instead of silently giving up forever.
    */
   public unlock() {
-    if (this.unlocked) return;
     const ctx = this.ensureContext();
     if (!ctx) return;
-    this.unlocked = true;
-    ctx.resume().catch(() => {});
+    if (ctx.state === 'running') {
+      this.unlocked = true;
+      return;
+    }
+    ctx.resume()
+      .then(() => {
+        if (ctx.state === 'running') this.unlocked = true;
+      })
+      .catch(() => {});
     const buffer = ctx.createBuffer(1, 1, 22050);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
@@ -51,8 +62,19 @@ class SoundEngine {
     source.start(0);
   }
 
+  public isUnlocked(): boolean {
+    return this.unlocked;
+  }
+
   private getContext(): AudioContext | null {
     if (!this.enabled) return null;
+    // Never construct the AudioContext from a non-gesture code path (e.g.
+    // the AI's own dice roll firing off a setTimeout before the human has
+    // touched the screen at all) — a context created outside a real user
+    // gesture can end up permanently stuck suspended on some WebKit
+    // versions, and once `ctx` is set, unlock() reuses that same tainted
+    // instance instead of ever creating a fresh gesture-bound one.
+    if (!this.unlocked) return null;
     const ctx = this.ensureContext();
     if (ctx && ctx.state === 'suspended') {
       ctx.resume().catch(() => {});
