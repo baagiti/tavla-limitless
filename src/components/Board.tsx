@@ -35,17 +35,22 @@ interface BoardProps {
   onOpeningRoll?: (player?: Player) => void;
 }
 
-// A real backgammon board is inherently a wide shape. This is the ratio used
-// on landscape/tablet screens, where there's width to spare. On a narrow
-// portrait phone, fitting that same wide shape by width alone leaves most of
-// the available height empty (confirmed: on a 375x812 phone this rendered a
-// 359x265 board — centered, with ~166px of dead space above AND below it).
-// So the ratio isn't fixed: it's clamped between this and MIN_BOARD_ASPECT_RATIO
-// based on the container's own shape, letting the board actually use a tall
-// portrait container's height instead of "containing" itself into a letterboxed
-// sliver.
-const MAX_BOARD_ASPECT_RATIO = 1.38;
-const MIN_BOARD_ASPECT_RATIO = 0.62;
+// A real backgammon board is inherently a wide shape. The ratio isn't fixed:
+// it's clamped between MIN and MAX based on the container's own shape, so
+// the board fills whatever space is actually there instead of "containing"
+// itself into a letterboxed sliver either way:
+//  - MAX caps landscape phones/tablets, which have width to spare, at a
+//    shape that still reads as a real board rather than a stretched strip
+//    (1.38 was far too tight here — on a landscape phone with a slim header
+//    it clamped the board to using well under half the available width,
+//    leaving huge dead margins on both sides).
+//  - MIN caps portrait phones, where height is what's abundant, so the
+//    board doesn't get stretched into a tall narrow column that doesn't
+//    look like an actual board (0.62 let it go nearly 1.6x taller than
+//    wide; capping at 1.0 keeps it no taller than it is wide, leaving any
+//    leftover height as space above/below rather than distorting the board).
+const MAX_BOARD_ASPECT_RATIO = 1.85;
+const MIN_BOARD_ASPECT_RATIO = 1.0;
 
 export const Board: React.FC<BoardProps> = ({
   board,

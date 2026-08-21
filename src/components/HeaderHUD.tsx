@@ -19,6 +19,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { getCheckerStyle } from '../utils/themes';
+import { useIsShortViewport } from '../hooks/useIsShortViewport';
 
 interface HeaderHUDProps {
   settings: GameSettings;
@@ -58,12 +59,73 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
   const humanPlayer = settings.playerColor;
   const isAITurn = isAIMode && activePlayer !== humanPlayer;
   const isCubeMode = settings.cubeMode === 'with_cube';
+  const isShort = useIsShortViewport();
 
   // Calculate Pip difference (positive = White has fewer pips = White is leading)
   // Note: in backgammon, lower pip count is better/ahead
   const pipLeadWhite = pips.black - pips.white; // > 0 means White is ahead in race
   const whiteChecker = getCheckerStyle('white', settings.boardTheme, settings.checkerTheme);
   const blackChecker = getCheckerStyle('black', settings.boardTheme, settings.checkerTheme);
+
+  // Landscape phones leave as little as ~380-430px of total height, so a
+  // structurally different single-row header replaces the full HUD instead
+  // of trying to squeeze the same three-section layout down with padding
+  // tweaks — the board needs that vertical space far more than the header
+  // needs its avatars, subtitle, or target box.
+  if (isShort) {
+    const iconBtnClass =
+      'p-1 rounded border border-[#2d1e15] text-[#c2a278] bg-[#201610] hover:border-[#c2a278] transition-colors cursor-pointer';
+    return (
+      <header className="w-full px-2 pt-1 select-none z-20">
+        <div className="flex items-center justify-between gap-2 bg-[#160f0a]/95 border border-[#2d1e15] rounded px-2 py-1 shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+          <div className="flex items-center gap-1.5">
+            <img
+              src="/app-icon.png"
+              alt="Backgammon Limitless"
+              className="w-4 h-4 rounded-[3px] object-cover border border-[#c2a278]/40"
+            />
+            <span
+              className="w-2 h-2 rounded-full shadow-inner transition-opacity"
+              style={{ backgroundColor: whiteChecker.dotBg, opacity: activePlayer === 'white' ? 1 : 0.3 }}
+            />
+            <span className="text-xs font-serif font-bold text-[#f9f3e5] leading-none">
+              {score.white}–{score.black}
+            </span>
+            <span
+              className="w-2 h-2 rounded-full shadow-inner transition-opacity"
+              style={{ backgroundColor: blackChecker.dotBg, opacity: activePlayer === 'black' ? 1 : 0.3 }}
+            />
+            {isCubeMode && (
+              <span className="text-[9px] font-mono font-bold text-[#e5c07b] ml-0.5">
+                ×{cube.value}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button type="button" onClick={onUndo} disabled={!canUndo} title={t('header.undo')} className={`${iconBtnClass} ${!canUndo ? 'opacity-30 cursor-not-allowed' : ''}`}>
+              <RotateCcw className="w-3 h-3" />
+            </button>
+            <button type="button" onClick={onToggleSound} title={t('header.toggleSoundOn')} className={iconBtnClass}>
+              {settings.soundEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3 opacity-40" />}
+            </button>
+            <button type="button" onClick={onOpenStats} title={t('header.stats')} className={iconBtnClass}>
+              <Trophy className="w-3 h-3" />
+            </button>
+            <button type="button" onClick={onOpenRules} title={t('header.rules')} className={iconBtnClass}>
+              <BookOpen className="w-3 h-3" />
+            </button>
+            <button type="button" onClick={onOpenSettings} title={t('header.settings')} className={iconBtnClass}>
+              <Settings className="w-3 h-3" />
+            </button>
+            <button type="button" onClick={onResign} title={t('header.resign')} className={iconBtnClass}>
+              <Flag className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="w-full max-w-6xl mx-auto px-2 sm:px-3 py-1 sm:py-1.5 [@media(max-height:480px)]:py-0.5 select-none z-20">

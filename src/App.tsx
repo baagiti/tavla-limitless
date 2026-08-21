@@ -51,6 +51,7 @@ import { MoveReviewModal } from './components/MoveReviewModal';
 import { SettingsModal } from './components/SettingsModal';
 import { RulesModal } from './components/RulesModal';
 import { StatsHistoryModal } from './components/StatsHistoryModal';
+import { useIsShortViewport } from './hooks/useIsShortViewport';
 
 // Minimum equity gap (in evaluateBoard's score units) before a human turn is
 // flagged as a mistake. Calibrated empirically: simulating a moderately
@@ -91,6 +92,7 @@ export default function App() {
   // In-flight match tracking
   const currentMatchGamesRef = useRef<GameHistoryEntry[]>([]);
   const currentMatchEventsRef = useRef<string[]>([]);
+  const isShortViewport = useIsShortViewport();
   const matchStartTimeRef = useRef<number>(Date.now());
   const gameTurnsCountRef = useRef<number>(0);
   const gameHitsCountRef = useRef<{ white: number; black: number }>({ white: 0, black: 0 });
@@ -1132,40 +1134,45 @@ export default function App() {
         />
       </main>
 
-      {/* Minimalist Bottom Status Bar */}
-      <footer className="w-full max-w-5xl mx-auto px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] tracking-wider uppercase text-[#a89984]/60 border-t border-[#2d1e15]">
-        <div className="flex items-center gap-2">
-          <span className="text-[#e5c07b] font-medium">{t('footer.appName')}</span>
-          <span>•</span>
-          <span className="capitalize">
-            {settings.mode === 'ai' ? t('footer.vsAi', { difficulty: settings.aiDifficulty }) : t('footer.twoPlayer')}
-          </span>
-          <span>•</span>
-          <span>
-            {settings.bearingDirection === 'counterclockwise' ? t('footer.directionStandard') : t('footer.directionReverse')}
-          </span>
-        </div>
+      {/* Minimalist Bottom Status Bar (dropped entirely on short/landscape
+          viewports — that band was directly starving the board of the
+          vertical space it needs there; Stats & Rules are still reachable
+          from the compact header's icon row) */}
+      {!isShortViewport && (
+        <footer className="w-full max-w-5xl mx-auto px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] tracking-wider uppercase text-[#a89984]/60 border-t border-[#2d1e15]">
+          <div className="flex items-center gap-2">
+            <span className="text-[#e5c07b] font-medium">{t('footer.appName')}</span>
+            <span>•</span>
+            <span className="capitalize">
+              {settings.mode === 'ai' ? t('footer.vsAi', { difficulty: settings.aiDifficulty }) : t('footer.twoPlayer')}
+            </span>
+            <span>•</span>
+            <span>
+              {settings.bearingDirection === 'counterclockwise' ? t('footer.directionStandard') : t('footer.directionReverse')}
+            </span>
+          </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => setIsStatsOpen(true)}
-            className="text-[#c2a278] hover:text-[#f9f3e5] hover:underline cursor-pointer flex items-center gap-1 transition-colors"
-          >
-            {t('footer.statsAndHistory')}
-          </button>
-          <span>•</span>
-          <span>{t('footer.game', { n: score.gamesPlayed })}</span>
-          <span>•</span>
-          <button
-            type="button"
-            onClick={() => setIsRulesOpen(true)}
-            className="text-[#c2a278] hover:text-[#f9f3e5] hover:underline cursor-pointer transition-colors"
-          >
-            {t('footer.howToPlay')}
-          </button>
-        </div>
-      </footer>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setIsStatsOpen(true)}
+              className="text-[#c2a278] hover:text-[#f9f3e5] hover:underline cursor-pointer flex items-center gap-1 transition-colors"
+            >
+              {t('footer.statsAndHistory')}
+            </button>
+            <span>•</span>
+            <span>{t('footer.game', { n: score.gamesPlayed })}</span>
+            <span>•</span>
+            <button
+              type="button"
+              onClick={() => setIsRulesOpen(true)}
+              className="text-[#c2a278] hover:text-[#f9f3e5] hover:underline cursor-pointer transition-colors"
+            >
+              {t('footer.howToPlay')}
+            </button>
+          </div>
+        </footer>
+      )}
 
       {/* Modals */}
       <MatchStartModal
