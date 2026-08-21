@@ -123,6 +123,23 @@ export const Board: React.FC<BoardProps> = ({
     };
   }, []);
 
+  // Checkers were a fixed 36px regardless of how much room a point column
+  // actually had — fine on a wide desktop board, but on a narrow phone each
+  // column can be under 20px wide (board width split across 12 columns plus
+  // the bar and two bear-off trays), so checkers from neighboring points
+  // visually overlapped. Measuring a real rendered point after boardSize
+  // settles ties checker size to whatever room is actually there, on any
+  // screen, instead of guessing at the tray/bar/padding math.
+  const [checkerSize, setCheckerSize] = useState<number>(36);
+  useEffect(() => {
+    if (!boardSize) return;
+    const pointEl = containerRef.current?.querySelector('[id^="point-"]');
+    const w = pointEl?.getBoundingClientRect().width;
+    if (w && w > 0) {
+      setCheckerSize(Math.max(16, Math.min(36, Math.floor(w * 0.82))));
+    }
+  }, [boardSize]);
+
   let topLeftIndices: number[];
   let topRightIndices: number[];
   let bottomLeftIndices: number[];
@@ -166,6 +183,7 @@ export const Board: React.FC<BoardProps> = ({
               highlightMoves={settings.highlightMoves}
               theme={settings.boardTheme || 'royal_green'}
               checkerTheme={settings.checkerTheme || 'auto'}
+              checkerSize={checkerSize}
             />
           );
         })}

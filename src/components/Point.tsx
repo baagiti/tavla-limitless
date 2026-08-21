@@ -18,6 +18,7 @@ interface PointProps {
   highlightMoves: boolean;
   theme?: BoardTheme;
   checkerTheme?: CheckerTheme;
+  checkerSize?: number;
 }
 
 export const Point: React.FC<PointProps> = ({
@@ -34,6 +35,7 @@ export const Point: React.FC<PointProps> = ({
   highlightMoves,
   theme = 'royal_green',
   checkerTheme = 'auto',
+  checkerSize = 36,
 }) => {
   const hasFriendlyCheckers = state.count > 0 && state.color === activePlayer;
   const isTarget = isValidTarget && highlightMoves;
@@ -185,8 +187,9 @@ export const Point: React.FC<PointProps> = ({
                   onClick={handleClick}
                 >
                   <Checker
+                    key={checkerSize}
                     color={state.color!}
-                    size={36}
+                    size={checkerSize}
                     indexInStack={stackIdx}
                     totalInStack={state.count}
                     isSelected={isSelected}
