@@ -135,13 +135,27 @@ export const Board: React.FC<BoardProps> = ({
   // visually overlapped. Measuring a real rendered point after boardSize
   // settles ties checker size to whatever room is actually there, on any
   // screen, instead of guessing at the tray/bar/padding math.
+  //
+  // Width alone isn't enough, though: on a short landscape board a point's
+  // column can be wide but its row shallow, so a size that fits 5 stacked
+  // checkers sideways could still be too tall to fit them without spilling
+  // past the point/board edge. Both dimensions are checked and the smaller
+  // wins, reserving room for the point-number label and the gaps between
+  // stacked checkers (Point.tsx shows at most 5 before badging the rest).
   const [checkerSize, setCheckerSize] = useState<number>(36);
   useEffect(() => {
     if (!boardSize) return;
     const pointEl = containerRef.current?.querySelector('[id^="point-"]');
-    const w = pointEl?.getBoundingClientRect().width;
-    if (w && w > 0) {
-      setCheckerSize(Math.max(16, Math.min(36, Math.floor(w * 0.82))));
+    const rect = pointEl?.getBoundingClientRect();
+    if (rect && rect.width > 0 && rect.height > 0) {
+      const MAX_STACK = 5;
+      const STACK_GAP = 1.5;
+      const LABEL_RESERVE = 16;
+      const sizeFromWidth = Math.floor(rect.width * 0.82);
+      const sizeFromHeight = Math.floor(
+        (rect.height - LABEL_RESERVE - STACK_GAP * (MAX_STACK - 1)) / MAX_STACK
+      );
+      setCheckerSize(Math.max(16, Math.min(36, sizeFromWidth, sizeFromHeight)));
     }
   }, [boardSize]);
 
