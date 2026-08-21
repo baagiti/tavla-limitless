@@ -61,7 +61,7 @@ export const Point: React.FC<PointProps> = ({
     <div
       id={`point-${index}`}
       onClick={handleClick}
-      className={`relative flex-1 h-full flex ${
+      className={`relative flex-1 min-w-0 h-full flex ${
         isTop ? 'flex-col justify-start' : 'flex-col-reverse justify-start'
       } items-center transition-colors select-none ${
         isTarget

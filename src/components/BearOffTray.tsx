@@ -52,10 +52,9 @@ export const BearOffTray: React.FC<BearOffTrayProps> = ({
       title={isTarget ? t('bearOff.clickToBearOff') : t('bearOff.tray')}
     >
       {/* Black Bear-Off Top Slot */}
-      <div className="flex flex-col items-center gap-0.5">
-        <div className="text-[10px] font-mono text-[#e0d5c1]/60 uppercase tracking-wider flex items-center justify-between w-full px-1">
-          <span className="truncate max-w-[36px]">{blackName.split(' ')[0]}</span>
-          <span className="text-[#c2a278] font-bold">{borneOff.black}/15</span>
+      <div className="flex flex-col items-center gap-0.5" title={blackName}>
+        <div className="text-[10px] font-mono text-[#c2a278] font-bold tracking-wider text-center w-full">
+          {borneOff.black}/15
         </div>
 
         {/* Stacked borne off chips */}
@@ -102,10 +101,11 @@ export const BearOffTray: React.FC<BearOffTrayProps> = ({
           ))}
         </div>
 
-        <div className="text-[10px] font-mono text-[#e0d5c1]/60 uppercase tracking-wider flex items-center justify-between w-full px-1">
-          <span className="truncate max-w-[36px]">{whiteName.split(' ')[0]}</span>
-          <span className="text-[#c2a278] font-bold">{borneOff.white}/15</span>
-        </div>
+      </div>
+
+      {/* White Bear-Off Bottom Slot Label */}
+      <div className="text-[10px] font-mono text-[#c2a278] font-bold tracking-wider text-center w-full" title={whiteName}>
+        {borneOff.white}/15
       </div>
     </div>
   );
