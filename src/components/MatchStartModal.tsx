@@ -126,6 +126,11 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                       );
                     })}
                   </div>
+                  {(settings.aiDifficulty === 'hard' || settings.aiDifficulty === 'master') && (
+                    <p className="text-[9px] text-[#c2a278]/60 mt-1.5 leading-relaxed">
+                      {t('matchSetup.difficultyHardDesc')}
+                    </p>
+                  )}
                 </div>
 
                 <div>
