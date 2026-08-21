@@ -175,6 +175,24 @@ export const MiniBoardDiagram: React.FC<MiniBoardDiagramProps> = ({
     const from = posOf('from', step);
     const to = posOf('to', step);
     const markerId = `arrowhead-${highlightColor.replace('#', '')}-${i}`;
+
+    // Two different checkers moving on the same row (e.g. one turn's two
+    // dice each played from the same starting point to two different
+    // destinations) produce collinear arrows — drawn as straight lines,
+    // the shorter one lands exactly on top of part of the longer one and
+    // disappears, making that move look like it covered fewer pips than
+    // it actually did even though both dice were legitimately used. Each
+    // step bows out from the straight line by a per-index amount so
+    // overlapping arrows stay visible as distinct curves instead.
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const nx = -dy / len;
+    const ny = dx / len;
+    const bow = (6 + i * 7) * (i % 2 === 0 ? -1 : 1);
+    const midX = (from.x + to.x) / 2 + nx * bow;
+    const midY = (from.y + to.y) / 2 + ny * bow;
+
     return (
       <g key={`arrow-${i}`}>
         <defs>
@@ -190,11 +208,9 @@ export const MiniBoardDiagram: React.FC<MiniBoardDiagramProps> = ({
           </marker>
         </defs>
         <circle cx={from.x} cy={from.y} r={CHECKER_R + 3} fill="none" stroke={highlightColor} strokeWidth={1.5} opacity={0.9} />
-        <line
-          x1={from.x}
-          y1={from.y}
-          x2={to.x}
-          y2={to.y}
+        <path
+          d={`M ${from.x} ${from.y} Q ${midX} ${midY} ${to.x} ${to.y}`}
+          fill="none"
           stroke={highlightColor}
           strokeWidth={1.75}
           opacity={0.85}
