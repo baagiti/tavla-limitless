@@ -327,6 +327,8 @@
     "subtitleWithMistakes": "{{count}} von {{total}} Zügen markiert",
     "subtitleClean": "{{total}} Züge gespielt — keine Fehler markiert",
     "empty": "Für dieses Spiel sind noch keine Züge aufgezeichnet.",
-    "betterMove": "Besser:"
+    "betterMove": "Besser:",
+    "yourMove": "Dein Zug",
+    "tapToCompare": "Tippen, um das Brett zu sehen"
   }
 }

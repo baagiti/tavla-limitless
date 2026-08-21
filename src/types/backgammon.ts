@@ -31,6 +31,7 @@ export interface MoveLogEntry {
   steps: MoveStep[];
   isMistake: boolean;
   betterSteps?: MoveStep[];
+  boardBefore: BoardState;
 }
 
 export interface TurnSequence {

@@ -326,6 +326,8 @@
     "subtitleWithMistakes": "{{total}} 回合中有 {{count}} 回合被标记",
     "subtitleClean": "共进行了 {{total}} 回合——没有标记的失误",
     "empty": "本局尚无记录的走法。",
-    "betterMove": "更好的走法："
+    "betterMove": "更好的走法：",
+    "yourMove": "你的走法",
+    "tapToCompare": "点按查看棋盘"
   }
 }

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
-import { MoveLogEntry, MoveStep } from '../types/backgammon';
-import { X, AlertTriangle, ClipboardList } from 'lucide-react';
+import { GameSettings, MoveLogEntry, MoveStep } from '../types/backgammon';
+import { X, AlertTriangle, ClipboardList, ChevronDown } from 'lucide-react';
+import { MiniBoardDiagram } from './MiniBoardDiagram';
 
 interface MoveReviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   moveLog: MoveLogEntry[];
+  settings: GameSettings;
 }
 
 function formatStep(step: MoveStep): string {
@@ -25,8 +27,14 @@ function formatDice(dice: number[]): string {
   return unique.length === 1 ? `${unique[0]}-${unique[0]}` : dice.join('-');
 }
 
-export const MoveReviewModal: React.FC<MoveReviewModalProps> = ({ isOpen, onClose, moveLog }) => {
+export const MoveReviewModal: React.FC<MoveReviewModalProps> = ({
+  isOpen,
+  onClose,
+  moveLog,
+  settings,
+}) => {
   const { t } = useTranslation();
+  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
   if (!isOpen) return null;
 
   const mistakeCount = moveLog.filter((m) => m.isMistake).length;
@@ -65,41 +73,91 @@ export const MoveReviewModal: React.FC<MoveReviewModalProps> = ({ isOpen, onClos
           {moveLog.length === 0 ? (
             <p className="text-xs text-[#e0d5c1]/50 text-center py-8">{t('moveReview.empty')}</p>
           ) : (
-            moveLog.map((entry, idx) => (
-              <div
-                key={idx}
-                className={`p-2.5 rounded-sm border text-xs ${
-                  entry.isMistake
-                    ? 'border-rose-800/50 bg-rose-950/20'
-                    : 'border-[#2d1e15] bg-[#1a130f]'
-                }`}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span
-                      className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                        entry.player === 'white'
-                          ? 'bg-[#f9f3e5] border border-[#d4c5a9]'
-                          : 'bg-[#961c1e] border border-[#52090a]'
-                      }`}
-                    />
-                    <span className="font-mono text-[#c2a278] shrink-0">{formatDice(entry.dice)}</span>
-                    <span className="text-[#e0d5c1] truncate">{formatSteps(entry.steps)}</span>
+            moveLog.map((entry, idx) => {
+              const canExpand = entry.isMistake && !!entry.betterSteps;
+              const isExpanded = canExpand && expandedIdx === idx;
+              return (
+                <div
+                  key={idx}
+                  className={`rounded-sm border text-xs overflow-hidden ${
+                    entry.isMistake
+                      ? 'border-rose-800/50 bg-rose-950/20'
+                      : 'border-[#2d1e15] bg-[#1a130f]'
+                  }`}
+                >
+                  <div
+                    className={`p-2.5 ${canExpand ? 'cursor-pointer' : ''}`}
+                    onClick={() => canExpand && setExpandedIdx(isExpanded ? null : idx)}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                            entry.player === 'white'
+                              ? 'bg-[#f9f3e5] border border-[#d4c5a9]'
+                              : 'bg-[#961c1e] border border-[#52090a]'
+                          }`}
+                        />
+                        <span className="font-mono text-[#c2a278] shrink-0">{formatDice(entry.dice)}</span>
+                        <span className="text-[#e0d5c1] truncate">{formatSteps(entry.steps)}</span>
+                      </div>
+                      {entry.isMistake && (
+                        <div className="flex items-center gap-1 shrink-0">
+                          <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                          {canExpand && (
+                            <ChevronDown
+                              className={`w-3.5 h-3.5 text-rose-400/70 transition-transform ${
+                                isExpanded ? 'rotate-180' : ''
+                              }`}
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {entry.isMistake && entry.betterSteps && (
+                      <div className="mt-1.5 pt-1.5 border-t border-rose-900/40 flex items-center gap-1.5 text-[11px]">
+                        <span className="text-rose-400/80 uppercase tracking-wider text-[9px] shrink-0">
+                          {t('moveReview.betterMove')}
+                        </span>
+                        <span className="text-rose-200 font-mono truncate">{formatSteps(entry.betterSteps)}</span>
+                      </div>
+                    )}
+                    {canExpand && !isExpanded && (
+                      <div className="mt-1 text-[9px] uppercase tracking-wider text-rose-400/50">
+                        {t('moveReview.tapToCompare')}
+                      </div>
+                    )}
                   </div>
-                  {entry.isMistake && (
-                    <AlertTriangle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+
+                  {isExpanded && entry.betterSteps && (
+                    <div className="px-2.5 pb-3 pt-1 border-t border-rose-900/40 space-y-3 bg-black/20">
+                      <div>
+                        <div className="text-[9px] uppercase tracking-wider text-rose-400/80 mb-1">
+                          {t('moveReview.yourMove')} — {formatSteps(entry.steps)}
+                        </div>
+                        <MiniBoardDiagram
+                          board={entry.boardBefore}
+                          steps={entry.steps}
+                          highlightColor="#f43f5e"
+                          settings={settings}
+                        />
+                      </div>
+                      <div>
+                        <div className="text-[9px] uppercase tracking-wider text-emerald-400/80 mb-1">
+                          {t('moveReview.betterMove')} {formatSteps(entry.betterSteps)}
+                        </div>
+                        <MiniBoardDiagram
+                          board={entry.boardBefore}
+                          steps={entry.betterSteps}
+                          highlightColor="#34d399"
+                          settings={settings}
+                        />
+                      </div>
+                    </div>
                   )}
                 </div>
-                {entry.isMistake && entry.betterSteps && (
-                  <div className="mt-1.5 pt-1.5 border-t border-rose-900/40 flex items-center gap-1.5 text-[11px]">
-                    <span className="text-rose-400/80 uppercase tracking-wider text-[9px] shrink-0">
-                      {t('moveReview.betterMove')}
-                    </span>
-                    <span className="text-rose-200 font-mono truncate">{formatSteps(entry.betterSteps)}</span>
-                  </div>
-                )}
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </motion.div>

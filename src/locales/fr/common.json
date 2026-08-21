@@ -327,6 +327,8 @@
     "subtitleWithMistakes": "{{count}} coups signalés sur {{total}}",
     "subtitleClean": "{{total}} tours joués — aucune erreur signalée",
     "empty": "Aucun coup enregistré pour cette partie pour le moment.",
-    "betterMove": "Meilleur coup :"
+    "betterMove": "Meilleur coup :",
+    "yourMove": "Votre coup",
+    "tapToCompare": "Touchez pour voir le plateau"
   }
 }

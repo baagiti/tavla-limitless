@@ -327,6 +327,8 @@
     "subtitleWithMistakes": "{{count}} de {{total}} turnos marcados",
     "subtitleClean": "{{total}} turnos jugados — sin errores marcados",
     "empty": "Todavía no hay jugadas registradas para esta partida.",
-    "betterMove": "Mejor:"
+    "betterMove": "Mejor:",
+    "yourMove": "Tu Jugada",
+    "tapToCompare": "Toca para ver el tablero"
   }
 }

@@ -329,6 +329,8 @@
     "subtitleWithMistakes": "Отмечено {{count}} из {{total}} ходов",
     "subtitleClean": "Сыграно {{total}} ходов — ошибок не отмечено",
     "empty": "Для этой игры пока нет записанных ходов.",
-    "betterMove": "Лучше:"
+    "betterMove": "Лучше:",
+    "yourMove": "Ваш ход",
+    "tapToCompare": "Нажмите, чтобы увидеть доску"
   }
 }

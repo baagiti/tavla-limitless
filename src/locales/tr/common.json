@@ -327,6 +327,8 @@
     "subtitleWithMistakes": "{{total}} turdan {{count}} tanesi işaretlendi",
     "subtitleClean": "{{total}} tur oynandı — işaretlenen hamle yok",
     "empty": "Bu oyun için henüz kayıtlı hamle yok.",
-    "betterMove": "Daha iyisi:"
+    "betterMove": "Daha iyisi:",
+    "yourMove": "Senin Hamlen",
+    "tapToCompare": "Tahtayı görmek için dokun"
   }
 }

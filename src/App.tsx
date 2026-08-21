@@ -528,6 +528,7 @@ export default function App() {
             steps: playedSteps,
             isMistake,
             betterSteps: isMistake ? bestSeq.steps : undefined,
+            boardBefore: startBoard,
           },
         ]);
 
@@ -1220,6 +1221,7 @@ export default function App() {
         isOpen={isMoveReviewOpen}
         onClose={() => setIsMoveReviewOpen(false)}
         moveLog={moveLog}
+        settings={settings}
       />
 
       <SettingsModal

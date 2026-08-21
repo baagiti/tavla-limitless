@@ -329,6 +329,8 @@
     "subtitleWithMistakes": "Oznaczono {{count}} z {{total}} tur",
     "subtitleClean": "Rozegrano {{total}} tur — nie oznaczono żadnego błędu",
     "empty": "Dla tej gry nie zarejestrowano jeszcze żadnych ruchów.",
-    "betterMove": "Lepiej:"
+    "betterMove": "Lepiej:",
+    "yourMove": "Twój ruch",
+    "tapToCompare": "Dotknij, aby zobaczyć planszę"
   }
 }

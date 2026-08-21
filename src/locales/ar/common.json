@@ -330,6 +330,8 @@
     "subtitleWithMistakes": "تم تحديد {{count}} من أصل {{total}} دور",
     "subtitleClean": "تم لعب {{total}} دور — لم يتم تحديد أي خطأ",
     "empty": "لا توجد حركات مسجلة لهذه المباراة بعد.",
-    "betterMove": "الأفضل:"
+    "betterMove": "الأفضل:",
+    "yourMove": "حركتك",
+    "tapToCompare": "اضغط لرؤية الرقعة"
   }
 }

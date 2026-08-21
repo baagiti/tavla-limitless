@@ -327,6 +327,8 @@
     "subtitleWithMistakes": "{{count}} of {{total}} turns flagged",
     "subtitleClean": "{{total}} turns played — no mistakes flagged",
     "empty": "No moves recorded for this game yet.",
-    "betterMove": "Better:"
+    "betterMove": "Better:",
+    "yourMove": "Your Move",
+    "tapToCompare": "Tap to see the board"
   }
 }
