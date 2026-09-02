@@ -1,20 +1,19 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Backgammon Limitless
 
-# Run and deploy your AI Studio app
+A championship-grade Backgammon app: luxury board aesthetics, physics-based checkers, an AI opponent, career stats, and tournament doubling cube rules. Built with React + Vite, packaged for iOS/Android via Capacitor.
 
-This contains everything you need to run your app locally.
+## Run locally
 
-View your app in AI Studio: https://ai.studio/apps/9eea1471-27d0-4376-a4e2-594a5137c153
+**Prerequisites:** Node.js
 
-## Run Locally
+1. Install dependencies: `npm install`
+2. Run the app: `npm run dev`
+3. Build for production: `npm run build`
 
-**Prerequisites:**  Node.js
+## Native builds
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```
+npx cap sync
+npx cap open ios
+npx cap open android
+```
