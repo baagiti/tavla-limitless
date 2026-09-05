@@ -1089,7 +1089,10 @@ export default function App() {
     >
       {/* Dynamic Toast Banner */}
       {statusMessage && (
-        <div className="fixed top-4 inset-x-0 z-50 flex justify-center pointer-events-none px-4">
+        <div
+          className="fixed inset-x-0 z-50 flex justify-center pointer-events-none px-4"
+          style={{ top: 'calc(env(safe-area-inset-top) + 64px)' }}
+        >
           <div className="bg-[#1a120b]/95 backdrop-blur-md text-[#f9f3e5] px-6 py-2.5 rounded-full text-xs tracking-wider font-medium shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-[#e5c07b]/70 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#e5c07b] animate-pulse" />
             <span>{statusMessage}</span>

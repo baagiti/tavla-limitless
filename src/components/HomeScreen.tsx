@@ -50,7 +50,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNewMatch, onOpenSettin
         </div>
       </div>
 
-      <div className="flex-1 w-full flex items-end justify-center px-4 pb-4 sm:pb-6 relative z-10">
+      <div className="flex-1 w-full flex items-center justify-center px-4 pb-4 sm:pb-6 relative z-10">
         <div
           className="relative w-full max-w-md rounded-lg overflow-hidden"
           style={{
