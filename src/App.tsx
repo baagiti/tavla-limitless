@@ -31,7 +31,13 @@ import {
   getPossibleMoves,
   checkWin,
 } from './logic/rules';
-import { chooseBestTurn, shouldAIDouble, shouldAIAcceptDouble, evaluateBoard } from './logic/ai';
+import {
+  chooseBestTurn,
+  shouldAIDouble,
+  shouldAIAcceptDouble,
+  evaluateBoard,
+  MISTAKE_EQUITY_THRESHOLD,
+} from './logic/ai';
 import { sound } from './utils/audio';
 import {
   loadCareerStats,
@@ -51,16 +57,10 @@ import { MoveReviewModal } from './components/MoveReviewModal';
 import { SettingsModal } from './components/SettingsModal';
 import { RulesModal } from './components/RulesModal';
 import { StatsHistoryModal } from './components/StatsHistoryModal';
-import { useIsShortViewport } from './hooks/useIsShortViewport';
 
-// Minimum equity gap (in evaluateBoard's score units) before a human turn is
-// flagged as a mistake. Calibrated empirically: simulating a moderately
-// careless player (the 'medium' AI tier) across ~280 turns, its equity loss
-// vs. the true best move exceeded 40 exactly zero times (max observed: 32).
-// A 40-point bar meant this basically never fired in real play. 15 catches
-// roughly the worst ~2.5% of turns in that simulation — real, noticeable
-// errors — without flagging routine near-ties.
-const MISTAKE_EQUITY_THRESHOLD = 15;
+// MISTAKE_EQUITY_THRESHOLD now lives in logic/ai.ts, shared with the
+// post-match deep re-analysis in MoveReviewModal so both use the same
+// calibrated bar for what counts as a real mistake.
 
 export default function App() {
   const { t } = useTranslation();
@@ -92,7 +92,6 @@ export default function App() {
   // In-flight match tracking
   const currentMatchGamesRef = useRef<GameHistoryEntry[]>([]);
   const currentMatchEventsRef = useRef<string[]>([]);
-  const isShortViewport = useIsShortViewport();
   const matchStartTimeRef = useRef<number>(Date.now());
   const gameTurnsCountRef = useRef<number>(0);
   const gameHitsCountRef = useRef<{ white: number; black: number }>({ white: 0, black: 0 });
@@ -1082,10 +1081,10 @@ export default function App() {
 
   return (
     <div
-      className="app-safe-area app-full-height w-full bg-[#0d0906] text-[#e0d5c1] flex flex-col justify-between selection:bg-[#e5c07b] selection:text-[#0d0906] font-sans overflow-hidden relative"
+      className="app-safe-area app-full-height w-full text-[#e0d5c1] flex flex-col selection:bg-[#e5c07b] selection:text-[#0d0906] font-sans overflow-hidden relative"
       style={{
         backgroundImage:
-          'radial-gradient(ellipse at 50% 35%, rgba(65, 43, 26, 0.45) 0%, rgba(20, 14, 9, 0.95) 75%, #0a0604 100%)',
+          'radial-gradient(120% 60% at 50% 0%, #4a3320 0%, #2a1d12 45%, #17100a 100%)',
       }}
     >
       {/* Dynamic Toast Banner */}
@@ -1111,7 +1110,6 @@ export default function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenRules={() => setIsRulesOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
-        onNewGame={() => setIsStartModalOpen(true)}
         onToggleSound={() => setSettings((s) => ({ ...s, soundEnabled: !s.soundEnabled }))}
         onResign={handleResign}
       />
@@ -1144,46 +1142,6 @@ export default function App() {
           onOpeningRoll={handleRollOpeningDie}
         />
       </main>
-
-      {/* Minimalist Bottom Status Bar (dropped entirely on short/landscape
-          viewports — that band was directly starving the board of the
-          vertical space it needs there; Stats & Rules are still reachable
-          from the compact header's icon row) */}
-      {!isShortViewport && (
-        <footer className="w-full max-w-5xl mx-auto px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] tracking-wider uppercase text-[#a89984]/60 border-t border-[#2d1e15]">
-          <div className="flex items-center gap-2">
-            <span className="text-[#e5c07b] font-medium">{t('footer.appName')}</span>
-            <span>•</span>
-            <span className="capitalize">
-              {settings.mode === 'ai' ? t('footer.vsAi', { difficulty: settings.aiDifficulty }) : t('footer.twoPlayer')}
-            </span>
-            <span>•</span>
-            <span>
-              {settings.bearingDirection === 'counterclockwise' ? t('footer.directionStandard') : t('footer.directionReverse')}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setIsStatsOpen(true)}
-              className="text-[#c2a278] hover:text-[#f9f3e5] hover:underline cursor-pointer flex items-center gap-1 transition-colors"
-            >
-              {t('footer.statsAndHistory')}
-            </button>
-            <span>•</span>
-            <span>{t('footer.game', { n: score.gamesPlayed })}</span>
-            <span>•</span>
-            <button
-              type="button"
-              onClick={() => setIsRulesOpen(true)}
-              className="text-[#c2a278] hover:text-[#f9f3e5] hover:underline cursor-pointer transition-colors"
-            >
-              {t('footer.howToPlay')}
-            </button>
-          </div>
-        </footer>
-      )}
 
       {/* Modals */}
       <MatchStartModal
@@ -1232,6 +1190,7 @@ export default function App() {
         onClose={() => setIsMoveReviewOpen(false)}
         moveLog={moveLog}
         settings={settings}
+        onUpdateMoveLog={setMoveLog}
       />
 
       <SettingsModal

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Languages } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, SupportedLanguage } from '../i18n/config';
+import { INK, BRASS, ledgerCardStyle } from './LedgerUI';
 
 export const LanguageSwitcher: React.FC = () => {
   const { i18n, t } = useTranslation();
@@ -35,17 +36,27 @@ export const LanguageSwitcher: React.FC = () => {
       </button>
 
       {open && (
-        <div className="absolute end-0 mt-2 w-44 max-h-72 overflow-y-auto bg-[#140e0a] border border-[#3d2b1f] rounded-md shadow-2xl z-50 py-1">
+        <div
+          className="absolute end-0 mt-2 w-44 max-h-72 overflow-y-auto rounded-md z-50 py-1 ledger-scroll"
+          style={{ ...ledgerCardStyle, boxShadow: '0 20px 40px rgba(0,0,0,0.5), inset 0 0 0 1.5px rgba(184,147,90,0.4)' }}
+        >
           {SUPPORTED_LANGUAGES.map((lang) => (
             <button
               key={lang}
               type="button"
               onClick={() => changeLanguage(lang)}
-              className={`w-full text-start px-3.5 py-2 text-sm transition-colors cursor-pointer ${
+              className="w-full text-start px-3.5 py-2 text-sm transition-colors cursor-pointer"
+              style={
                 current === lang
-                  ? 'text-[#e5c07b] bg-[#2d1e15] font-semibold'
-                  : 'text-[#e0d5c1] hover:bg-[#1a130f]'
-              }`}
+                  ? { color: BRASS, background: 'rgba(163,119,63,0.14)', fontWeight: 600 }
+                  : { color: INK }
+              }
+              onMouseEnter={(e) => {
+                if (current !== lang) e.currentTarget.style.background = 'rgba(58,42,24,0.08)';
+              }}
+              onMouseLeave={(e) => {
+                if (current !== lang) e.currentTarget.style.background = 'transparent';
+              }}
             >
               {LANGUAGE_NAMES[lang]}
             </button>

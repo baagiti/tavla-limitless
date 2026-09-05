@@ -9,6 +9,7 @@ import {
 import { Point } from './Point';
 import { Bar } from './Bar';
 import { BearOffTray } from './BearOffTray';
+import { BearOffTrayHorizontal } from './BearOffTrayHorizontal';
 import { Dice } from './Dice';
 import { BOARD_THEMES } from '../utils/themes';
 
@@ -84,13 +85,31 @@ export const Board: React.FC<BoardProps> = ({
   // after the header/footer) to overflow instead of shrinking, since a pure
   // CSS aspect-ratio box sized from width alone doesn't know to give way
   // when height runs out.
+  const outerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [boardSize, setBoardSize] = useState<{ width: number; height: number } | null>(null);
+  // Portrait phones/tablets have width to spare in trade for scarce height
+  // above/below the board (see MIN_BOARD_ASPECT_RATIO's comment) — so on
+  // those, the bear-off tray moves out of the felt frame's side column
+  // (BearOffTray) into two slim strips in that already-idle space
+  // (BearOffTrayHorizontal), and every one of the 24 point columns gets a
+  // little wider. Landscape phones have the opposite trade — height is what
+  // they can't spare — so they keep the traditional side tray there, which
+  // costs width the felt frame already isn't using at its aspect-ratio cap.
+  // Decided from the OUTER wrapper (stable regardless of which tray layout
+  // is showing) rather than the inner felt-sizing container, so adding or
+  // removing the horizontal strips can never feed back into this decision.
+  const [useHorizontalTrays, setUseHorizontalTrays] = useState(false);
 
   useEffect(() => {
+    const outerEl = outerRef.current;
     const el = containerRef.current;
-    if (!el) return;
+    if (!outerEl || !el) return;
     const measure = () => {
+      const outerRect = outerEl.getBoundingClientRect();
+      if (outerRect.width > 0 && outerRect.height > 0) {
+        setUseHorizontalTrays(outerRect.width < outerRect.height);
+      }
       const { width, height } = el.getBoundingClientRect();
       if (width < 1 || height < 1) return;
       const ratio = Math.min(
@@ -117,6 +136,7 @@ export const Board: React.FC<BoardProps> = ({
     // observed element's box actually updating in the same tick.
     const ro = new ResizeObserver(measure);
     ro.observe(el);
+    ro.observe(outerEl);
     window.addEventListener('resize', measure);
     window.addEventListener('orientationchange', measure);
     window.visualViewport?.addEventListener('resize', measure);
@@ -214,9 +234,24 @@ export const Board: React.FC<BoardProps> = ({
 
   return (
     <div
-      ref={containerRef}
-      className="w-full h-full max-w-5xl mx-auto px-1 sm:px-3 py-1 select-none flex items-center justify-center min-h-0 min-w-0"
+      ref={outerRef}
+      className={`w-full h-full max-w-5xl mx-auto px-1 sm:px-3 py-1 select-none flex flex-col items-center justify-center${
+        useHorizontalTrays ? ' gap-1 sm:gap-1.5' : ''
+      }`}
     >
+      {useHorizontalTrays && (
+        <BearOffTrayHorizontal
+          player="black"
+          count={board.borneOff.black}
+          isValidTarget={isBearOffTarget && activePlayer === 'black'}
+          onBearOffClick={() => onSelectTarget('off')}
+          highlightMoves={settings.highlightMoves}
+          theme={settings.boardTheme || 'royal_green'}
+          checkerTheme={settings.checkerTheme || 'auto'}
+        />
+      )}
+
+      <div ref={containerRef} className="w-full flex-1 min-h-0 min-w-0 flex items-center justify-center">
       {/* Board Outer Luxury Frame */}
       <div
         id="backgammon-board"
@@ -248,7 +283,7 @@ export const Board: React.FC<BoardProps> = ({
           }}
         >
           {/* If Clockwise, Bear-off tray is on Left */}
-          {!isCCW && (
+          {!isCCW && !useHorizontalTrays && (
             <BearOffTray
               borneOff={board.borneOff}
               activePlayer={activePlayer}
@@ -349,7 +384,7 @@ export const Board: React.FC<BoardProps> = ({
           </div>
 
           {/* If Counter-Clockwise (Standard), Bear-off tray is on Right */}
-          {isCCW && (
+          {isCCW && !useHorizontalTrays && (
             <BearOffTray
               borneOff={board.borneOff}
               activePlayer={activePlayer}
@@ -363,6 +398,19 @@ export const Board: React.FC<BoardProps> = ({
           )}
         </div>
       </div>
+      </div>
+
+      {useHorizontalTrays && (
+        <BearOffTrayHorizontal
+          player="white"
+          count={board.borneOff.white}
+          isValidTarget={isBearOffTarget && activePlayer === 'white'}
+          onBearOffClick={() => onSelectTarget('off')}
+          highlightMoves={settings.highlightMoves}
+          theme={settings.boardTheme || 'royal_green'}
+          checkerTheme={settings.checkerTheme || 'auto'}
+        />
+      )}
     </div>
   );
 };

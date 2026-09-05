@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { DoublingCubeState, Player } from '../types/backgammon';
-import { Check, X, Zap } from 'lucide-react';
+import { INK, INK_MUTED, BRASS, RULE, serif, ledgerCardStyle } from './LedgerUI';
 
 interface DoublingModalProps {
   isOpen: boolean;
@@ -37,22 +37,32 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
         initial={{ scale: 0.92, opacity: 0, y: 15 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0 }}
-        className="w-full max-w-sm bg-[#140e0a] border border-[#2d1e15] rounded-sm shadow-2xl p-6 text-[#e0d5c1] text-center"
+        className="w-full max-w-sm rounded-lg p-6 text-center"
+        style={ledgerCardStyle}
       >
         {/* Cube Badge */}
-        <div className="w-16 h-16 mx-auto rounded-sm bg-[#2d1e15] border border-[#4a3528] flex items-center justify-center text-[#c2a278] font-serif text-2xl font-light shadow-inner mb-4">
+        <div
+          className="w-16 h-16 mx-auto rounded-md flex items-center justify-center font-bold mb-4"
+          style={{
+            ...serif,
+            fontSize: '22px',
+            background: `linear-gradient(160deg,#cba766,#a3773f)`,
+            color: '#2a1c0e',
+            boxShadow: '0 10px 22px rgba(60,38,10,0.35), inset 0 1px 0 rgba(255,255,255,0.4)',
+          }}
+        >
           {nextValue}
         </div>
 
-        <p className="text-[10px] uppercase tracking-[0.25em] text-[#c2a278] opacity-80 mb-1">
+        <p className="text-[10px] uppercase tracking-[0.25em] mb-1" style={{ color: BRASS }}>
           {t('doubling.proposed')}
         </p>
 
-        <h3 className="text-xl font-light text-[#f9f3e5] capitalize tracking-tight">
+        <h3 className="text-xl capitalize tracking-tight" style={{ ...serif, fontWeight: 600, color: INK }}>
           {t('doubling.doublesTo', { player: offeredBy, value: nextValue })}
         </h3>
 
-        <p className="text-xs text-[#e0d5c1]/60 mt-2 mb-6">
+        <p className="text-xs mt-2 mb-6" style={{ color: INK_MUTED }}>
           {t('doubling.stakesIncrease', { from: cube.value, to: nextValue, player: answeringPlayer })}
         </p>
 
@@ -61,7 +71,12 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
           <button
             type="button"
             onClick={onAccept}
-            className="py-3 px-4 border border-[#c2a278] bg-[#c2a278] text-[#140e0a] text-xs uppercase tracking-[0.15em] font-semibold rounded-sm hover:bg-[#d6b78d] transition-colors cursor-pointer"
+            className="py-3 px-4 text-xs uppercase tracking-[0.15em] font-semibold rounded-md transition-transform active:scale-[0.98] cursor-pointer"
+            style={{
+              background: `linear-gradient(160deg,#cba766,#a3773f)`,
+              color: '#2a1c0e',
+              boxShadow: '0 10px 22px rgba(60,38,10,0.35), inset 0 1px 0 rgba(255,255,255,0.4)',
+            }}
           >
             {t('doubling.accept', { value: nextValue })}
           </button>
@@ -70,7 +85,8 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
           <button
             type="button"
             onClick={onDrop}
-            className="py-3 px-4 border border-[#2d1e15] bg-[#1a130f] hover:border-rose-800 hover:text-rose-300 text-[#e0d5c1]/70 text-xs uppercase tracking-[0.15em] font-semibold rounded-sm transition-colors cursor-pointer"
+            className="py-3 px-4 text-xs uppercase tracking-[0.15em] font-semibold rounded-md transition-colors cursor-pointer"
+            style={{ border: '1px solid rgba(139,30,30,0.35)', color: '#7a231f', background: 'rgba(139,30,30,0.06)' }}
           >
             {t('doubling.drop', { value: cube.value })}
           </button>
@@ -81,7 +97,8 @@ export const DoublingModal: React.FC<DoublingModalProps> = ({
           <button
             type="button"
             onClick={onBeaver}
-            className="w-full mt-3 py-2.5 border border-[#4a3528] bg-[#1a130f] text-[#c2a278] text-[11px] uppercase tracking-wider font-semibold rounded-sm hover:border-[#c2a278] transition-colors cursor-pointer"
+            className="w-full mt-3 py-2.5 text-[11px] uppercase tracking-wider font-semibold rounded-md transition-colors cursor-pointer"
+            style={{ border: `1px solid ${RULE}`, background: 'rgba(58,42,24,0.06)', color: BRASS }}
           >
             {t('doubling.beaver', { value: nextValue * 2 })}
           </button>

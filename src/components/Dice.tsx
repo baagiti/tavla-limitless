@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Player, GameMode } from '../types/backgammon';
 import { Crown, Bot, User, Dices } from 'lucide-react';
+import { INK, INK_MUTED, BRASS, RULE, serif, ledgerCardStyle } from './LedgerUI';
 
 interface DiceProps {
   dice: number[];
@@ -169,10 +170,11 @@ export const Dice: React.FC<DiceProps> = ({
     return (
       <div
         id="opening-dice-stage"
-        className="flex flex-col items-center bg-[#140e0a]/95 backdrop-blur-md border border-[#e5c07b]/40 rounded-lg p-3 sm:p-4 shadow-[0_15px_35px_rgba(0,0,0,0.9)] max-w-sm sm:max-w-md w-full mx-auto"
+        className="flex flex-col items-center rounded-lg p-3 sm:p-4 max-w-sm sm:max-w-md w-full mx-auto"
+        style={{ ...ledgerCardStyle, boxShadow: '0 20px 45px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(184,147,90,0.4)' }}
       >
         {/* Header title */}
-        <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-[#e5c07b] mb-3">
+        <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-3" style={{ color: BRASS }}>
           <Dices className="w-3.5 h-3.5" />
           <span>{t('dice.openingRollTitle')}</span>
         </div>
@@ -181,8 +183,8 @@ export const Dice: React.FC<DiceProps> = ({
         <div className="flex items-center justify-around w-full gap-3 sm:gap-6 py-2">
           {/* WHITE DIE SLOT */}
           <div className="flex flex-col items-center flex-1">
-            <div className="flex items-center gap-1 mb-1.5 text-[10px] uppercase font-mono tracking-wider text-[#e0d5c1]/80">
-              {isWhiteHuman ? <User className="w-3 h-3 text-[#c2a278]" /> : <Bot className="w-3 h-3 text-[#c2a278]" />}
+            <div className="flex items-center gap-1 mb-1.5 text-[10px] uppercase font-mono tracking-wider" style={{ color: INK_MUTED }}>
+              {isWhiteHuman ? <User className="w-3 h-3" style={{ color: BRASS }} /> : <Bot className="w-3 h-3" style={{ color: BRASS }} />}
               <span>{isWhiteHuman ? (gameMode === 'local' ? t('players.white') : t('dice.you')) : t('dice.aiWhite')}</span>
             </div>
 
@@ -215,19 +217,26 @@ export const Dice: React.FC<DiceProps> = ({
                   whileTap={{ scale: 0.94 }}
                   onClick={() => handleOpeningClick('white')}
                   disabled={isRolling}
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border-2 border-dashed border-[#e5c07b] bg-[#2d1e15] hover:bg-[#e5c07b] hover:text-[#140e0a] text-[#e5c07b] flex flex-col items-center justify-center transition-all shadow-lg animate-pulse cursor-pointer"
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border-2 border-dashed flex flex-col items-center justify-center transition-all shadow-lg animate-pulse cursor-pointer"
+                  style={{ borderColor: BRASS, background: 'rgba(163,119,63,0.1)', color: BRASS }}
                 >
                   <Dices className="w-4 h-4" />
                   <span className="text-[9px] font-bold uppercase tracking-tight mt-0.5">{t('dice.rollDie')}</span>
                 </motion.button>
               ) : (
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-[#4a3528] bg-[#1a130f] flex flex-col items-center justify-center text-[#c2a278]/60 text-[9px] uppercase font-mono animate-pulse">
+                <div
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex flex-col items-center justify-center text-[9px] uppercase font-mono animate-pulse"
+                  style={{ border: `1px solid ${RULE}`, background: 'rgba(58,42,24,0.06)', color: BRASS, opacity: 0.75 }}
+                >
                   <span>{t('dice.aiRollingShort')}</span>
                   <span>{t('dice.rollingEllipsis')}</span>
                 </div>
               )
             ) : (
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-dashed border-[#4a3528]/50 bg-[#140e0a]/50 flex items-center justify-center text-[#e0d5c1]/30 text-[9px] font-mono">
+              <div
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-dashed flex items-center justify-center text-[9px] font-mono"
+                style={{ borderColor: RULE, background: 'rgba(58,42,24,0.03)', color: INK_MUTED, opacity: 0.6 }}
+              >
                 {t('dice.waiting')}
               </div>
             )}
@@ -235,9 +244,9 @@ export const Dice: React.FC<DiceProps> = ({
 
           {/* VS / Result Divider */}
           <div className="flex flex-col items-center justify-center px-1">
-            <span className="text-[10px] font-mono font-bold text-[#c2a278]/60 uppercase">VS</span>
+            <span className="text-[10px] font-mono font-bold uppercase" style={{ color: INK_MUTED }}>VS</span>
             {isTie && (
-              <span className="text-[8px] uppercase tracking-wider text-amber-400 font-bold mt-1 text-center animate-pulse">
+              <span className="text-[8px] uppercase tracking-wider font-bold mt-1 text-center animate-pulse" style={{ color: '#9a6a1f' }}>
                 {t('dice.tieExclaim')}
               </span>
             )}
@@ -245,8 +254,8 @@ export const Dice: React.FC<DiceProps> = ({
 
           {/* BLACK DIE SLOT */}
           <div className="flex flex-col items-center flex-1">
-            <div className="flex items-center gap-1 mb-1.5 text-[10px] uppercase font-mono tracking-wider text-[#e0d5c1]/80">
-              {isBlackHuman ? <User className="w-3 h-3 text-[#c2a278]" /> : <Bot className="w-3 h-3 text-[#c2a278]" />}
+            <div className="flex items-center gap-1 mb-1.5 text-[10px] uppercase font-mono tracking-wider" style={{ color: INK_MUTED }}>
+              {isBlackHuman ? <User className="w-3 h-3" style={{ color: BRASS }} /> : <Bot className="w-3 h-3" style={{ color: BRASS }} />}
               <span>{isBlackHuman ? (gameMode === 'local' ? t('players.black') : t('dice.you')) : t('dice.aiBlack')}</span>
             </div>
 
@@ -279,19 +288,26 @@ export const Dice: React.FC<DiceProps> = ({
                   whileTap={{ scale: 0.94 }}
                   onClick={() => handleOpeningClick('black')}
                   disabled={isRolling}
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border-2 border-dashed border-[#e5c07b] bg-[#2d1e15] hover:bg-[#e5c07b] hover:text-[#140e0a] text-[#e5c07b] flex flex-col items-center justify-center transition-all shadow-lg animate-pulse cursor-pointer"
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border-2 border-dashed flex flex-col items-center justify-center transition-all shadow-lg animate-pulse cursor-pointer"
+                  style={{ borderColor: BRASS, background: 'rgba(163,119,63,0.1)', color: BRASS }}
                 >
                   <Dices className="w-4 h-4" />
                   <span className="text-[9px] font-bold uppercase tracking-tight mt-0.5">{t('dice.rollDie')}</span>
                 </motion.button>
               ) : (
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-[#4a3528] bg-[#1a130f] flex flex-col items-center justify-center text-[#c2a278]/60 text-[9px] uppercase font-mono animate-pulse">
+                <div
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex flex-col items-center justify-center text-[9px] uppercase font-mono animate-pulse"
+                  style={{ border: `1px solid ${RULE}`, background: 'rgba(58,42,24,0.06)', color: BRASS, opacity: 0.75 }}
+                >
                   <span>{t('dice.aiRollingShort')}</span>
                   <span>{t('dice.rollingEllipsis')}</span>
                 </div>
               )
             ) : (
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-dashed border-[#4a3528]/50 bg-[#140e0a]/50 flex items-center justify-center text-[#e0d5c1]/30 text-[9px] font-mono">
+              <div
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg border border-dashed flex items-center justify-center text-[9px] font-mono"
+                style={{ borderColor: RULE, background: 'rgba(58,42,24,0.03)', color: INK_MUTED, opacity: 0.6 }}
+              >
                 {t('dice.waiting')}
               </div>
             )}
@@ -311,19 +327,27 @@ export const Dice: React.FC<DiceProps> = ({
               whileTap={{ scale: 0.95 }}
               onClick={() => handleOpeningClick()}
               disabled={isRolling}
-              className="px-6 py-2 rounded-full border border-[#e5c07b] bg-gradient-to-r from-[#8b6b47] via-[#e5c07b] to-[#8b6b47] text-[#140e0a] text-xs font-bold uppercase tracking-wider shadow-[0_0_16px_rgba(229,192,123,0.6)] flex items-center gap-2 cursor-pointer hover:brightness-110"
+              className="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer"
+              style={{
+                background: `linear-gradient(160deg,#cba766,#a3773f)`,
+                color: '#2a1c0e',
+                boxShadow: '0 10px 22px rgba(60,38,10,0.35), inset 0 1px 0 rgba(255,255,255,0.4)',
+              }}
             >
-              <Dices className="w-4 h-4 text-[#140e0a]" />
+              <Dices className="w-4 h-4" style={{ color: '#2a1c0e' }} />
               <span>{t('dice.rollAgain')}</span>
             </motion.button>
           </motion.div>
         )}
 
         {/* Status Prompt Footer */}
-        <div className="text-[10px] text-[#c2a278]/90 font-medium text-center mt-2 px-2.5 py-1 bg-[#1a130f] border border-[#2d1e15] rounded w-full">
+        <div
+          className="text-[10px] font-medium text-center mt-2 px-2.5 py-1 rounded w-full"
+          style={{ color: BRASS, background: 'rgba(58,42,24,0.06)', border: `1px solid ${RULE}` }}
+        >
           {isBothRolled ? (
             isTie ? (
-              <span className="text-amber-300 font-semibold">
+              <span className="font-semibold" style={{ color: '#9a6a1f' }}>
                 {t('dice.tieResult', { white: openingDice.white, black: openingDice.black })}
               </span>
             ) : (

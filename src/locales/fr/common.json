@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "Équilibré",
     "difficultyHard": "Difficile",
     "difficultyHardDesc": "Vrai moteur de recherche, pas de chance — peut surprendre même les joueurs confiants.",
+    "difficultyMaster": "Maître",
+    "difficultyMasterDesc": "Tout ce que fait Hard, avec une recherche bien plus approfondie — le niveau le plus fort de ce moteur.",
     "yourColor": "Vos pions",
     "playWhite": "Jouer les blancs",
     "playBlack": "Jouer les rouges",
@@ -329,6 +331,7 @@
     "empty": "Aucun coup enregistré pour cette partie pour le moment.",
     "betterMove": "Meilleur coup :",
     "yourMove": "Votre coup",
-    "tapToCompare": "Touchez pour voir le plateau"
+    "tapToCompare": "Touchez pour voir le plateau",
+    "analyzing": "Analyse du tour {{current}} sur {{total}}…"
   }
 }

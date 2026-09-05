@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "Equilibrada",
     "difficultyHard": "Difícil",
     "difficultyHardDesc": "Motor de búsqueda real, no suerte — puede sorprender incluso a jugadores seguros de sí mismos.",
+    "difficultyMaster": "Maestro",
+    "difficultyMasterDesc": "Todo lo que hace Hard, con una búsqueda mucho más profunda — el nivel más fuerte de este motor.",
     "yourColor": "Tus fichas",
     "playWhite": "Jugar con blancas",
     "playBlack": "Jugar con rojas",
@@ -329,6 +331,7 @@
     "empty": "Todavía no hay jugadas registradas para esta partida.",
     "betterMove": "Mejor:",
     "yourMove": "Tu Jugada",
-    "tapToCompare": "Toca para ver el tablero"
+    "tapToCompare": "Toca para ver el tablero",
+    "analyzing": "Analizando el turno {{current}} de {{total}}…"
   }
 }

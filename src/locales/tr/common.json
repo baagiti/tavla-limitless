@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Tavla",
+    "title": "Backgammon",
     "subtitle": "LIMITLESS",
     "newMatch": "Yeni Maç",
     "settings": "Ayarlar"
@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "Dengeli",
     "difficultyHard": "Zor",
     "difficultyHardDesc": "Şansa değil, gerçek hesaplamaya dayanır — kendine güvenen oyuncuları bile şaşırtabilir.",
+    "difficultyMaster": "Master",
+    "difficultyMasterDesc": "Zor'un yaptığı her şeyi, çok daha kapsamlı bir aramayla yapar — motorun ulaşabildiği en güçlü seviye.",
     "yourColor": "Sizin Taşınız",
     "playWhite": "Beyaz ile Oyna",
     "playBlack": "Kırmızı ile Oyna",
@@ -329,6 +331,7 @@
     "empty": "Bu oyun için henüz kayıtlı hamle yok.",
     "betterMove": "Daha iyisi:",
     "yourMove": "Senin Hamlen",
-    "tapToCompare": "Tahtayı görmek için dokun"
+    "tapToCompare": "Tahtayı görmek için dokun",
+    "analyzing": "{{current}}/{{total}}. hamle analiz ediliyor…"
   }
 }

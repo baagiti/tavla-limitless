@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "बैकगैमन",
+    "title": "Backgammon",
     "subtitle": "LIMITLESS",
     "newMatch": "नया मैच",
     "settings": "सेटिंग्स"
@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "संतुलित",
     "difficultyHard": "कठिन",
     "difficultyHardDesc": "किस्मत नहीं, असली सर्च इंजन — आत्मविश्वासी खिलाड़ियों को भी चौंका सकता है।",
+    "difficultyMaster": "मास्टर",
+    "difficultyMasterDesc": "Hard जो कुछ भी करता है, बस कहीं अधिक गहराई से खोजकर करता है — यह इंजन जितना मज़बूत हो सकता है, उतना।",
     "yourColor": "आपकी गोटियां",
     "playWhite": "सफ़ेद से खेलें",
     "playBlack": "लाल से खेलें",
@@ -329,6 +331,7 @@
     "empty": "इस गेम के लिए अभी तक कोई चाल दर्ज नहीं हुई है।",
     "betterMove": "बेहतर:",
     "yourMove": "आपकी चाल",
-    "tapToCompare": "बोर्ड देखने के लिए टैप करें"
+    "tapToCompare": "बोर्ड देखने के लिए टैप करें",
+    "analyzing": "चाल {{current}} / {{total}} का विश्लेषण हो रहा है…"
   }
 }

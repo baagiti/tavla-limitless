@@ -24,3 +24,4 @@ android/keystore/
 android/key.properties
 *.jks
 *.keystore
+_backup_ingame_ui/

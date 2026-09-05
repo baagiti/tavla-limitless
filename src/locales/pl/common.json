@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "Zrównoważony",
     "difficultyHard": "Trudny",
     "difficultyHardDesc": "Prawdziwy silnik obliczeniowy, nie szczęście — może zaskoczyć nawet pewnych siebie graczy.",
+    "difficultyMaster": "Mistrz",
+    "difficultyMasterDesc": "Wszystko, co robi Hard, ale z dużo dokładniejszym przeszukiwaniem — najsilniejszy poziom tego silnika.",
     "yourColor": "Twoje pionki",
     "playWhite": "Graj białymi",
     "playBlack": "Graj czerwonymi",
@@ -331,6 +333,7 @@
     "empty": "Dla tej gry nie zarejestrowano jeszcze żadnych ruchów.",
     "betterMove": "Lepiej:",
     "yourMove": "Twój ruch",
-    "tapToCompare": "Dotknij, aby zobaczyć planszę"
+    "tapToCompare": "Dotknij, aby zobaczyć planszę",
+    "analyzing": "Analizowanie ruchu {{current}} z {{total}}…"
   }
 }

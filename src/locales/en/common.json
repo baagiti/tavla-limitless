@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "Balanced",
     "difficultyHard": "Hard",
     "difficultyHardDesc": "Real search engine, not luck — can surprise even confident players.",
+    "difficultyMaster": "Master",
+    "difficultyMasterDesc": "Everything Hard does, searched far more thoroughly — the strongest this engine gets.",
     "yourColor": "Your Checkers",
     "playWhite": "Play White",
     "playBlack": "Play Red",
@@ -329,6 +331,7 @@
     "empty": "No moves recorded for this game yet.",
     "betterMove": "Better:",
     "yourMove": "Your Move",
-    "tapToCompare": "Tap to see the board"
+    "tapToCompare": "Tap to see the board",
+    "analyzing": "Analyzing turn {{current}} of {{total}}…"
   }
 }

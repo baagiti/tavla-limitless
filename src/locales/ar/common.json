@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "الطاولة",
+    "title": "Backgammon",
     "subtitle": "LIMITLESS",
     "newMatch": "مباراة جديدة",
     "settings": "الإعدادات"
@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "متوازن",
     "difficultyHard": "صعب",
     "difficultyHardDesc": "محرك بحث حقيقي، لا حظ — قد يفاجئ حتى اللاعبين الواثقين من أنفسهم.",
+    "difficultyMaster": "خبير",
+    "difficultyMasterDesc": "كل ما يفعله الوضع الصعب، لكن ببحث أكثر شمولاً بكثير — أقوى مستوى يصل إليه هذا المحرك.",
     "yourColor": "أحجارك",
     "playWhite": "العب بالأبيض",
     "playBlack": "العب بالأحمر",
@@ -332,6 +334,7 @@
     "empty": "لا توجد حركات مسجلة لهذه المباراة بعد.",
     "betterMove": "الأفضل:",
     "yourMove": "حركتك",
-    "tapToCompare": "اضغط لرؤية الرقعة"
+    "tapToCompare": "اضغط لرؤية الرقعة",
+    "analyzing": "جارٍ تحليل النقلة {{current}} من {{total}}…"
   }
 }

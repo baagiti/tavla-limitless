@@ -32,6 +32,10 @@ export interface MoveLogEntry {
   isMistake: boolean;
   betterSteps?: MoveStep[];
   boardBefore: BoardState;
+  // True once this turn has been re-checked by the slower post-match 3-ply
+  // analysis (see analyzeBestTurn in logic/ai.ts), rather than only the
+  // quick live 2-ply check every turn gets during play.
+  deepChecked?: boolean;
 }
 
 export interface TurnSequence {

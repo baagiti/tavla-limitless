@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "西洋双陆棋",
+    "title": "Backgammon",
     "subtitle": "LIMITLESS",
     "newMatch": "新比赛",
     "settings": "设置"
@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "均衡",
     "difficultyHard": "困难",
     "difficultyHardDesc": "真正的搜索引擎，而非运气——即使是自信的玩家也可能被打个措手不及。",
+    "difficultyMaster": "大师",
+    "difficultyMasterDesc": "Hard 的一切能力，只是搜索更加彻底——这是引擎能达到的最强水平。",
     "yourColor": "你的棋子",
     "playWhite": "执白棋",
     "playBlack": "执红棋",
@@ -328,6 +330,7 @@
     "empty": "本局尚无记录的走法。",
     "betterMove": "更好的走法：",
     "yourMove": "你的走法",
-    "tapToCompare": "点按查看棋盘"
+    "tapToCompare": "点按查看棋盘",
+    "analyzing": "正在分析第 {{current}} / {{total}} 步…"
   }
 }

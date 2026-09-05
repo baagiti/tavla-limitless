@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "Ausgewogen",
     "difficultyHard": "Schwer",
     "difficultyHardDesc": "Echte Suchmaschine, kein Zufall — kann selbst selbstbewusste Spieler überraschen.",
+    "difficultyMaster": "Meister",
+    "difficultyMasterDesc": "Alles, was Hard macht, nur mit deutlich gründlicherer Suche — die stärkste Stufe dieser Engine.",
     "yourColor": "Deine Steine",
     "playWhite": "Mit Weiß spielen",
     "playBlack": "Mit Rot spielen",
@@ -329,6 +331,7 @@
     "empty": "Für dieses Spiel sind noch keine Züge aufgezeichnet.",
     "betterMove": "Besser:",
     "yourMove": "Dein Zug",
-    "tapToCompare": "Tippen, um das Brett zu sehen"
+    "tapToCompare": "Tippen, um das Brett zu sehen",
+    "analyzing": "Zug {{current}} von {{total}} wird analysiert…"
   }
 }

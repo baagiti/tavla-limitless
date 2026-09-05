@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Нарды",
+    "title": "Backgammon",
     "subtitle": "LIMITLESS",
     "newMatch": "Новый матч",
     "settings": "Настройки"
@@ -53,6 +53,8 @@
     "difficultyMediumDesc": "Сбалансированная",
     "difficultyHard": "Сложная",
     "difficultyHardDesc": "Настоящий поисковый движок, а не удача — может удивить даже уверенных в себе игроков.",
+    "difficultyMaster": "Мастер",
+    "difficultyMasterDesc": "Всё, что делает Hard, но с гораздо более тщательным поиском — максимальная сила этого движка.",
     "yourColor": "Ваши шашки",
     "playWhite": "Играть белыми",
     "playBlack": "Играть красными",
@@ -331,6 +333,7 @@
     "empty": "Для этой игры пока нет записанных ходов.",
     "betterMove": "Лучше:",
     "yourMove": "Ваш ход",
-    "tapToCompare": "Нажмите, чтобы увидеть доску"
+    "tapToCompare": "Нажмите, чтобы увидеть доску",
+    "analyzing": "Анализ хода {{current}} из {{total}}…"
   }
 }

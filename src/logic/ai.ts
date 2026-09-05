@@ -1,9 +1,19 @@
-import { BoardState, Player, AIDifficulty, TurnSequence } from '../types/backgammon';
+import { BoardState, Player, AIDifficulty, TurnSequence, MoveStep } from '../types/backgammon';
 import {
   calculatePipCount,
   getAllLegalTurnSequences,
   canBearOff,
+  applyMove,
 } from './rules';
+
+// Minimum equity gap (in evaluateBoard's score units) before a human turn is
+// flagged as a mistake. Calibrated empirically: simulating a moderately
+// careless player (the 'medium' AI tier) across ~280 turns, its equity loss
+// vs. the true best move exceeded 40 exactly zero times (max observed: 32).
+// A 40-point bar meant this basically never fired in real play. 15 catches
+// roughly the worst ~2.5% of turns in that simulation — real, noticeable
+// errors — without flagging routine near-ties.
+export const MISTAKE_EQUITY_THRESHOLD = 15;
 
 // Precomputed probability table of being hit from N pips away by a single checker (out of 36 combinations)
 const SHOT_PROBABILITIES: { [distance: number]: number } = {
@@ -63,6 +73,53 @@ function calculateAnticipatedOpponentHitRisk(board: BoardState, player: Player):
 }
 
 /**
+ * True once neither side can ever hit the other again — every white checker
+ * has already crossed past every black checker. Priming, blot risk, and
+ * anchors all assume future contact, so once this is true they stop meaning
+ * anything and pip count becomes almost the entire story.
+ */
+function isPureRace(board: BoardState): boolean {
+  if (board.bar.white > 0 || board.bar.black > 0) return false;
+
+  let whiteRearmost = -1; // white travels toward 0, so "rearmost" = largest remaining index
+  let blackRearmost = 24; // black travels toward 23, so "rearmost" = smallest remaining index
+  let whiteOnBoard = false;
+  let blackOnBoard = false;
+
+  for (let i = 0; i < 24; i++) {
+    const pt = board.points[i];
+    if (pt.count === 0) continue;
+    if (pt.color === 'white') {
+      whiteOnBoard = true;
+      if (i > whiteRearmost) whiteRearmost = i;
+    } else if (pt.color === 'black') {
+      blackOnBoard = true;
+      if (i < blackRearmost) blackRearmost = i;
+    }
+  }
+
+  if (!whiteOnBoard || !blackOnBoard) return true;
+  return whiteRearmost < blackRearmost;
+}
+
+// Approx. standard deviation of the pips used in a single backgammon turn
+// (average ~8.17 pips/turn once doubles are weighted in). Used to scale a
+// pip lead into a win-probability curve rather than treating it as linear.
+const ROLL_PIP_STD_DEV = 8.17;
+
+/**
+ * Converts a pip-count lead in a contact-free race into a bounded equity
+ * score via a win-probability curve, instead of scaling it linearly forever.
+ * A 40-pip lead isn't "twice as good" as a 20-pip lead — it's just a more
+ * lopsided win probability — and this keeps race scores in the same rough
+ * range the rest of evaluateBoard uses instead of growing unbounded.
+ */
+function raceEquityFromPipDiff(pipDiff: number): number {
+  const winProb = 1 / (1 + Math.exp(-pipDiff / ROLL_PIP_STD_DEV));
+  return (winProb - 0.5) * 400;
+}
+
+/**
  * Calculates positional equity for a given player on a board
  */
 export function evaluateBoard(board: BoardState, player: Player, difficulty: AIDifficulty): number {
@@ -83,10 +140,15 @@ export function evaluateBoard(board: BoardState, player: Player, difficulty: AID
 
   let score = (myBorne - oppBorne) * 30;
 
-  // 2. Pip count racing advantage
+  // 2. Pip count racing advantage. Once it's a pure race, weight the lead
+  // through a win-probability curve instead of a flat linear multiplier —
+  // see raceEquityFromPipDiff. Contact-only sections (priming, blot risk,
+  // anchors) are skipped entirely in that case since they assume future
+  // contact that can no longer happen.
   const pip = calculatePipCount(board);
   const pipDiff = player === 'white' ? pip.black - pip.white : pip.white - pip.black;
-  score += pipDiff * 1.6;
+  const raceMode = isPureRace(board);
+  score += raceMode ? raceEquityFromPipDiff(pipDiff) : pipDiff * 1.6;
 
   // 3. Bar penalties & rewards
   const myBar = board.bar[player];
@@ -94,69 +156,72 @@ export function evaluateBoard(board: BoardState, player: Player, difficulty: AID
   score -= myBar * 48;
   score += oppBar * 42;
 
-  // 4. Prime formations & Made points
-  let myConsecutivePoints = 0;
-  let maxMyPrime = 0;
-  let oppConsecutivePoints = 0;
-  let maxOppPrime = 0;
+  // 4. Prime formations & Made points (contact-only — meaningless in a pure race)
+  if (!raceMode) {
+    let myConsecutivePoints = 0;
+    let maxMyPrime = 0;
+    let oppConsecutivePoints = 0;
+    let maxOppPrime = 0;
+    let myHomePointsMade = 0;
+    let oppHomePointsMade = 0;
 
-  let myHomePointsMade = 0;
-  let oppHomePointsMade = 0;
+    for (let i = 0; i < 24; i++) {
+      const pt = board.points[i];
+      const isMyHome = player === 'white' ? i <= 5 : i >= 18;
+      const isOppHome = opponent === 'white' ? i <= 5 : i >= 18;
 
-  for (let i = 0; i < 24; i++) {
-    const pt = board.points[i];
-    const isMyHome = player === 'white' ? i <= 5 : i >= 18;
-    const isOppHome = opponent === 'white' ? i <= 5 : i >= 18;
+      if (pt.count >= 2) {
+        if (pt.color === player) {
+          myConsecutivePoints++;
+          if (myConsecutivePoints > maxMyPrime) maxMyPrime = myConsecutivePoints;
+          oppConsecutivePoints = 0;
 
-    if (pt.count >= 2) {
-      if (pt.color === player) {
-        myConsecutivePoints++;
-        if (myConsecutivePoints > maxMyPrime) maxMyPrime = myConsecutivePoints;
-        oppConsecutivePoints = 0;
-
-        if (isMyHome) {
-          myHomePointsMade++;
-          score += 16;
-          // Golden Points: 5-point (White idx 4, Black idx 19)
-          if ((player === 'white' && i === 4) || (player === 'black' && i === 19)) {
-            score += 24;
-          }
-          // 4-point (White idx 3, Black idx 20)
-          if ((player === 'white' && i === 3) || (player === 'black' && i === 20)) {
+          if (isMyHome) {
+            myHomePointsMade++;
             score += 16;
+            // Golden Points: 5-point (White idx 4, Black idx 19)
+            if ((player === 'white' && i === 4) || (player === 'black' && i === 19)) {
+              score += 24;
+            }
+            // 4-point (White idx 3, Black idx 20)
+            if ((player === 'white' && i === 3) || (player === 'black' && i === 20)) {
+              score += 16;
+            }
+            // Bar Point: 7-point (White idx 6, Black idx 17)
+            if ((player === 'white' && i === 6) || (player === 'black' && i === 17)) {
+              score += 18;
+            }
           }
-          // Bar Point: 7-point (White idx 6, Black idx 17)
-          if ((player === 'white' && i === 6) || (player === 'black' && i === 17)) {
-            score += 18;
-          }
-        }
-      } else if (pt.color === opponent) {
-        oppConsecutivePoints++;
-        if (oppConsecutivePoints > maxOppPrime) maxOppPrime = oppConsecutivePoints;
-        myConsecutivePoints = 0;
+        } else if (pt.color === opponent) {
+          oppConsecutivePoints++;
+          if (oppConsecutivePoints > maxOppPrime) maxOppPrime = oppConsecutivePoints;
+          myConsecutivePoints = 0;
 
-        if (isOppHome) {
-          oppHomePointsMade++;
-          score -= 16;
+          if (isOppHome) {
+            oppHomePointsMade++;
+            score -= 16;
+          }
         }
+      } else {
+        myConsecutivePoints = 0;
+        oppConsecutivePoints = 0;
       }
-    } else {
-      myConsecutivePoints = 0;
-      oppConsecutivePoints = 0;
+    }
+
+    // Prime power (4, 5, 6-prime creates impenetrable wall)
+    if (maxMyPrime >= 4) score += Math.pow(maxMyPrime - 2, 2) * 18;
+    if (maxOppPrime >= 4) score -= Math.pow(maxOppPrime - 2, 2) * 18;
+
+    // Blitz bonus: if opponent has checkers on bar and AI has strong home board
+    if (oppBar > 0 && myHomePointsMade >= 3) {
+      score += myHomePointsMade * 15 * oppBar;
     }
   }
 
-  // Prime power (4, 5, 6-prime creates impenetrable wall)
-  if (maxMyPrime >= 4) score += Math.pow(maxMyPrime - 2, 2) * 18;
-  if (maxOppPrime >= 4) score -= Math.pow(maxOppPrime - 2, 2) * 18;
-
-  // Blitz bonus: if opponent has checkers on bar and AI has strong home board
-  if (oppBar > 0 && myHomePointsMade >= 3) {
-    score += myHomePointsMade * 15 * oppBar;
-  }
-
-  // 5. Blot Risk & Anticipated Opponent Moves
-  if (normalizedDiff === 'hard') {
+  // 5. Blot Risk & Anticipated Opponent Moves (contact-only — meaningless in a pure race)
+  if (raceMode) {
+    // no-op: nothing can be hit anymore
+  } else if (normalizedDiff === 'hard') {
     // Advanced tactical anticipation
     const hitRisk = calculateAnticipatedOpponentHitRisk(board, player);
     score -= hitRisk * 1.5;
@@ -187,19 +252,21 @@ export function evaluateBoard(board: BoardState, player: Player, difficulty: AID
     score -= myBlots * 4;
   }
 
-  // 6. Anchors in Opponent Home Board (Holding defensive outposts)
-  if (player === 'white') {
-    for (let i = 18; i < 24; i++) {
-      if (board.points[i].color === 'white' && board.points[i].count >= 2) {
-        score += 20; // Anchor
-        if (i === 19) score += 10; // Advanced 20-point anchor
+  // 6. Anchors in Opponent Home Board (contact-only — meaningless in a pure race)
+  if (!raceMode) {
+    if (player === 'white') {
+      for (let i = 18; i < 24; i++) {
+        if (board.points[i].color === 'white' && board.points[i].count >= 2) {
+          score += 20; // Anchor
+          if (i === 19) score += 10; // Advanced 20-point anchor
+        }
       }
-    }
-  } else {
-    for (let i = 0; i < 6; i++) {
-      if (board.points[i].color === 'black' && board.points[i].count >= 2) {
-        score += 20;
-        if (i === 4) score += 10; // Advanced anchor
+    } else {
+      for (let i = 0; i < 6; i++) {
+        if (board.points[i].color === 'black' && board.points[i].count >= 2) {
+          score += 20;
+          if (i === 4) score += 10; // Advanced anchor
+        }
       }
     }
   }
@@ -219,6 +286,33 @@ export function evaluateBoard(board: BoardState, player: Player, difficulty: AID
   }
 
   return score;
+}
+
+// How close a candidate's cheap 0-ply score has to be to the top-ranked
+// candidate to count as "still in contention" for computeAdaptiveWidth —
+// roughly the value of a single made point.
+const CLOSE_GAP = 20;
+
+/**
+ * How many of the top-ranked (by 0-ply score) candidate moves to deepen with
+ * the expensive per-roll search. A fixed width wastes time deepening moves
+ * that were never going to be chosen when one move is clearly best, and
+ * under-searches when several moves are genuinely close. Instead, count how
+ * many candidates sit within CLOSE_GAP of the top score — that's roughly
+ * "how many moves are actually still in contention" — and deepen exactly
+ * that many, clamped to [minWidth, maxWidth].
+ */
+function computeAdaptiveWidth(
+  ranked: { zeroPlyScore: number }[],
+  minWidth: number,
+  maxWidth: number
+): number {
+  const topScore = ranked[0].zeroPlyScore;
+  let contenders = 0;
+  for (const c of ranked) {
+    if (topScore - c.zeroPlyScore <= CLOSE_GAP) contenders++;
+  }
+  return Math.max(minWidth, Math.min(maxWidth, contenders));
 }
 
 // Every distinct dice-roll outcome (21 combinations), weighted by how many of
@@ -338,18 +432,22 @@ export function chooseBestTurn(
   // 3. Hard / Master AI: 2-ply lookahead. Evaluating every legal first move
   // against all 21 opponent dice rolls would be too slow (each expansion re-runs
   // full move generation 21 times), so first rank every legal move with the
-  // cheap 0-ply heuristic, then only deepen the top candidates. Master deepens
-  // more candidates than Hard — that width is what actually separates the two
-  // tiers now, both share the same evaluation function.
+  // cheap 0-ply heuristic, then only deepen the top candidates.
   const rankedByZeroPly = sequences
     .map((seq) => ({ seq, zeroPlyScore: evaluateBoard(seq.finalBoard, player, 'hard') }))
     .sort((a, b) => b.zeroPlyScore - a.zeroPlyScore);
 
-  // Both tiers deepen a bounded number of candidates — unbounded 2-ply search
-  // was tested and can blow past several seconds on chaotic, blot-heavy
-  // positions with doubles (each extra candidate re-runs full move generation
-  // 21 times for the opponent's replies). Master deepens more than Hard.
-  const candidateWidth = difficulty === 'master' ? 14 : 5;
+  // How many candidates to deepen is adaptive, not fixed — see
+  // computeAdaptiveWidth. Master gets a wider band at both ends than Hard:
+  // it stays just as cheap as Hard on open-and-shut decisions, but is
+  // willing to search much wider than Hard ever does when several moves are
+  // genuinely close. That adaptive ceiling — not just "always search wider"
+  // — is what separates the two tiers now; both share the same evaluation
+  // function. Unbounded search was tested and can blow past several seconds
+  // on chaotic, blot-heavy positions with doubles (each extra candidate
+  // re-runs full move generation 21 times for the opponent's replies).
+  const [minWidth, maxWidth] = difficulty === 'master' ? [6, 20] : [3, 8];
+  const candidateWidth = computeAdaptiveWidth(rankedByZeroPly, minWidth, maxWidth);
   const candidates = rankedByZeroPly.slice(0, candidateWidth);
 
   let bestSeq = candidates[0].seq;
@@ -363,6 +461,112 @@ export function chooseBestTurn(
   }
 
   return bestSeq;
+}
+
+/**
+ * 3-ply equity: like evaluateTwoPly, but after the opponent's best reply is
+ * chosen it doesn't stop there — it also averages over the mover's own next
+ * 21 possible rolls and picks the mover's best 0-ply reply for each before
+ * scoring. That roughly squares the already-expensive per-roll search (21 →
+ * 21×21 move-generation calls per candidate), which is far too slow to run
+ * live during a match — see analyzeBestTurn, the only caller, which only
+ * runs after a match ends, one recorded turn at a time, with no time
+ * pressure on the player.
+ *
+ * Exported so callers can score the turn as it was actually played at the
+ * same depth as analyzeBestTurn's candidates — scoring one side with this
+ * and the other with plain evaluateBoard compares two different quantities
+ * (an averaged two-turn-ahead equity vs. an instantaneous one) and reads
+ * every move as a mistake, even the one the search itself would have played.
+ */
+export function evaluateThreePly(board: BoardState, player: Player): number {
+  const opponent: Player = player === 'white' ? 'black' : 'white';
+  let weightedTotal = 0;
+
+  for (const { dice, weight } of ALL_ROLLS) {
+    const oppSequences = getAllLegalTurnSequences(board, opponent, dice);
+
+    let bestOppFinalBoard = oppSequences[0]?.finalBoard ?? board;
+    let bestOppScore = -Infinity;
+    for (const seq of oppSequences) {
+      const oppScore = evaluateBoard(seq.finalBoard, opponent, 'hard');
+      if (oppScore > bestOppScore) {
+        bestOppScore = oppScore;
+        bestOppFinalBoard = seq.finalBoard;
+      }
+    }
+
+    // One more full layer: from the opponent's chosen reply, average over
+    // the mover's own next roll instead of scoring immediately.
+    let innerWeightedTotal = 0;
+    for (const { dice: myDice, weight: myWeight } of ALL_ROLLS) {
+      const mySequences = getAllLegalTurnSequences(bestOppFinalBoard, player, myDice);
+      let bestMyFinalBoard = mySequences[0]?.finalBoard ?? bestOppFinalBoard;
+      let bestMyScore = -Infinity;
+      for (const seq of mySequences) {
+        const myScore = evaluateBoard(seq.finalBoard, player, 'hard');
+        if (myScore > bestMyScore) {
+          bestMyScore = myScore;
+          bestMyFinalBoard = seq.finalBoard;
+        }
+      }
+      innerWeightedTotal += evaluateBoard(bestMyFinalBoard, player, 'hard') * myWeight;
+    }
+
+    weightedTotal += (innerWeightedTotal / 36) * weight;
+  }
+
+  return weightedTotal / 36;
+}
+
+/**
+ * Replays a recorded turn's steps onto its starting board to reconstruct the
+ * board a player actually ended up on. MoveLogEntry only stores boardBefore
+ * + steps, not the resulting board, so post-match analysis needs this to
+ * know what was actually played before it can score it.
+ */
+export function replayTurn(boardBefore: BoardState, steps: MoveStep[]): BoardState {
+  let current = boardBefore;
+  for (const step of steps) {
+    current = applyMove(current, step.player, step.from, step.to, step.dieUsed).nextBoard;
+  }
+  return current;
+}
+
+/**
+ * Post-match deep analysis for a single recorded turn — the engine's
+ * strongest mode. Live play has to respond before the next dice roll and
+ * narrows to a handful of candidates to stay fast; this runs after the match
+ * is over with no time pressure on the player, so every legal sequence for
+ * the roll gets the full 3-ply search rather than only the top few by a
+ * cheap 0-ply prefilter. Returns null only if there was no legal move to
+ * analyze.
+ */
+export function analyzeBestTurn(
+  board: BoardState,
+  player: Player,
+  dice: number[]
+): { bestSeq: TurnSequence; bestEquity: number } | null {
+  const sequences = getAllLegalTurnSequences(board, player, dice);
+  if (sequences.length === 0) return null;
+  if (sequences.length === 1) {
+    return {
+      bestSeq: sequences[0],
+      bestEquity: evaluateBoard(sequences[0].finalBoard, player, 'hard'),
+    };
+  }
+
+  let bestSeq = sequences[0];
+  let bestEquity = -Infinity;
+  for (const seq of sequences) {
+    const equity = evaluateThreePly(seq.finalBoard, player);
+    if (equity > bestEquity) {
+      bestEquity = equity;
+      bestSeq = seq;
+    }
+  }
+
+  return { bestSeq, bestEquity };
 }
 
 /**

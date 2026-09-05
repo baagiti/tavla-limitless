@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GameSettings, AIDifficulty, Player } from '../types/backgammon';
 import { Bot, Users, Trophy, Settings } from 'lucide-react';
+import { INK, INK_MUTED, BRASS, RULE, serif, ledgerCardStyle, LedgerToggle, LedgerPill } from './LedgerUI';
 
 interface MatchStartModalProps {
   isOpen: boolean;
@@ -13,14 +14,17 @@ interface MatchStartModalProps {
   onOpenSettings?: () => void;
 }
 
-const segBase =
-  'flex-1 py-2.5 px-2 rounded-sm border text-[11px] font-semibold uppercase tracking-wide transition-colors cursor-pointer flex items-center justify-center gap-1.5';
-const segActive = 'border-[#c2a278] bg-[#c2a278] text-[#140e0a]';
-const segInactive = 'border-[#2d1e15] bg-[#1a130f] text-[#e0d5c1]/70 hover:border-[#4a3528] hover:text-[#e0d5c1]';
-
 const SectionLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <label className="text-[10px] tracking-[0.15em] uppercase text-[#c2a278]/60 block mb-2">{children}</label>
+  <label className="text-[10px] tracking-[0.15em] uppercase block mb-2" style={{ color: BRASS }}>
+    {children}
+  </label>
 );
+
+const iconBtn: React.CSSProperties = {
+  border: `1px solid rgba(58,42,24,0.25)`,
+  background: 'rgba(58,42,24,0.06)',
+  color: INK,
+};
 
 export const MatchStartModal: React.FC<MatchStartModalProps> = ({
   isOpen,
@@ -44,11 +48,12 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
         initial={{ scale: 0.96, opacity: 0, y: 10 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.97, opacity: 0 }}
-        className="w-full max-w-md bg-[#140e0a] border border-[#2d1e15] rounded-sm shadow-2xl p-5 sm:p-6 text-[#e0d5c1] relative overflow-hidden"
+        className="w-full max-w-md rounded-lg p-5 sm:p-6 relative overflow-hidden ledger-scroll"
+        style={ledgerCardStyle}
       >
         {/* Header */}
         <div className="mb-5 flex items-center justify-between">
-          <h1 className="text-lg sm:text-xl font-serif font-bold tracking-wide text-[#f9f3e5]">
+          <h1 className="text-lg sm:text-xl" style={{ ...serif, fontWeight: 600, color: INK }}>
             {t('matchSetup.title')}
           </h1>
 
@@ -58,7 +63,8 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                 type="button"
                 onClick={onOpenSettings}
                 title={t('matchSetup.settings')}
-                className="p-2 rounded-sm border border-[#2d1e15] bg-[#1a130f] text-[#c2a278] hover:border-[#c2a278] transition-colors cursor-pointer"
+                className="p-2 rounded-full transition-colors cursor-pointer"
+                style={iconBtn}
               >
                 <Settings className="w-4 h-4" />
               </button>
@@ -68,7 +74,8 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                 type="button"
                 onClick={onOpenStats}
                 title={t('matchSetup.statistics')}
-                className="p-2 rounded-sm border border-[#2d1e15] bg-[#1a130f] text-[#c2a278] hover:border-[#c2a278] transition-colors cursor-pointer"
+                className="p-2 rounded-full transition-colors cursor-pointer"
+                style={iconBtn}
               >
                 <Trophy className="w-4 h-4" />
               </button>
@@ -81,28 +88,20 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
           <section>
             <SectionLabel>{t('matchSetup.opponentSelection')}</SectionLabel>
             <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ mode: 'ai' })}
-                className={`${segBase} ${settings.mode === 'ai' ? segActive : segInactive}`}
-              >
+              <LedgerPill selected={settings.mode === 'ai'} onClick={() => onUpdateSettings({ mode: 'ai' })}>
                 <Bot className="w-3.5 h-3.5" />
                 {t('matchSetup.aiOpponent')}
-              </button>
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ mode: 'local' })}
-                className={`${segBase} ${settings.mode === 'local' ? segActive : segInactive}`}
-              >
+              </LedgerPill>
+              <LedgerPill selected={settings.mode === 'local'} onClick={() => onUpdateSettings({ mode: 'local' })}>
                 <Users className="w-3.5 h-3.5" />
                 {t('matchSetup.passAndPlayTitle')}
-              </button>
+              </LedgerPill>
             </div>
 
             {settings.mode === 'ai' && (
               <div className="mt-3 space-y-3">
                 <div>
-                  <span className="text-[9px] tracking-[0.15em] uppercase text-[#e0d5c1]/40 block mb-1.5">
+                  <span className="text-[9px] tracking-[0.15em] uppercase block mb-1.5" style={{ color: INK_MUTED }}>
                     {t('matchSetup.aiDifficultyLevel')}
                   </span>
                   <div className="flex gap-1.5">
@@ -110,42 +109,41 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                       { key: 'easy', label: t('matchSetup.difficultyEasy') },
                       { key: 'medium', label: t('matchSetup.difficultyMedium') },
                       { key: 'hard', label: t('matchSetup.difficultyHard') },
-                    ].map((diff) => {
-                      const isSelected =
-                        settings.aiDifficulty === diff.key ||
-                        (diff.key === 'hard' && settings.aiDifficulty === 'master');
-                      return (
-                        <button
-                          key={diff.key}
-                          type="button"
-                          onClick={() => onUpdateSettings({ aiDifficulty: diff.key as AIDifficulty })}
-                          className={`${segBase} py-2 text-[10px] ${isSelected ? segActive : segInactive}`}
-                        >
-                          {diff.label}
-                        </button>
-                      );
-                    })}
+                      { key: 'master', label: t('matchSetup.difficultyMaster') },
+                    ].map((diff) => (
+                      <LedgerPill
+                        key={diff.key}
+                        selected={settings.aiDifficulty === diff.key}
+                        onClick={() => onUpdateSettings({ aiDifficulty: diff.key as AIDifficulty })}
+                        className="py-2 text-[10px]"
+                      >
+                        {diff.label}
+                      </LedgerPill>
+                    ))}
                   </div>
-                  {(settings.aiDifficulty === 'hard' || settings.aiDifficulty === 'master') && (
-                    <p className="text-[9px] text-[#c2a278]/60 mt-1.5 leading-relaxed">
+                  {settings.aiDifficulty === 'hard' && (
+                    <p className="text-[9px] mt-1.5 leading-relaxed" style={{ color: INK_MUTED }}>
                       {t('matchSetup.difficultyHardDesc')}
+                    </p>
+                  )}
+                  {settings.aiDifficulty === 'master' && (
+                    <p className="text-[9px] mt-1.5 leading-relaxed" style={{ color: INK_MUTED }}>
+                      {t('matchSetup.difficultyMasterDesc')}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <span className="text-[9px] tracking-[0.15em] uppercase text-[#e0d5c1]/40 block mb-1.5">
+                  <span className="text-[9px] tracking-[0.15em] uppercase block mb-1.5" style={{ color: INK_MUTED }}>
                     {t('matchSetup.yourColor')}
                   </span>
                   <div className="flex gap-1.5">
                     {(['white', 'black'] as Player[]).map((col) => (
-                      <button
+                      <LedgerPill
                         key={col}
-                        type="button"
+                        selected={settings.playerColor === col}
                         onClick={() => onUpdateSettings({ playerColor: col })}
-                        className={`${segBase} py-2 text-[10px] ${
-                          settings.playerColor === col ? segActive : segInactive
-                        }`}
+                        className="py-2 text-[10px]"
                       >
                         <span
                           className={`w-3 h-3 rounded-full shadow-sm shrink-0 ${
@@ -155,7 +153,7 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                           }`}
                         />
                         {col === 'white' ? t('matchSetup.playWhite') : t('matchSetup.playBlack')}
-                      </button>
+                      </LedgerPill>
                     ))}
                   </div>
                 </div>
@@ -167,46 +165,32 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
           <section>
             <SectionLabel>{t('matchSetup.ruleVariant')}</SectionLabel>
             <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ cubeMode: 'with_cube' })}
-                className={`${segBase} ${isCubeMode ? segActive : segInactive}`}
-              >
+              <LedgerPill selected={isCubeMode} onClick={() => onUpdateSettings({ cubeMode: 'with_cube' })}>
                 {t('matchSetup.doublingCubeTitle')}
-              </button>
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ cubeMode: 'no_cube' })}
-                className={`${segBase} ${!isCubeMode ? segActive : segInactive}`}
-              >
+              </LedgerPill>
+              <LedgerPill selected={!isCubeMode} onClick={() => onUpdateSettings({ cubeMode: 'no_cube' })}>
                 {t('matchSetup.standardModeTitle')}
-              </button>
+              </LedgerPill>
             </div>
           </section>
 
           {/* Mistake Flagging Toggle */}
-          <section className="flex items-center justify-between p-3 bg-[#1a130f] border border-[#2d1e15] rounded-sm">
+          <section
+            className="flex items-center justify-between p-3 rounded-md"
+            style={{ background: 'rgba(58,42,24,0.06)', border: `1px solid ${RULE}` }}
+          >
             <div>
-              <div className="text-xs font-semibold text-[#f9f3e5]">{t('settings.mistakeFlagging')}</div>
-              <div className="text-[9px] opacity-50 mt-0.5">{t('settings.mistakeFlaggingDesc')}</div>
+              <div className="text-xs font-semibold" style={{ ...serif, color: INK }}>
+                {t('settings.mistakeFlagging')}
+              </div>
+              <div className="text-[9px] mt-0.5" style={{ color: INK_MUTED }}>
+                {t('settings.mistakeFlaggingDesc')}
+              </div>
             </div>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={settings.mistakeFlagging}
-              onClick={() => onUpdateSettings({ mistakeFlagging: !settings.mistakeFlagging })}
-              className={`w-10 h-5 rounded-full relative p-0.5 transition-colors cursor-pointer shrink-0 ${
-                settings.mistakeFlagging ? 'bg-[#c2a278]' : 'bg-[#2d1e15]'
-              }`}
-            >
-              <div
-                className={`w-4 h-4 rounded-full transition-transform ${
-                  settings.mistakeFlagging
-                    ? 'translate-x-5 bg-[#140e0a]'
-                    : 'translate-x-0 bg-[#c2a278]'
-                }`}
-              />
-            </button>
+            <LedgerToggle
+              checked={settings.mistakeFlagging}
+              onToggle={() => onUpdateSettings({ mistakeFlagging: !settings.mistakeFlagging })}
+            />
           </section>
 
           {/* Stakes & Match Length */}
@@ -217,22 +201,24 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                 <button
                   type="button"
                   onClick={() => onUpdateSettings({ stakeType: 'points' })}
-                  className={`px-2.5 py-1 rounded-sm text-[10px] uppercase tracking-wide transition-colors cursor-pointer ${
+                  className="px-2.5 py-1 rounded-md text-[10px] uppercase tracking-wide transition-colors cursor-pointer"
+                  style={
                     settings.stakeType === 'points'
-                      ? 'border border-[#c2a278] text-[#c2a278] bg-[#2d1e15]'
-                      : 'text-[#e0d5c1]/40 hover:text-[#e0d5c1]'
-                  }`}
+                      ? { color: BRASS, background: 'rgba(163,119,63,0.14)', fontWeight: 600 }
+                      : { color: INK_MUTED }
+                  }
                 >
                   {t('matchSetup.pointsRace')}
                 </button>
                 <button
                   type="button"
                   onClick={() => onUpdateSettings({ stakeType: 'money' })}
-                  className={`px-2.5 py-1 rounded-sm text-[10px] uppercase tracking-wide transition-colors cursor-pointer ${
+                  className="px-2.5 py-1 rounded-md text-[10px] uppercase tracking-wide transition-colors cursor-pointer"
+                  style={
                     settings.stakeType === 'money'
-                      ? 'border border-[#c2a278] text-[#c2a278] bg-[#2d1e15]'
-                      : 'text-[#e0d5c1]/40 hover:text-[#e0d5c1]'
-                  }`}
+                      ? { color: BRASS, background: 'rgba(163,119,63,0.14)', fontWeight: 600 }
+                      : { color: INK_MUTED }
+                  }
                 >
                   {t('matchSetup.moneyStake')}
                 </button>
@@ -242,8 +228,8 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
             {settings.stakeType === 'points' ? (
               <div className="space-y-1.5">
                 <div className="flex justify-between text-[11px]">
-                  <span className="text-[#e0d5c1]/50">{t('matchSetup.targetMatchPoints')}</span>
-                  <span className="font-mono text-[#c2a278] font-bold">
+                  <span style={{ color: INK_MUTED }}>{t('matchSetup.targetMatchPoints')}</span>
+                  <span className="font-mono font-bold" style={{ color: BRASS }}>
                     {settings.matchTarget} {t('matchSetup.pointsUnit')}
                   </span>
                 </div>
@@ -253,11 +239,12 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                       key={pts}
                       type="button"
                       onClick={() => onUpdateSettings({ matchTarget: pts })}
-                      className={`py-2 rounded-sm border text-xs font-mono transition-colors cursor-pointer ${
+                      className="py-2 rounded-md text-xs font-mono transition-colors cursor-pointer"
+                      style={
                         settings.matchTarget === pts
-                          ? 'border-[#c2a278] bg-[#c2a278] text-[#140e0a] font-bold'
-                          : 'border-[#2d1e15] bg-[#1a130f] text-[#e0d5c1]/60 hover:border-[#4a3528]'
-                      }`}
+                          ? { background: `linear-gradient(160deg,#cba766,#a3773f)`, color: '#2a1c0e', fontWeight: 700 }
+                          : { background: 'rgba(58,42,24,0.06)', color: INK_MUTED, border: `1px solid ${RULE}` }
+                      }
                     >
                       {pts}p
                     </button>
@@ -267,8 +254,10 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
             ) : (
               <div className="space-y-1.5">
                 <div className="flex justify-between text-[11px]">
-                  <span className="text-[#e0d5c1]/50">{t('matchSetup.stakePerPoint')}</span>
-                  <span className="font-mono text-[#c2a278] font-bold">${settings.stakePerPoint} / pt</span>
+                  <span style={{ color: INK_MUTED }}>{t('matchSetup.stakePerPoint')}</span>
+                  <span className="font-mono font-bold" style={{ color: BRASS }}>
+                    ${settings.stakePerPoint} / pt
+                  </span>
                 </div>
                 <div className="grid grid-cols-4 gap-1.5">
                   {[10, 25, 50, 100].map((amount) => (
@@ -276,11 +265,12 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
                       key={amount}
                       type="button"
                       onClick={() => onUpdateSettings({ stakePerPoint: amount })}
-                      className={`py-2 rounded-sm border text-xs font-mono transition-colors cursor-pointer ${
+                      className="py-2 rounded-md text-xs font-mono transition-colors cursor-pointer"
+                      style={
                         settings.stakePerPoint === amount
-                          ? 'border-[#c2a278] bg-[#c2a278] text-[#140e0a] font-bold'
-                          : 'border-[#2d1e15] bg-[#1a130f] text-[#e0d5c1]/60 hover:border-[#4a3528]'
-                      }`}
+                          ? { background: `linear-gradient(160deg,#cba766,#a3773f)`, color: '#2a1c0e', fontWeight: 700 }
+                          : { background: 'rgba(58,42,24,0.06)', color: INK_MUTED, border: `1px solid ${RULE}` }
+                      }
                     >
                       ${amount}
                     </button>
@@ -296,7 +286,12 @@ export const MatchStartModal: React.FC<MatchStartModalProps> = ({
           id="btn-start-match"
           type="button"
           onClick={onStartMatch}
-          className="w-full mt-6 py-3 rounded-sm border border-[#c2a278] bg-[#c2a278] text-[#140e0a] text-xs tracking-[0.2em] uppercase font-bold hover:bg-[#d6b78d] transition-colors cursor-pointer shadow-lg"
+          className="w-full mt-6 py-3.5 rounded-md text-xs tracking-[0.2em] uppercase font-bold transition-transform active:scale-[0.98] cursor-pointer"
+          style={{
+            background: 'linear-gradient(160deg,#cba766,#a3773f)',
+            color: '#2a1c0e',
+            boxShadow: '0 10px 22px rgba(60,38,10,0.35), inset 0 1px 0 rgba(255,255,255,0.4)',
+          }}
         >
           {isCubeMode ? t('matchSetup.startMatchCube') : t('matchSetup.startMatchStandard')}
         </button>
