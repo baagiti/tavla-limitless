@@ -90,7 +90,15 @@ export const MoveReviewModal: React.FC<MoveReviewModalProps> = ({
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
 
-      if (!cancelled) setAnalyzeProgress(null);
+      // Reaching here means the loop above ran to completion rather than
+      // exiting early via the `if (cancelled) return;` check — so this is
+      // always a real finish, never a stale one. Gating this on `cancelled`
+      // was the bug: marking the LAST entry deepChecked flips allDeepChecked
+      // to true via the onUpdateMoveLog call above, and since that's an
+      // effect dependency, React tears down this very effect instance
+      // (setting `cancelled = true`) as part of the same commit — racing
+      // this line and permanently stranding the progress bar at "N/N".
+      setAnalyzeProgress(null);
     };
 
     runDeepAnalysis();
