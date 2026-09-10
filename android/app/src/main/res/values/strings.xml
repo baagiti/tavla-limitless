@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Backgammon Limitless</string>
+    <string name="title_activity_main">Backgammon Limitless</string>
+    <string name="package_name">com.burakakkaya.tavla</string>
+    <string name="custom_url_scheme">com.burakakkaya.tavla</string>
+</resources>
